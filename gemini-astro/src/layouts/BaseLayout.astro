@@ -1,0 +1,371 @@
+---
+import '@/styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  canonicalURL?: string;
+  type?: 'website' | 'article';
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description,
+  image = '/img/og-image.png',
+  canonicalURL = Astro.url.href,
+  type = 'website',
+  noindex = false,
+} = Astro.props;
+
+const siteURL = 'https://geminisoftware.mx';
+const fullImageURL = image.startsWith('http') ? image : `${siteURL}${image}`;
+---
+
+<!DOCTYPE html>
+<html lang="es" class="lenis lenis-smooth">
+<head>
+  <!-- ========== Essential Meta Tags ========== -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+  <!-- ========== Primary Meta Tags ========== -->
+  <title>{title}</title>
+  <meta name="title" content={title} />
+  <meta name="description" content={description} />
+  <meta name="author" content="Gemini Software" />
+  <meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large'} />
+  <meta name="googlebot" content={noindex ? 'noindex, nofollow' : 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1'} />
+  
+  <!-- ========== SEO Keywords ========== -->
+  <meta name="keywords" content="desarrollo web, desarrollo de software, apps móviles, aplicaciones web, marketing digital, diseño web, UX/UI, SEO, CRM, ERP, software a medida, agencia digital, Monterrey, México, Nuevo León, Latinoamérica" />
+  
+  <!-- ========== Canonical & Language ========== -->
+  <link rel="canonical" href={canonicalURL} />
+  <meta name="language" content="Spanish" />
+  <meta name="geo.region" content="MX-NLE" />
+  <meta name="geo.placename" content="Monterrey" />
+  
+  <!-- ========== Open Graph / Facebook ========== -->
+  <meta property="og:type" content={type} />
+  <meta property="og:url" content={canonicalURL} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content={fullImageURL} />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:site_name" content="Gemini Software" />
+  <meta property="og:locale" content="es_MX" />
+  
+  <!-- ========== Twitter Card ========== -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content={canonicalURL} />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={fullImageURL} />
+  <meta name="twitter:creator" content="@geminisoftware" />
+  
+  <!-- ========== Favicon ========== -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+  <meta name="theme-color" content="#01183D" />
+  <meta name="msapplication-TileColor" content="#01183D" />
+  
+  <!-- ========== Preconnect & Preload (Optimized) ========== -->
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" as="style" fetchpriority="high" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" /></noscript>
+  
+  <!-- Preload critical hero image for LCP -->
+  {Astro.url.pathname === '/' && (
+    <link rel="preload" href="/img/Laptop-full.webp" as="image" type="image/webp" fetchpriority="high" />
+  )}
+  
+  <!-- ========== Structured Data (JSON-LD) ========== -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": "https://geminisoftware.mx/#organization",
+    "name": "Gemini Software",
+    "url": "https://geminisoftware.mx",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://geminisoftware.mx/img/logo.png",
+      "width": 512,
+      "height": 512
+    },
+    "image": "https://geminisoftware.mx/img/og-image.png",
+    "description": "Empresa especializada en desarrollo de software personalizado, sitios web, apps móviles y marketing digital para empresas en México, Latinoamérica y más allá.",
+    "telephone": "+52 81 3660 0062",
+    "email": "contacto@geminisoftware.mx",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Monterrey",
+      "addressRegion": "Nuevo León",
+      "postalCode": "64000",
+      "addressCountry": "MX"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": "25.6866",
+      "longitude": "-100.3161"
+    },
+    "areaServed": [
+      { "@type": "Country", "name": "México" },
+      { "@type": "Country", "name": "Estados Unidos" },
+      { "@type": "Country", "name": "España" },
+      { "@type": "Country", "name": "Colombia" },
+      { "@type": "Country", "name": "Argentina" }
+    ],
+    "sameAs": [
+      "https://www.facebook.com/share/16r12w8BBK/?mibextid=wwXIfr",
+      "https://www.instagram.com/gemini_software?igsh=MXQ3a2gzdGo1dmNqcQ==",
+      "https://www.linkedin.com/company/gemini-sftwre/",
+      "https://twitter.com/geminisoftware"
+    ],
+    "foundingDate": "2020",
+    "priceRange": "$$",
+    "openingHoursSpecification": {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      "opens": "09:00",
+      "closes": "18:00"
+    }
+  })} />
+  
+  <!-- ========== Local Business Schema ========== -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": ["LocalBusiness", "ProfessionalService"],
+    "@id": "https://geminisoftware.mx/#localbusiness",
+    "name": "Gemini Software",
+    "image": "https://geminisoftware.mx/img/og-image.png",
+    "url": "https://geminisoftware.mx",
+    "telephone": "+52 81 3660 0062",
+    "email": "contacto@geminisoftware.mx",
+    "priceRange": "$$",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Monterrey",
+      "addressRegion": "Nuevo León",
+      "addressCountry": "MX"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": "25.6866",
+      "longitude": "-100.3161"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "reviewCount": "47"
+    },
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "opens": "09:00",
+        "closes": "18:00"
+      }
+    ],
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Servicios de Desarrollo Digital",
+      "itemListElement": [
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Desarrollo Web",
+            "description": "Sitios web profesionales optimizados para conversión"
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Aplicaciones Móviles",
+            "description": "Apps iOS y Android con excelente experiencia de usuario"
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Software Empresarial",
+            "description": "Sistemas CRM/ERP a medida para optimizar tu negocio"
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "E-Commerce",
+            "description": "Tiendas online optimizadas para ventas 24/7"
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Marketing Digital",
+            "description": "Estrategias SEO y campañas digitales que generan resultados"
+          }
+        }
+      ]
+    }
+  })} />
+  
+  <!-- ========== Website Schema ========== -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": "https://geminisoftware.mx/#website",
+    "url": "https://geminisoftware.mx",
+    "name": "Gemini Software",
+    "description": "Desarrollo de Software, Web, Apps y Marketing Digital",
+    "publisher": {
+      "@id": "https://geminisoftware.mx/#organization"
+    },
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://geminisoftware.mx/buscar?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  })} />
+
+  <!-- ========== View Transitions ========== -->
+  <meta name="view-transition" content="same-origin" />
+  
+  <!-- ========== Google Analytics (Deferred) ========== -->
+  {import.meta.env.PUBLIC_GA_ID && (
+    <>
+      <script type="text/partytown" async src={`https://www.googletagmanager.com/gtag/js?id=${import.meta.env.PUBLIC_GA_ID}`}></script>
+      <script type="text/partytown" define:vars={{ gaId: import.meta.env.PUBLIC_GA_ID }}>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', gaId, {
+          page_path: window.location.pathname,
+          anonymize_ip: true,
+        });
+        
+        // Track contact form submissions
+        window.trackContactSubmission = function() {
+          gtag('event', 'form_submit', {
+            event_category: 'Contact',
+            event_label: 'Contact Form',
+            value: 1
+          });
+        };
+        
+        // Track WhatsApp clicks
+        window.trackWhatsAppClick = function() {
+          gtag('event', 'click', {
+            event_category: 'Contact',
+            event_label: 'WhatsApp Click',
+            value: 1
+          });
+        };
+        
+        // Track service clicks
+        window.trackServiceClick = function(serviceName) {
+          gtag('event', 'click', {
+            event_category: 'Services',
+            event_label: serviceName,
+            value: 1
+          });
+        };
+      </script>
+    </>
+  )}
+  
+  <!-- Critical CSS inline for FCP optimization -->
+  <style is:inline>
+    /* Critical above-the-fold styles */
+    body{margin:0;padding:0;font-family:Montserrat,sans-serif;background:#01183d;color:#fff}
+    .hero-section{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+    .hero-gradient{background:linear-gradient(135deg,#01183d 0%,#003799 50%,#00d3ff 100%)}
+    .container{width:100%;max-width:1280px;margin:0 auto;padding:0 1rem}
+    @media(min-width:640px){.container{padding:0 1.5rem}}
+    @media(min-width:1024px){.container{padding:0 3rem}}
+  </style>
+  
+  <slot name="head" />
+</head>
+<body class="antialiased">
+  <!-- Noise Overlay for texture -->
+  <div class="noise-overlay" aria-hidden="true"></div>
+  
+  <!-- Page Content -->
+  <slot />
+  
+  <!-- Smooth Scroll with Lenis -->
+  <script>
+    import Lenis from 'lenis';
+
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: 'vertical',
+      gestureOrientation: 'vertical',
+      smoothWheel: true,
+      wheelMultiplier: 1,
+      touchMultiplier: 2,
+      infinite: false,
+    });
+
+    function raf(time: number) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+
+    // Make lenis available globally
+    (window as any).lenis = lenis;
+  </script>
+
+  <!-- GSAP ScrollTrigger Integration -->
+  <script>
+    import { gsap } from 'gsap';
+    import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Sync ScrollTrigger with Lenis
+    const lenis = (window as any).lenis;
+    if (lenis) {
+      lenis.on('scroll', ScrollTrigger.update);
+      gsap.ticker.add((time) => {
+        lenis.raf(time * 1000);
+      });
+      gsap.ticker.lagSmoothing(0);
+    }
+
+    // Reveal animations on scroll
+    const revealElements = document.querySelectorAll('.reveal');
+    revealElements.forEach((el) => {
+      gsap.fromTo(el,
+        { opacity: 0, y: 50 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 85%',
+            toggleActions: 'play none none reverse',
+          },
+        }
+      );
+    });
+  </script>
+</body>
+</html>

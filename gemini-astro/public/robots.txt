@@ -1,0 +1,24 @@
+# Robots.txt for Gemini Software
+# https://geminisoftware.mx
+
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /api/
+
+# Sitemaps
+Sitemap: https://geminisoftware.mx/sitemap-index.xml
+Sitemap: https://geminisoftware.mx/sitemap-0.xml
+
+# Crawl-delay (optional, for slower crawling)
+Crawl-delay: 1
+
+# Google
+User-agent: Googlebot
+Allow: /
+Disallow: /admin
+
+# Bing
+User-agent: Bingbot
+Allow: /
+Disallow: /admin

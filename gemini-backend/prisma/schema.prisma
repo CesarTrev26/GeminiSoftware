@@ -1,0 +1,190 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================
+// USER & AUTHENTICATION
+// ============================================
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      String   @default("ADMIN") // ADMIN, EDITOR
+  avatar    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  projects  Project[]
+  contacts  Contact[]
+
+  @@map("users")
+}
+
+// ============================================
+// PORTFOLIO PROJECTS
+// ============================================
+model Project {
+  id              String   @id @default(uuid())
+  slug            String   @unique
+  title           String
+  subtitle        String?
+  category        String
+  client          String?
+  description     String
+  longDescription String?
+  
+  // Images
+  thumbnail       String?
+  images          ProjectImage[]
+  
+  // Tech stack
+  tags            String   // JSON array stored as string
+  
+  // Results/metrics
+  results         String?  // JSON array stored as string
+  
+  // Metadata
+  year            String?
+  duration        String?
+  website         String?
+  
+  // Project type and status
+  projectType     String?  // "Development" or "Redesign"
+  inProgress      Boolean  @default(false)
+  
+  // Status
+  featured        Boolean  @default(false)
+  published       Boolean  @default(true)
+  order           Int      @default(0)
+  
+  // Timestamps
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  publishedAt     DateTime?
+  
+  // Relations
+  authorId        String?
+  author          User?    @relation(fields: [authorId], references: [id])
+
+  @@map("projects")
+}
+
+model ProjectImage {
+  id        String   @id @default(uuid())
+  url       String
+  alt       String?
+  caption   String?
+  order     Int      @default(0)
+  
+  projectId String
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  
+  createdAt DateTime @default(now())
+
+  @@map("project_images")
+}
+
+// ============================================
+// CONTACT SUBMISSIONS
+// ============================================
+model Contact {
+  id        String   @id @default(uuid())
+  name      String
+  email     String
+  phone     String?
+  service   String?
+  message   String
+  
+  // Status tracking (NEW, IN_PROGRESS, CONTACTED, CONVERTED, ARCHIVED)
+  status    String   @default("NEW")
+  notes     String?
+  
+  // Metadata
+  source    String?       // Where the contact came from
+  ip        String?
+  userAgent String?
+  
+  // Timestamps
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  
+  // Relations
+  assignedToId String?
+  assignedTo   User?      @relation(fields: [assignedToId], references: [id])
+
+  @@map("contacts")
+}
+
+// ============================================
+// SERVICES
+// ============================================
+model Service {
+  id          String  @id @default(uuid())
+  slug        String  @unique
+  title       String
+  subtitle    String?
+  description String
+  icon        String?
+  
+  // Features (JSON array)
+  features    String?
+  
+  // Technologies (JSON array)
+  technologies String?
+  
+  // Display settings
+  color       String  @default("cyan")
+  order       Int     @default(0)
+  published   Boolean @default(true)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("services")
+}
+
+// ============================================
+// TESTIMONIALS
+// ============================================
+model Testimonial {
+  id        String   @id @default(uuid())
+  name      String
+  role      String?
+  company   String?
+  avatar    String?
+  content   String
+  rating    Int      @default(5)
+  
+  featured  Boolean  @default(false)
+  published Boolean  @default(true)
+  order     Int      @default(0)
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("testimonials")
+}
+
+// ============================================
+// SITE SETTINGS
+// ============================================
+model Setting {
+  id    String @id @default(uuid())
+  key   String @unique
+  value String
+  type  String @default("string") // string, number, boolean, json
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("settings")
+}

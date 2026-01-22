@@ -1,0 +1,175 @@
+---
+const stats = [
+  { number: '15+', label: 'Proyectos Completados' },
+  { number: '2+', label: 'Años de Experiencia' },
+  { number: '100%', label: 'Clientes Satisfechos' },
+  { number: '24/7', label: 'Soporte Disponible' },
+];
+
+const values = [
+  {
+    icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />`,
+    title: 'Resultados Garantizados',
+    description: 'Proyectos diseñados para cumplir objetivos medibles. Te entregamos métricas claras y ROI demostrable.',
+  },
+  {
+    icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />`,
+    title: 'Calidad Profesional',
+    description: 'Código limpio, diseño pulido y atención al detalle. Cada proyecto pasa por pruebas rigurosas antes de lanzar.',
+  },
+  {
+    icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />`,
+    title: 'Compromiso Total',
+    description: 'Acompañamiento en cada fase del proyecto, comunicación constante y soporte post-lanzamiento.',
+  },
+];
+---
+
+<section id="nosotros" class="py-12 sm:py-16 lg:py-20 bg-dark-blue-500 relative overflow-hidden">
+  <!-- Background Elements -->
+  <div class="absolute inset-0">
+    <div class="absolute top-0 left-1/4 w-[500px] h-[500px] bg-cyan-500/5 rounded-full blur-[100px]"></div>
+    <div class="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-blue-500/5 rounded-full blur-[80px]"></div>
+    <div class="absolute inset-0 bg-[linear-gradient(rgba(0,211,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(0,211,255,0.02)_1px,transparent_1px)] bg-[size:60px_60px]"></div>
+  </div>
+
+  <div class="container mx-auto px-4 sm:px-6 lg:px-12 relative z-10">
+    <div class="grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 xl:gap-20 items-center">
+      <!-- Left Content -->
+      <div>
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-white/5 border border-white/10 mb-4 sm:mb-6">
+          <span class="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-cyan-400 rounded-full"></span>
+          <span class="text-white/60 text-xs sm:text-sm font-medium">¿Quiénes Somos?</span>
+        </div>
+        
+        <h2 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-montserrat-alt font-light text-white mb-4 sm:mb-6 leading-tight reveal">
+          Somos <span class="text-cyan-400">GEMINI</span>,<br />
+          tu aliado digital
+        </h2>
+        
+        <p class="text-base sm:text-lg text-white/60 leading-relaxed mb-4 sm:mb-8 reveal">
+          En <strong class="text-white font-medium">Gemini Software</strong> transformamos tus ideas en soluciones digitales que generan resultados reales. Somos un equipo de desarrolladores, diseñadores y estrategistas comprometidos con el éxito de tu proyecto, desde la primera reunión hasta mucho después del lanzamiento.
+        </p>
+        
+        <p class="text-sm sm:text-base text-white/50 leading-relaxed mb-6 sm:mb-10 reveal">
+          Trabajamos contigo para entender tus objetivos de negocio y crear soluciones que los cumplan. Cada proyecto incluye métricas claras, pruebas exhaustivas y soporte continuo. Nuestro compromiso es simple: tu proyecto debe funcionar perfectamente y cumplir con lo prometido.
+        </p>
+
+        <!-- Values -->
+        <div class="grid gap-4 sm:gap-6 reveal">
+          {values.map((value) => (
+            <div class="flex items-start gap-4 group">
+              <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-500/20 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+                <svg class="w-6 h-6 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" set:html={value.icon} />
+              </div>
+              <div>
+                <h3 class="text-white font-medium mb-1">{value.title}</h3>
+                <p class="text-white/50 text-sm">{value.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Right Content - Stats & Visual -->
+      <div class="relative">
+        <!-- Stats Grid -->
+        <div class="grid grid-cols-2 gap-4 sm:gap-4 lg:gap-6 mb-6 sm:mb-8">
+          {stats.map((stat, index) => (
+            <div 
+              class="stat-card group p-5 sm:p-6 lg:p-8 rounded-xl sm:rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm hover:bg-white/10 hover:border-cyan-500/30 transition-all duration-500 hover:-translate-y-1"
+              style={`animation-delay: ${index * 100}ms`}
+            >
+              <div class="text-2xl sm:text-3xl lg:text-4xl font-montserrat-alt font-light text-cyan-400 mb-1 sm:mb-2 stat-number">
+                {stat.number}
+              </div>
+              <div class="text-white/50 text-xs sm:text-sm lg:text-base">
+                {stat.label}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <!-- Team Visual Placeholder -->
+        <div class="relative rounded-3xl overflow-hidden aspect-video bg-gradient-to-br from-blue-500/20 to-cyan-500/20 border border-white/10">
+          <div class="absolute inset-0 flex items-center justify-center">
+            <div class="text-center">
+              <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center">
+                <svg class="w-10 h-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+              </div>
+              <p class="text-white/60 text-sm">Nuestro Equipo</p>
+            </div>
+          </div>
+          
+          <!-- Decorative elements -->
+          <div class="absolute top-4 left-4 w-20 h-20 border border-cyan-500/20 rounded-full"></div>
+          <div class="absolute bottom-4 right-4 w-16 h-16 border border-blue-500/20 rounded-full"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  
+  gsap.registerPlugin(ScrollTrigger);
+  
+  // Animate stats on scroll
+  gsap.utils.toArray('.stat-card').forEach((card: any, index: number) => {
+    gsap.from(card, {
+      opacity: 0,
+      y: 40,
+      scale: 0.9,
+      duration: 0.6,
+      delay: index * 0.1,
+      ease: 'back.out(1.7)',
+      scrollTrigger: {
+        trigger: card,
+        start: 'top 85%',
+        toggleActions: 'play none none reverse',
+      },
+    });
+  });
+
+  // Animate stat numbers
+  gsap.utils.toArray('.stat-number').forEach((num: any) => {
+    const text = num.textContent || '';
+    const hasPlus = text.includes('+');
+    const hasPercent = text.includes('%');
+    const hasSlash = text.includes('/');
+    
+    if (hasSlash) return; // Skip 24/7 type stats
+    
+    const numericValue = parseInt(text.replace(/[^0-9]/g, ''));
+    
+    if (isNaN(numericValue)) return; // Skip if not a number
+    
+    gsap.fromTo(num, 
+      {
+        textContent: 0,
+      },
+      {
+        textContent: numericValue,
+        duration: 2,
+        ease: 'power2.out',
+        snap: { textContent: 1 },
+        scrollTrigger: {
+          trigger: num,
+          start: 'top 85%',
+          toggleActions: 'play none none reverse',
+        },
+        onUpdate: function() {
+          const current = Math.round(Number(this.targets()[0].textContent));
+          let suffix = '';
+          if (hasPlus) suffix = '+';
+          if (hasPercent) suffix = '%';
+          this.targets()[0].textContent = current + suffix;
+        },
+      }
+    );
+  });
+</script>

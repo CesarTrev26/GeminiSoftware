@@ -1,0 +1,399 @@
+---
+interface ProjectImage {
+  id: string;
+  url: string;
+  alt?: string;
+}
+
+interface Project {
+  id: string;
+  slug: string;
+  title: string;
+  category: string;
+  description: string;
+  thumbnail?: string;
+  images?: ProjectImage[];
+  tags: string[];
+  client?: string;
+  year?: string;
+  featured?: boolean;
+  inProgress?: boolean;
+}
+
+interface Props {
+  projects?: Project[];
+  limit?: number;
+}
+
+// Fetch projects from API
+const API_URL = import.meta.env.PUBLIC_API_URL || 'http://localhost:3001/api';
+let apiProjects: Project[] = [];
+
+try {
+  const response = await fetch(`${API_URL}/projects?featured=true`);
+  const data = await response.json();
+  if (data.success && data.data) {
+    apiProjects = data.data;
+  }
+} catch (error) {
+  console.error('Error fetching projects:', error);
+}
+
+const fallbackProjects: Project[] = [
+  {
+    id: '1',
+    slug: 'ecommerce-platform',
+    title: 'E-Commerce Platform',
+    category: 'Desarrollo Web',
+    description: 'Plataforma de comercio electrónico con integración de pagos, inventario y análisis.',
+    thumbnail: '/img/portfolio/project1.jpg',
+    tags: ['Next.js', 'Stripe', 'PostgreSQL'],
+  },
+  {
+    id: '2',
+    slug: 'delivery-app',
+    title: 'App de Delivery',
+    category: 'Apps Móviles',
+    description: 'Aplicación móvil para servicio de entregas con tracking en tiempo real.',
+    thumbnail: '/img/portfolio/project2.jpg',
+    tags: ['React Native', 'Firebase', 'Maps API'],
+  },
+  {
+    id: '3',
+    slug: 'business-dashboard',
+    title: 'Dashboard Empresarial',
+    category: 'Software a Medida',
+    description: 'Sistema de gestión empresarial con reportes, KPIs y automatizaciones.',
+    thumbnail: '/img/portfolio/project3.jpg',
+    tags: ['React', 'Node.js', 'MongoDB'],
+  },
+  {
+    id: '4',
+    slug: 'real-estate',
+    title: 'Landing Page Inmobiliaria',
+    category: 'Diseño Web',
+    description: 'Sitio web de alto impacto para empresa inmobiliaria premium.',
+    thumbnail: '/img/portfolio/project4.jpg',
+    tags: ['Astro', 'Tailwind', 'GSAP'],
+  },
+];
+
+const { projects, limit = 4 } = Astro.props;
+const finalProjects = projects || (apiProjects.length > 0 ? apiProjects : fallbackProjects);
+
+// Parse JSON fields and ensure proper data structure
+const parsedProjects = finalProjects.map(project => ({
+  ...project,
+  tags: typeof project.tags === 'string' ? JSON.parse(project.tags) : (Array.isArray(project.tags) ? project.tags : []),
+  images: project.images || [],
+}));
+
+const displayProjects = parsedProjects.slice(0, limit);
+
+const categories = ['Todos', ...new Set(parsedProjects.map(p => p.category))];
+---
+
+<section id="portfolio" class="py-12 sm:py-16 lg:py-20 bg-gray-200 relative overflow-hidden">
+  <!-- Background -->
+  <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(0,211,255,0.05),transparent_50%)]"></div>
+  
+  <div class="container mx-auto px-4 sm:px-6 lg:px-12 relative z-10">
+    <!-- Section Header -->
+    <div class="text-center max-w-3xl mx-auto mb-8 sm:mb-10 lg:mb-12">
+      <div class="inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-dark-blue-500/5 border border-dark-blue-500/10 mb-4 sm:mb-6">
+        <span class="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-blue-500 rounded-full"></span>
+        <span class="text-dark-blue-500/70 text-xs sm:text-sm font-medium">Nuestro Trabajo</span>
+      </div>
+      
+      <h2 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-montserrat-alt font-light text-dark-blue-500 mb-3 sm:mb-6 leading-tight reveal">
+        Proyectos que
+        <span class="gradient-text"> hablan por sí solos</span>
+      </h2>
+      
+      <p class="text-base sm:text-lg text-dark-blue-500/60 leading-relaxed reveal">
+        Cada proyecto es una oportunidad de crear algo extraordinario. Aquí algunos de nuestros trabajos más destacados.
+      </p>
+    </div>
+
+    <!-- Category Filter -->
+    <div class="flex flex-wrap justify-center gap-2.5 sm:gap-3 mb-8 sm:mb-10 lg:mb-12" id="portfolio-filter">
+      {categories.map((category, index) => (
+        <button
+          class:list={[
+            'filter-btn px-5 py-2 rounded-full text-sm font-medium transition-all duration-300',
+            index === 0 
+              ? 'bg-dark-blue-500 text-white' 
+              : 'bg-white/50 text-dark-blue-500/70 hover:bg-white hover:text-dark-blue-500',
+          ]}
+          data-category={category}
+        >
+          {category}
+        </button>
+      ))}
+    </div>
+
+    <!-- Projects Grid -->
+    <div class="grid md:grid-cols-2 gap-6 lg:gap-8" id="portfolio-grid">
+      {displayProjects.map((project, index) => (
+        <article 
+          class="portfolio-item group relative rounded-3xl overflow-hidden bg-white shadow-lg hover:shadow-xl transition-all duration-500"
+          data-category={project.category}
+          style={`animation-delay: ${index * 100}ms`}
+        >
+          <!-- Image Container with Carousel -->
+          <div class="relative aspect-[16/10] overflow-hidden project-carousel" data-project-id={project.id}>
+            <!-- Carousel Track -->
+            <div class="carousel-track absolute inset-0 flex transition-transform duration-500 ease-out">
+              {project.images && project.images.length > 0 ? (
+                project.images.map((image: ProjectImage) => (
+                  <div class="carousel-slide min-w-full h-full relative">
+                    <div class="absolute inset-0 bg-gradient-to-br from-dark-blue-500 via-blue-500 to-cyan-500 opacity-20"></div>
+                    <img 
+                      src={image.url} 
+                      alt={image.alt || project.title}
+                      class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                    />
+                  </div>
+                ))
+              ) : (
+                <div class="carousel-slide min-w-full h-full relative">
+                  <div class="absolute inset-0 bg-gradient-to-br from-dark-blue-500 via-blue-500 to-cyan-500"></div>
+                  {project.thumbnail && (
+                    <img 
+                      src={project.thumbnail} 
+                      alt={project.title}
+                      class="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700"
+                    />
+                  )}
+                </div>
+              )}
+            </div>
+            
+            <!-- Carousel Navigation -->
+            {project.images && project.images.length > 1 && (
+              <>
+                <button 
+                  class="carousel-prev absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/95 backdrop-blur-md shadow-xl flex items-center justify-center text-dark-blue-500 opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-cyan-500 hover:text-white hover:scale-110 z-20 border border-white/20"
+                  aria-label="Imagen anterior"
+                >
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+                  </svg>
+                </button>
+                <button 
+                  class="carousel-next absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/95 backdrop-blur-md shadow-xl flex items-center justify-center text-dark-blue-500 opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-cyan-500 hover:text-white hover:scale-110 z-20 border border-white/20"
+                  aria-label="Siguiente imagen"
+                >
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                  </svg>
+                </button>
+                
+                <!-- Carousel Indicators -->
+                <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 bg-dark-blue-500/30 backdrop-blur-sm px-3 py-2 rounded-full z-10">
+                  {project.images.map((_: ProjectImage, imgIndex: number) => (
+                    <button 
+                      class="carousel-indicator w-2 h-2 rounded-full bg-white/60 hover:bg-white transition-all duration-300 hover:scale-125"
+                      data-index={imgIndex}
+                      aria-label={`Ir a imagen ${imgIndex + 1}`}
+                    />
+                  ))}
+                </div>
+              </>
+            )}
+            
+            <!-- Overlay -->
+            <div class="absolute inset-0 bg-dark-blue-500/60 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center pointer-events-none">
+              <a 
+                href={project.slug ? `/portfolio/${project.slug}` : '#'}
+                class="px-6 py-3 bg-white text-dark-blue-500 font-medium rounded-full transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 hover:bg-cyan-400 hover:text-dark-blue-500 pointer-events-auto"
+              >
+                Ver Proyecto
+              </a>
+            </div>
+
+            <!-- Category Badge -->
+            <div class="absolute top-4 left-4 px-3 py-1 bg-white/90 backdrop-blur-sm rounded-full text-xs font-medium text-dark-blue-500 z-10">
+              {project.category}
+            </div>
+            
+            <!-- In Progress Badge -->
+            {project.inProgress && (
+              <div class="absolute top-4 right-4 px-3 py-1 bg-amber-500 text-white text-xs font-medium rounded-full z-10 flex items-center gap-1">
+                <span>:wrench:</span>
+                <span>En Progreso</span>
+              </div>
+            )}
+          </div>
+          
+          <!-- Content -->
+          <div class="p-4 sm:p-5 lg:p-6">
+            <h3 class="text-lg sm:text-xl font-montserrat-alt font-medium text-dark-blue-500 mb-2 group-hover:text-blue-500 transition-colors duration-300">
+              {project.title}
+            </h3>
+            
+            <p class="text-sm sm:text-base text-dark-blue-500/60 mb-3 sm:mb-4 line-clamp-2">
+              {project.description}
+            </p>
+            
+            <!-- Tags -->
+            <div class="flex flex-wrap gap-1.5 sm:gap-2">
+              {project.tags.slice(0, 3).map((tag: string) => (
+                <span class="px-2.5 py-0.5 sm:px-3 sm:py-1 bg-cyan-500/10 text-cyan-600 text-xs font-medium rounded-full">
+                  {tag}
+                </span>
+              ))}
+              {project.tags.length > 3 && (
+                <span class="px-2.5 py-0.5 sm:px-3 sm:py-1 bg-gray-200 text-dark-blue-500/60 text-xs font-medium rounded-full">
+                  +{project.tags.length - 3}
+                </span>
+              )}
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <!-- CTA -->
+    <div class="text-center mt-12 lg:mt-16">
+      <a 
+        href="/portfolio" 
+        class="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-medium rounded-full transition-all duration-300 hover:shadow-glow hover:scale-105"
+      >
+        Ver todos los proyectos
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  
+  gsap.registerPlugin(ScrollTrigger);
+  
+  // Filter functionality
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const portfolioItems = document.querySelectorAll('.portfolio-item');
+  
+  filterBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const category = btn.getAttribute('data-category');
+      
+      // Update active button
+      filterBtns.forEach((b) => {
+        b.classList.remove('bg-dark-blue-500', 'text-white');
+        b.classList.add('bg-white/50', 'text-dark-blue-500/70');
+      });
+      btn.classList.add('bg-dark-blue-500', 'text-white');
+      btn.classList.remove('bg-white/50', 'text-dark-blue-500/70');
+      
+      // Filter items
+      portfolioItems.forEach((item) => {
+        const itemCategory = item.getAttribute('data-category');
+        
+        if (category === 'Todos' || itemCategory === category) {
+          gsap.to(item, {
+            opacity: 1,
+            scale: 1,
+            duration: 0.4,
+            ease: 'power2.out',
+          });
+          (item as HTMLElement).style.display = 'block';
+        } else {
+          gsap.to(item, {
+            opacity: 0,
+            scale: 0.9,
+            duration: 0.4,
+            ease: 'power2.out',
+            onComplete: () => {
+              (item as HTMLElement).style.display = 'none';
+            },
+          });
+        }
+      });
+    });
+  });
+  
+  // Carousel functionality
+  document.querySelectorAll('.project-carousel').forEach((carousel) => {
+    const track = carousel.querySelector('.carousel-track') as HTMLElement;
+    const slides = carousel.querySelectorAll('.carousel-slide');
+    const prevBtn = carousel.querySelector('.carousel-prev');
+    const nextBtn = carousel.querySelector('.carousel-next');
+    const indicators = carousel.querySelectorAll('.carousel-indicator');
+    
+    if (slides.length <= 1) return;
+    
+    let currentIndex = 0;
+    const totalSlides = slides.length;
+    
+    function updateCarousel() {
+      if (track) {
+        track.style.transform = `translateX(-${currentIndex * 100}%)`;
+      }
+      indicators.forEach((indicator, index) => {
+        if (index === currentIndex) {
+          indicator.classList.add('bg-white', 'w-3');
+          indicator.classList.remove('bg-white/50', 'w-1.5');
+        } else {
+          indicator.classList.remove('bg-white', 'w-3');
+          indicator.classList.add('bg-white/50', 'w-1.5');
+        }
+      });
+    }
+    
+    function nextSlide() {
+      currentIndex = (currentIndex + 1) % totalSlides;
+      updateCarousel();
+    }
+    
+    function prevSlide() {
+      currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+      updateCarousel();
+    }
+    
+    prevBtn?.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      prevSlide();
+    });
+    
+    nextBtn?.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      nextSlide();
+    });
+    
+    indicators.forEach((indicator, index) => {
+      indicator.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        currentIndex = index;
+        updateCarousel();
+      });
+    });
+    
+    // Initialize first indicator
+    updateCarousel();
+  });
+  
+  // Animate portfolio items on scroll
+  gsap.utils.toArray('.portfolio-item').forEach((item: any, index: number) => {
+    gsap.from(item, {
+      opacity: 0,
+      y: 60,
+      duration: 0.8,
+      delay: index * 0.15,
+      ease: 'power3.out',
+      scrollTrigger: {
+        trigger: item,
+        start: 'top 85%',
+        toggleActions: 'play none none reverse',
+      },
+    });
+  });
+</script>

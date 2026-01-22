@@ -1,0 +1,73 @@
+---
+/**
+ * ResponsiveImage Component
+ * Automatically generates srcset for responsive images
+ * Usage: <ResponsiveImage src="/uploads/projects/image.webp" alt="Description" />
+ */
+
+interface Props {
+  src: string;
+  alt: string;
+  class?: string;
+  width?: number;
+  height?: number;
+  loading?: 'eager' | 'lazy';
+  fetchpriority?: 'high' | 'low' | 'auto';
+}
+
+const {
+  src,
+  alt,
+  class: className = '',
+  width,
+  height,
+  loading = 'lazy',
+  fetchpriority = 'auto'
+} = Astro.props;
+
+// Generate srcset from responsive versions
+// Assumes images are named: image-sm.webp, image-md.webp, image-lg.webp, image.webp
+function generateSrcSet(originalSrc: string): { srcset: string; sizes: string } {
+  const ext = originalSrc.substring(originalSrc.lastIndexOf('.'));
+  const baseUrl = originalSrc.substring(0, originalSrc.lastIndexOf('.'));
+  
+  // Check if it's a backend upload or public image
+  const isBackendUpload = originalSrc.includes('/uploads/');
+  
+  if (isBackendUpload) {
+    // For backend uploads with responsive versions
+    const srcset = [
+      `${baseUrl}-sm.webp 400w`,
+      `${baseUrl}-md.webp 800w`,
+      `${baseUrl}-lg.webp 1200w`,
+      `${baseUrl}.webp 1920w`
+    ].join(', ');
+    
+    // Default responsive sizes
+    const sizes = '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw';
+    
+    return { srcset, sizes };
+  } else {
+    // For public images, use original only
+    return {
+      srcset: `${originalSrc} 1920w`,
+      sizes: '100vw'
+    };
+  }
+}
+
+const { srcset, sizes } = generateSrcSet(src);
+---
+
+<img
+  src={src}
+  srcset={srcset}
+  sizes={sizes}
+  alt={alt}
+  class={className}
+  width={width}
+  height={height}
+  loading={loading}
+  fetchpriority={fetchpriority}
+  decoding="async"
+/>

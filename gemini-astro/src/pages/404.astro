@@ -1,0 +1,104 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Navbar from '@/components/Navbar.astro';
+import Footer from '@/components/Footer.astro';
+---
+
+<BaseLayout 
+  title="404 - Página No Encontrada | Gemini Software"
+  description="La página que buscas no existe. Descubre nuestros servicios de desarrollo web, apps móviles y marketing digital."
+  noindex={true}
+>
+  <Navbar />
+  
+  <section class="min-h-screen flex items-center justify-center bg-dark-blue-500 relative overflow-hidden">
+    <!-- Background Elements -->
+    <div class="absolute inset-0">
+      <div class="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-cyan-500/5 rounded-full blur-[100px]"></div>
+      <div class="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-blue-500/5 rounded-full blur-[80px]"></div>
+      <div class="absolute inset-0 bg-[linear-gradient(rgba(0,211,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(0,211,255,0.02)_1px,transparent_1px)] bg-[size:60px_60px]"></div>
+    </div>
+
+    <div class="container mx-auto px-6 relative z-10 text-center">
+      <!-- 404 Animation -->
+      <div class="mb-8">
+        <h1 class="text-[150px] sm:text-[200px] lg:text-[250px] font-montserrat-alt font-light text-transparent bg-clip-text bg-gradient-to-br from-cyan-400 via-blue-500 to-cyan-600 leading-none animate-pulse">
+          404
+        </h1>
+      </div>
+
+      <!-- Message -->
+      <h2 class="text-3xl sm:text-4xl lg:text-5xl font-montserrat-alt font-light text-white mb-6">
+        Oops... Página no encontrada
+      </h2>
+      
+      <p class="text-lg text-white/60 max-w-2xl mx-auto mb-12">
+        La página que estás buscando no existe o ha sido movida. 
+        Pero no te preocupes, te ayudamos a encontrar lo que necesitas.
+      </p>
+
+      <!-- Quick Links -->
+      <div class="flex flex-col sm:flex-row gap-4 justify-center mb-16">
+        <a 
+          href="/"
+          class="group inline-block px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-medium rounded-full overflow-hidden transition-all duration-300 hover:shadow-glow hover:scale-105"
+        >
+          <span class="flex items-center justify-center gap-2">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+            </svg>
+            Ir al Inicio
+          </span>
+        </a>
+        
+        <a 
+          href="#contacto"
+          class="group inline-block px-8 py-4 border border-white/20 text-white font-medium rounded-full backdrop-blur-sm transition-all duration-300 hover:bg-white/10 hover:border-cyan-500/50"
+        >
+          <span class="flex items-center justify-center gap-2">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+            Contáctanos
+          </span>
+        </a>
+      </div>
+
+      <!-- Popular Pages -->
+      <div class="max-w-4xl mx-auto">
+        <h3 class="text-white/70 text-sm uppercase tracking-wider mb-6">Páginas Populares</h3>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <a href="/servicios" class="p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-cyan-500/30 transition-all duration-300 group">
+            <svg class="w-8 h-8 text-cyan-400 mb-3 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            <p class="text-white font-medium group-hover:text-cyan-400 transition-colors">Servicios</p>
+          </a>
+
+          <a href="/portfolio" class="p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-cyan-500/30 transition-all duration-300 group">
+            <svg class="w-8 h-8 text-cyan-400 mb-3 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            <p class="text-white font-medium group-hover:text-cyan-400 transition-colors">Portafolio</p>
+          </a>
+
+          <a href="/#nosotros" class="p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-cyan-500/30 transition-all duration-300 group">
+            <svg class="w-8 h-8 text-cyan-400 mb-3 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+            <p class="text-white font-medium group-hover:text-cyan-400 transition-colors">Nosotros</p>
+          </a>
+
+          <a href="#contacto" class="p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-cyan-500/30 transition-all duration-300 group">
+            <svg class="w-8 h-8 text-cyan-400 mb-3 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+            <p class="text-white font-medium group-hover:text-cyan-400 transition-colors">Contacto</p>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</BaseLayout>

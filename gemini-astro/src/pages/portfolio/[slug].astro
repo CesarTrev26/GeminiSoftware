@@ -1,0 +1,748 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Navbar from '@/components/Navbar.astro';
+import Footer from '@/components/Footer.astro';
+
+export const prerender = false;
+
+// Get slug from URL
+const { slug } = Astro.params;
+
+// Fetch project from backend API
+const API_URL = import.meta.env.PUBLIC_API_URL || 'http://localhost:3001/api';
+
+let project: any = null;
+
+try {
+  const response = await fetch(`${API_URL}/projects/${slug}`);
+  const data = await response.json();
+  if (data.success && data.data) {
+    project = data.data;
+  }
+} catch (error) {
+  console.error('Error fetching project:', error);
+}
+
+// If project not found, return 404
+if (!project) {
+  return new Response(null, {
+    status: 404,
+    statusText: 'Not found'
+  });
+}
+
+const seoData = {
+  title: `${project.title} | Gemini Software - Caso de Estudio`,
+  description: project.description,
+};
+
+// Parse JSON fields if they're strings
+const tags = typeof project.tags === 'string' ? JSON.parse(project.tags) : project.tags || [];
+const results = typeof project.results === 'string' ? JSON.parse(project.results) : project.results || [];
+---
+
+<BaseLayout title={seoData.title} description={seoData.description}>
+  <Navbar variant="transparent" />
+  
+  <main>
+    <!-- Hero Section -->
+    <section class="min-h-[60vh] sm:min-h-[70vh] flex items-center hero-gradient pt-20 sm:pt-24 pb-12 sm:pb-16 relative overflow-hidden">
+      <div class="absolute inset-0 bg-[linear-gradient(rgba(0,211,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,211,255,0.03)_1px,transparent_1px)] bg-[size:60px_60px]"></div>
+      
+      <div class="container mx-auto px-6 lg:px-12 relative z-10">
+        <div class="max-w-4xl">
+          <!-- Breadcrumb -->
+          <nav class="flex items-center gap-2 text-sm text-white/50 mb-8">
+            <a href="/" class="hover:text-white transition-colors">Inicio</a>
+            <span>/</span>
+            <a href="/portfolio" class="hover:text-white transition-colors">Portafolio</a>
+            <span>/</span>
+            <span class="text-cyan-400">{project.title}</span>
+          </nav>
+
+          <!-- Category Badge -->
+          <div class="inline-flex flex-wrap items-center gap-2 mb-6">
+            <div class="px-4 py-2 rounded-full bg-cyan-500/20 border border-cyan-500/30">
+              <span class="text-cyan-400 text-sm font-medium">{project.category}</span>
+            </div>
+            {project.projectType && (
+              <div class="px-4 py-2 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center gap-2">
+                <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  {project.projectType === 'Development' ? (
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                  ) : (
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                  )}
+                </svg>
+                <span class="text-blue-400 text-sm font-medium">
+                  {project.projectType === 'Development' ? 'Development' : 'Redesign'}
+                </span>
+              </div>
+            )}
+            {project.inProgress && (
+              <div class="px-4 py-2 rounded-full bg-amber-500/20 border border-amber-500/30 flex items-center gap-2">
+                <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                </svg>
+                <span class="text-amber-400 text-sm font-medium">En Progreso</span>
+              </div>
+            )}
+          </div>
+          
+          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-montserrat-alt font-light text-white mb-6">
+            {project.title}
+          </h1>
+
+          {project.subtitle && (
+            <p class="text-xl text-cyan-400 mb-6">{project.subtitle}</p>
+          )}
+          
+          <p class="text-lg text-white/70 max-w-2xl leading-relaxed mb-8">
+            {project.description}
+          </p>
+
+          <!-- Project Meta -->
+          <div class="flex flex-wrap gap-6 text-white/60">
+            {project.client && (
+              <div>
+                <span class="block text-xs text-white/40 uppercase tracking-wider mb-1">Cliente</span>
+                <span class="text-white">{project.client}</span>
+              </div>
+            )}
+            {project.year && (
+              <div>
+                <span class="block text-xs text-white/40 uppercase tracking-wider mb-1">Año</span>
+                <span class="text-white">{project.year}</span>
+              </div>
+            )}
+            {project.duration && (
+              <div>
+                <span class="block text-xs text-white/40 uppercase tracking-wider mb-1">Duración</span>
+                <span class="text-white">{project.duration}</span>
+              </div>
+            )}
+            {project.website && (
+              <div>
+                <span class="block text-xs text-white/40 uppercase tracking-wider mb-1">Sitio Web</span>
+                <a href={project.website} target="_blank" rel="noopener" class="text-cyan-400 hover:text-cyan-300 transition-colors">
+                  Visitar →
+                </a>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Project Image -->
+    {project.thumbnail && (
+      <section class="relative -mt-16 sm:-mt-20 z-10 px-4 sm:px-6 lg:px-12 mb-10 sm:mb-12 lg:mb-16">
+        <div class="container mx-auto">
+          <div class="rounded-3xl overflow-hidden shadow-2xl ring-1 ring-black/5 hover:shadow-3xl transition-shadow duration-500">
+            <img 
+              src={project.thumbnail} 
+              alt={project.title}
+              width="1200"
+              height="675"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
+              class="w-full h-auto"
+              loading="eager"
+              decoding="async"
+              fetchpriority="high"
+            />
+          </div>
+        </div>
+      </section>
+    )}
+
+    <!-- Results Section -->
+    {results.length > 0 && (
+      <section class="py-12 sm:py-16 lg:py-20 bg-gradient-to-b from-white to-gray-50 relative overflow-hidden">
+        <!-- Background decoration -->
+        <div class="absolute inset-0 opacity-30">
+          <div class="absolute top-20 left-10 w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl"></div>
+          <div class="absolute bottom-20 right-10 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl"></div>
+        </div>
+        
+        <div class="container mx-auto px-4 sm:px-6 lg:px-12 relative z-10">
+          <div class="text-center mb-8 sm:mb-12 lg:mb-16">
+            <div class="inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-cyan-500/10 border border-cyan-500/20 mb-3 sm:mb-4">
+              <svg class="w-4 h-4 text-cyan-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+              </svg>
+              <span class="text-cyan-600 text-sm font-medium">Resultados</span>
+            </div>
+            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-montserrat-alt font-light text-dark-blue-500">
+              Impacto Medible
+            </h2>
+          </div>
+          
+          <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            {results.map((result: any, index: number) => (
+              <div class="group relative p-5 sm:p-6 lg:p-8 rounded-2xl bg-white border border-gray-200/50 hover:border-cyan-500/30 hover:shadow-xl transition-all duration-500">
+                <!-- Gradient overlay on hover -->
+                <div class="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 rounded-2xl transition-opacity duration-500"></div>
+                
+                <div class="relative">
+                  <div class="text-3xl sm:text-4xl lg:text-5xl font-montserrat-alt font-bold bg-gradient-to-br from-cyan-500 to-blue-500 bg-clip-text text-transparent mb-2 sm:mb-3">
+                    {typeof result === 'object' ? result.value : result}
+                  </div>
+                  <div class="text-sm sm:text-base text-dark-blue-500/70 font-medium leading-tight">
+                    {typeof result === 'object' ? result.label : ''}
+                  </div>
+                </div>
+                
+                <!-- Decorative element -->
+                <div class="absolute top-4 right-4 w-12 h-12 bg-gradient-to-br from-cyan-500/10 to-blue-500/10 rounded-full blur-xl group-hover:scale-150 transition-transform duration-500"></div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+
+    <!-- Technologies -->
+    {tags.length > 0 && (
+      <section class="py-12 sm:py-16 lg:py-20 bg-dark-blue-500 relative overflow-hidden">
+        <!-- Animated background grid -->
+        <div class="absolute inset-0 bg-[linear-gradient(rgba(0,211,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,211,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px] animate-pulse-slow"></div>
+        <div class="absolute top-0 right-0 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl"></div>
+        
+        <div class="container mx-auto px-4 sm:px-6 lg:px-12 relative z-10">
+          <div class="text-center mb-8 sm:mb-10 lg:mb-12">
+            <div class="inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-cyan-500/20 border border-cyan-500/30 mb-3 sm:mb-4">
+              <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
+              </svg>
+              <span class="text-cyan-400 text-xs sm:text-sm font-medium">Stack Tecnológico</span>
+            </div>
+            <h2 class="text-2xl sm:text-3xl lg:text-4xl font-montserrat-alt font-light text-white">
+              Herramientas y Tecnologías
+            </h2>
+          </div>
+          
+          <div class="flex flex-wrap justify-center gap-3 sm:gap-4">
+            {tags.map((tag: string) => (
+              <div class="group relative">
+                <div class="absolute inset-0 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-300"></div>
+                <span class="relative block px-5 py-2.5 sm:px-6 sm:py-3 bg-white/10 backdrop-blur-sm hover:bg-white/20 rounded-full text-white font-medium border border-white/20 hover:border-cyan-400/50 transition-all duration-300 hover:scale-105 hover:shadow-lg">
+                  {tag}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+
+    <!-- Long Description - Content Blocks -->
+    {project.longDescription && (
+      <section class="py-12 sm:py-16 lg:py-20 bg-gradient-to-b from-white via-gray-50/50 to-white relative overflow-hidden">
+        <!-- Decorative elements -->
+        <div class="absolute top-0 left-0 w-72 h-72 bg-cyan-500/5 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-0 right-0 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl"></div>
+        
+        <div class="container mx-auto px-4 sm:px-6 lg:px-12 relative z-10">
+          <div class="max-w-5xl mx-auto">
+            <!-- Section Header -->
+            <div class="text-center mb-10 sm:mb-12 lg:mb-16">
+              <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/20 mb-4 sm:mb-5">
+                <svg class="w-4 h-4 sm:w-5 sm:h-5 text-cyan-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+                <span class="text-cyan-600 text-sm sm:text-base font-medium">Descripción Detallada</span>
+              </div>
+              <h2 class="text-3xl sm:text-4xl lg:text-5xl font-montserrat-alt font-light text-dark-blue-500">
+                Sobre el Proyecto
+              </h2>
+            </div>
+            
+            <!-- Content Blocks -->
+            <div class="space-y-6 sm:space-y-8">
+              {(() => {
+                try {
+                  const blocks = typeof project.longDescription === 'string' 
+                    ? JSON.parse(project.longDescription) 
+                    : [];
+                  
+                  return blocks.map((block: any, index: number) => {
+                    switch(block.type) {
+                      case 'text':
+                        return (
+                          <div class="relative group">
+                            <div class="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-3xl opacity-0 group-hover:opacity-100 blur transition-all duration-500"></div>
+                            <div class="relative bg-white rounded-3xl shadow-lg hover:shadow-xl border border-gray-100 p-6 sm:p-8 lg:p-10 transition-all duration-300">
+                              <div class="prose prose-lg sm:prose-xl max-w-none
+                                prose-headings:font-montserrat-alt prose-headings:text-dark-blue-500 prose-headings:mb-4 prose-headings:mt-6 first:prose-headings:mt-0
+                                prose-h2:text-2xl sm:prose-h2:text-3xl prose-h2:font-light prose-h2:border-b prose-h2:border-cyan-500/20 prose-h2:pb-3
+                                prose-h3:text-xl sm:prose-h3:text-2xl prose-h3:font-medium prose-h3:text-dark-blue-500/90
+                                prose-p:text-dark-blue-500/80 prose-p:leading-relaxed prose-p:text-base sm:prose-p:text-lg prose-p:mb-4
+                                first:prose-p:text-lg sm:first:prose-p:text-xl first:prose-p:leading-relaxed first:prose-p:font-light first:prose-p:text-dark-blue-500
+                                prose-a:text-cyan-500 prose-a:no-underline prose-a:font-medium hover:prose-a:text-cyan-600 prose-a:underline-offset-2 hover:prose-a:underline
+                                prose-strong:text-dark-blue-500 prose-strong:font-semibold prose-strong:bg-cyan-500/10 prose-strong:px-1 prose-strong:rounded
+                                prose-ul:my-4 prose-ul:text-dark-blue-500/80 prose-ol:my-4 prose-ol:text-dark-blue-500/80
+                                prose-li:my-1.5 prose-li:leading-relaxed prose-li:marker:text-cyan-500">
+                                <Fragment set:html={block.content} />
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      
+                      case 'two-column':
+                        return (
+                          <div class="relative group">
+                            <div class="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-3xl opacity-0 group-hover:opacity-100 blur transition-all duration-500"></div>
+                            <div class="relative bg-white rounded-3xl shadow-lg hover:shadow-xl border border-gray-100 p-6 sm:p-8 lg:p-10 transition-all duration-300">
+                              <div class="grid md:grid-cols-2 gap-6 sm:gap-8 lg:gap-10">
+                                <div class="prose prose-base sm:prose-lg max-w-none
+                                  prose-headings:font-montserrat-alt prose-headings:text-dark-blue-500 prose-headings:mb-3
+                                  prose-h3:text-lg sm:prose-h3:text-xl prose-h3:font-semibold
+                                  prose-p:text-dark-blue-500/80 prose-p:leading-relaxed prose-p:mb-3
+                                  prose-a:text-cyan-500 hover:prose-a:text-cyan-600
+                                  prose-strong:text-dark-blue-500 prose-strong:font-semibold
+                                  prose-ul:my-3 prose-ul:text-dark-blue-500/80
+                                  prose-li:my-1 prose-li:marker:text-cyan-500">
+                                  <Fragment set:html={block.left} />
+                                </div>
+                                <div class="relative before:content-[''] before:absolute before:-left-3 sm:before:-left-5 before:top-0 before:bottom-0 before:w-px before:bg-gradient-to-b before:from-transparent before:via-cyan-500/30 before:to-transparent md:before:block before:hidden">
+                                  <div class="prose prose-base sm:prose-lg max-w-none
+                                    prose-headings:font-montserrat-alt prose-headings:text-dark-blue-500 prose-headings:mb-3
+                                    prose-h3:text-lg sm:prose-h3:text-xl prose-h3:font-semibold
+                                    prose-p:text-dark-blue-500/80 prose-p:leading-relaxed prose-p:mb-3
+                                    prose-a:text-cyan-500 hover:prose-a:text-cyan-600
+                                    prose-strong:text-dark-blue-500 prose-strong:font-semibold
+                                    prose-ul:my-3 prose-ul:text-dark-blue-500/80
+                                    prose-li:my-1 prose-li:marker:text-cyan-500">
+                                    <Fragment set:html={block.right} />
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      
+                      case 'highlight':
+                        return (
+                          <div class="relative">
+                            <div class="absolute inset-0 bg-gradient-to-r from-amber-500/20 via-yellow-500/20 to-amber-500/20 rounded-2xl blur-xl"></div>
+                            <div class="relative bg-gradient-to-br from-amber-50 to-yellow-50 rounded-2xl border-2 border-amber-500/30 p-6 sm:p-8 shadow-lg">
+                              <div class="flex gap-4">
+                                <div class="flex-shrink-0">
+                                  <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-amber-500 to-yellow-500 flex items-center justify-center shadow-lg">
+                                    <svg class="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                  </div>
+                                </div>
+                                <div class="flex-1 prose prose-base sm:prose-lg max-w-none
+                                  prose-p:text-dark-blue-500 prose-p:leading-relaxed prose-p:mb-2 prose-p:font-medium
+                                  prose-strong:text-dark-blue-500 prose-strong:font-bold
+                                  prose-a:text-amber-600 hover:prose-a:text-amber-700">
+                                  <Fragment set:html={block.content} />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      
+                      case 'cards':
+                        return (
+                          <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                            {[1, 2, 3].map((num) => {
+                              const title = block[`card${num}Title`];
+                              const content = block[`card${num}Content`];
+                              if (!title && !content) return null;
+                              
+                              return (
+                                <div class="group relative">
+                                  <div class="absolute -inset-0.5 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl opacity-0 group-hover:opacity-100 blur transition-all duration-500"></div>
+                                  <div class="relative bg-white rounded-2xl shadow-md hover:shadow-xl border border-gray-100 p-5 sm:p-6 transition-all duration-300 h-full">
+                                    <div class="flex items-start gap-3 mb-3">
+                                      <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+                                        {num}
+                                      </div>
+                                      {title && (
+                                        <h3 class="text-lg font-montserrat-alt font-semibold text-dark-blue-500 leading-tight">
+                                          {title}
+                                        </h3>
+                                      )}
+                                    </div>
+                                    {content && (
+                                      <div class="prose prose-sm max-w-none
+                                        prose-p:text-dark-blue-500/70 prose-p:leading-relaxed prose-p:mb-2
+                                        prose-ul:my-2 prose-ul:text-dark-blue-500/70 prose-ul:text-sm
+                                        prose-li:my-0.5 prose-li:marker:text-purple-500">
+                                        <Fragment set:html={content} />
+                                      </div>
+                                    )}
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        );
+                      
+                      default:
+                        return null;
+                    }
+                  });
+                } catch (e) {
+                  // Fallback for old HTML format
+                  return (
+                    <div class="relative group">
+                      <div class="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-3xl opacity-0 group-hover:opacity-100 blur transition-all duration-500"></div>
+                      <div class="relative bg-white rounded-3xl shadow-xl border border-gray-100 p-6 sm:p-8 lg:p-10">
+                        <div class="prose prose-lg sm:prose-xl max-w-none
+                          prose-headings:font-montserrat-alt prose-headings:text-dark-blue-500
+                          prose-p:text-dark-blue-500/80 prose-p:leading-relaxed
+                          prose-a:text-cyan-500 hover:prose-a:text-cyan-600
+                          prose-strong:text-dark-blue-500 prose-strong:font-semibold
+                          prose-ul:text-dark-blue-500/80 prose-li:marker:text-cyan-500">
+                          <Fragment set:html={project.longDescription} />
+                        </div>
+                      </div>
+                    </div>
+                  );
+                }
+              })()}
+            </div>
+          </div>
+        </div>
+      </section>
+    )}
+        </div>
+      </section>
+
+    <!-- Gallery -->
+    {project.images && project.images.length > 0 && (
+      <section class="py-10 sm:py-12 lg:py-16 bg-gradient-to-b from-gray-50 to-white relative">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-12">
+          <div class="text-center mb-8 sm:mb-10 lg:mb-12">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-dark-blue-500/5 border border-dark-blue-500/10 mb-4">
+              <svg class="w-4 h-4 text-dark-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+              </svg>
+              <span class="text-dark-blue-500/70 text-sm font-medium">Galería</span>
+            </div>
+            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-montserrat-alt font-light text-dark-blue-500">
+              Capturas del Proyecto
+            </h2>
+          </div>
+          
+          <!-- Two Column Gallery Layout -->
+          <div class="grid lg:grid-cols-12 gap-6 lg:gap-8">
+            <!-- Main Image Display - Left Side (8 columns) -->
+            <div class="lg:col-span-8">
+              <div class="relative rounded-2xl overflow-hidden shadow-2xl bg-gradient-to-br from-gray-100 to-gray-50 group">
+                <div class="relative w-full" style="min-height: 300px; max-height: 400px;">
+                  <img 
+                    id="main-gallery-image"
+                    src={project.images[0].url}
+                    alt={project.images[0].alt || project.title}
+                    width="800"
+                    height="450"
+                    class="w-full h-full max-h-[360px] object-contain transition-opacity duration-300"
+                    loading="eager"
+                    decoding="async"
+                  />
+                  
+                  <!-- Navigation Arrows -->
+                  <button 
+                    id="gallery-prev"
+                    class="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/90 backdrop-blur-sm shadow-xl flex items-center justify-center text-dark-blue-500 opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-cyan-500 hover:text-white hover:scale-110 z-10"
+                    aria-label="Previous image"
+                  >
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+                    </svg>
+                  </button>
+                  
+                  <button 
+                    id="gallery-next"
+                    class="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/90 backdrop-blur-sm shadow-xl flex items-center justify-center text-dark-blue-500 opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-cyan-500 hover:text-white hover:scale-110 z-10"
+                    aria-label="Next image"
+                  >
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                    </svg>
+                  </button>
+                  
+                  <!-- Image Counter -->
+                  <div class="absolute top-4 right-4 px-4 py-2 bg-dark-blue-500/90 backdrop-blur-sm rounded-full text-white text-sm font-medium shadow-lg">
+                    <span id="current-image-number">1</span> / {project.images.length}
+                  </div>
+                </div>
+                
+                <!-- Caption -->
+                <div id="main-image-caption" class="p-6 bg-white border-t border-gray-100">
+                  <div class="flex items-start gap-3">
+                    <svg class="w-5 h-5 text-cyan-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <p class="text-dark-blue-500/70 leading-relaxed">
+                      {project.images[0].caption || 'Imagen del proyecto'}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Thumbnail Grid - Right Side (4 columns) -->
+            <div class="lg:col-span-4">
+              <div class="max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 gap-3 sm:gap-4">
+                  {project.images.map((image: any, index: number) => (
+                    <button 
+                      class="gallery-thumbnail group relative rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 aspect-video bg-gradient-to-br from-gray-100 to-gray-50 cursor-pointer ring-2 ring-transparent hover:ring-cyan-500"
+                      data-image-index={index}
+                      data-image-url={image.url}
+                      data-image-alt={image.alt || project.title}
+                      data-image-caption={image.caption || ''}
+                    >
+                      <img 
+                        src={image.url}
+                        alt={image.alt || project.title}
+                        width="400"
+                        height="225"
+                        class="w-full h-full object-contain transition-all duration-300 group-hover:scale-105"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                      
+                      <!-- Overlay -->
+                      <div class="absolute inset-0 bg-dark-blue-500/0 group-hover:bg-dark-blue-500/20 transition-colors duration-300"></div>
+                      
+                      <!-- Active indicator -->
+                      <div class="thumbnail-active absolute inset-0 ring-4 ring-cyan-500 bg-cyan-500/10 opacity-0 transition-opacity duration-300"></div>
+                      
+                      <!-- Number badge -->
+                      <div class="absolute bottom-2 right-2 w-6 h-6 bg-dark-blue-500/80 backdrop-blur-sm rounded-full flex items-center justify-center text-white text-xs font-medium">
+                        {index + 1}
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+              
+              <!-- Scroll indicator (shows when more images below) -->
+              {project.images.length > 6 && (
+                <div class="mt-4 flex items-center justify-center gap-2 text-dark-blue-500/40 text-xs animate-bounce">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                  </svg>
+                  <span class="font-medium">Desliza para ver más</span>
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                  </svg>
+                </div>
+              )}
+            </div>
+          </div>
+          
+          <script is:inline define:vars={{ images: project.images }}>
+            // Gallery functionality
+            let currentGalleryIndex = 0;
+            
+            const mainImage = document.getElementById('main-gallery-image');
+            const mainCaption = document.getElementById('main-image-caption');
+            const currentNumber = document.getElementById('current-image-number');
+            const prevBtn = document.getElementById('gallery-prev');
+            const nextBtn = document.getElementById('gallery-next');
+            const thumbnails = document.querySelectorAll('.gallery-thumbnail');
+            
+            function updateGallery(index) {
+              if (!images || !images[index]) return;
+              
+              currentGalleryIndex = index;
+              const image = images[index];
+              
+              // Update main image
+              if (mainImage) {
+                mainImage.style.opacity = '0';
+                setTimeout(() => {
+                  mainImage.src = image.url;
+                  mainImage.alt = image.alt || '';
+                  mainImage.style.opacity = '1';
+                }, 150);
+              }
+              
+              // Update caption
+              if (mainCaption) {
+                const captionText = mainCaption.querySelector('p');
+                if (captionText) {
+                  captionText.textContent = image.caption || 'Imagen del proyecto';
+                }
+              }
+              
+              // Update counter
+              if (currentNumber) {
+                currentNumber.textContent = (index + 1).toString();
+              }
+              
+              // Update thumbnail active states
+              thumbnails.forEach((thumb, i) => {
+                const activeIndicator = thumb.querySelector('.thumbnail-active');
+                if (activeIndicator) {
+                  if (i === index) {
+                    activeIndicator.style.opacity = '1';
+                  } else {
+                    activeIndicator.style.opacity = '0';
+                  }
+                }
+              });
+            }
+            
+            function showPrevious() {
+              const newIndex = (currentGalleryIndex - 1 + images.length) % images.length;
+              updateGallery(newIndex);
+            }
+            
+            function showNext() {
+              const newIndex = (currentGalleryIndex + 1) % images.length;
+              updateGallery(newIndex);
+            }
+            
+            // Event listeners
+            thumbnails.forEach((thumb) => {
+              thumb.addEventListener('click', () => {
+                const index = parseInt(thumb.getAttribute('data-image-index'));
+                updateGallery(index);
+              });
+            });
+            
+            if (prevBtn) prevBtn.addEventListener('click', showPrevious);
+            if (nextBtn) nextBtn.addEventListener('click', showNext);
+            
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+              if (e.key === 'ArrowLeft') showPrevious();
+              if (e.key === 'ArrowRight') showNext();
+            });
+            
+            // Initialize first thumbnail as active
+            updateGallery(0);
+          </script>
+        </div>
+      </section>
+    )}
+
+    <!-- CTA Section -->
+    <section class="py-12 sm:py-16 lg:py-20 hero-gradient text-white relative overflow-hidden">
+      <!-- Animated background -->
+      <div class="absolute inset-0 opacity-30">
+        <div class="absolute top-10 left-10 w-64 h-64 bg-cyan-500/20 rounded-full blur-3xl animate-pulse"></div>
+        <div class="absolute bottom-10 right-10 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
+      </div>
+      
+      <div class="container mx-auto px-6 lg:px-12 text-center relative z-10">
+        <div class="max-w-3xl mx-auto">
+          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm mb-6">
+            <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+            </svg>
+            <span class="text-white/90 text-sm font-medium">Hablemos de tu proyecto</span>
+          </div>
+          
+          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-montserrat-alt font-light mb-6">
+            ¿Listo para crear algo extraordinario?
+          </h2>
+          <p class="text-lg sm:text-xl text-white/70 leading-relaxed mb-10">
+            Cada proyecto comienza con una conversación. Cuéntanos tu visión y la convertiremos en realidad digital.
+          </p>
+          
+          <div class="flex flex-col sm:flex-row justify-center gap-4">
+            <a 
+              href="/contacto" 
+              class="group inline-flex items-center justify-center gap-2 px-8 py-4 bg-cyan-500 hover:bg-cyan-400 text-white font-medium rounded-full transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-cyan-500/50"
+            >
+              Iniciar conversación
+              <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+              </svg>
+            </a>
+            <a 
+              href="/portfolio" 
+              class="group inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20 hover:border-white/40 text-white font-medium rounded-full transition-all duration-300"
+            >
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+              </svg>
+              Ver más proyectos
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  
+  <Footer />
+</BaseLayout>
+
+<style>
+  .prose h2 {
+    @apply text-3xl font-montserrat-alt font-light mt-12 mb-6 text-dark-blue-500;
+  }
+  
+  .prose h3 {
+    @apply text-2xl font-montserrat-alt font-light mt-8 mb-4 text-dark-blue-500;
+  }
+  
+  .prose h4 {
+    @apply text-xl font-medium mt-6 mb-3 text-dark-blue-500;
+  }
+  
+  .prose p {
+    @apply text-dark-blue-500/70 leading-relaxed mb-6;
+  }
+  
+  .prose ul, .prose ol {
+    @apply space-y-2 mb-6 pl-6;
+  }
+  
+  .prose li {
+    @apply text-dark-blue-500/70;
+  }
+  
+  .prose blockquote {
+    @apply border-l-4 border-cyan-500 pl-6 italic text-dark-blue-500/70 my-6;
+  }
+  
+  .prose strong {
+    @apply font-semibold text-dark-blue-500;
+  }
+  
+  @keyframes pulse-slow {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.5; }
+  }
+  
+  .animate-pulse-slow {
+    animation: pulse-slow 4s ease-in-out infinite;
+  }
+
+  /* Custom Scrollbar */
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(0, 211, 255) rgba(0, 211, 255, 0.1);
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(0, 211, 255, 0.1);
+    border-radius: 10px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgb(0, 211, 255);
+    border-radius: 10px;
+    transition: background 0.3s ease;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgb(14, 165, 233);
+  }
+</style>

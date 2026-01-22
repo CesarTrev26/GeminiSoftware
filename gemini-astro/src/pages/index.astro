@@ -1,0 +1,102 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Navbar from '@/components/Navbar.astro';
+import Hero from '@/components/Hero.astro';
+import Services from '@/components/Services.astro';
+import About from '@/components/About.astro';
+import Portfolio from '@/components/Portfolio.astro';
+import Contact from '@/components/Contact.astro';
+import Footer from '@/components/Footer.astro';
+
+const seoData = {
+  title: 'Gemini Software | Desarrollo de Software, Web, Apps y Marketing Digital en Monterrey',
+  description: 'Empresa especializada en desarrollo de software personalizado, sitios web, apps móviles y marketing digital para empresas en México, Latinoamérica y más allá. ¡Transformamos tus ideas en realidad!',
+};
+---
+
+<BaseLayout title={seoData.title} description={seoData.description}>
+  <!-- Additional SEO for Homepage -->
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "@id": "https://geminisoftware.mx/#webpage",
+      "url": "https://geminisoftware.mx",
+      "name": "Gemini Software - Desarrollo de Software, Web, Apps y Marketing Digital",
+      "description": seoData.description,
+      "isPartOf": {
+        "@id": "https://geminisoftware.mx/#website"
+      },
+      "about": {
+        "@id": "https://geminisoftware.mx/#organization"
+      },
+      "primaryImageOfPage": {
+        "@type": "ImageObject",
+        "url": "https://geminisoftware.mx/img/og-image.png"
+      }
+    })} />
+    
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "serviceType": "Software Development",
+      "provider": {
+        "@id": "https://geminisoftware.mx/#organization"
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "México"
+      },
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Servicios de Desarrollo",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Desarrollo Web",
+              "description": "Sitios web modernos, rápidos y optimizados para SEO"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Apps Móviles",
+              "description": "Aplicaciones nativas e híbridas para iOS y Android"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Software a Medida",
+              "description": "Soluciones empresariales personalizadas: CRM, ERP, automatización"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Marketing Digital",
+              "description": "SEO, SEM, Social Media y estrategias de crecimiento"
+            }
+          }
+        ]
+      }
+    })} />
+  </Fragment>
+
+  <Navbar variant="transparent" />
+  
+  <main>
+    <Hero />
+    <Services />
+    <About />
+    <Portfolio limit={4} />
+    <Contact />
+  </main>
+  
+  <Footer />
+</BaseLayout>

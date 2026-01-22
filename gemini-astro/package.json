@@ -1,0 +1,48 @@
+{
+  "name": "gemini-software",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Gemini Software - Desarrollo de Software, Web, Apps y Marketing Digital",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx,.astro --max-warnings 0",
+    "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx,.astro --fix",
+    "type-check": "astro check",
+    "build": "npm run lint && npm run type-check && astro build",
+    "build:prod": "cross-env NODE_ENV=production npm run lint && npm run type-check && astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.0",
+    "@astrojs/node": "^8.3.4",
+    "@astrojs/react": "^3.6.0",
+    "@astrojs/sitemap": "^3.1.0",
+    "@astrojs/tailwind": "^5.1.0",
+    "astro": "^4.15.0",
+    "clsx": "^2.1.1",
+    "framer-motion": "^11.3.0",
+    "gsap": "^3.12.5",
+    "lenis": "^1.1.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tailwind-merge": "^2.4.0",
+    "typescript": "^5.5.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@typescript-eslint/eslint-plugin": "^8.53.1",
+    "@typescript-eslint/parser": "^8.53.1",
+    "astro-compress": "^2.3.9",
+    "astro-eslint-parser": "^1.2.2",
+    "autoprefixer": "^10.4.19",
+    "cross-env": "^10.1.0",
+    "eslint": "^9.39.2",
+    "eslint-plugin-astro": "^1.5.0",
+    "postcss": "^8.4.40",
+    "sharp": "^0.34.5",
+    "tailwindcss": "^3.4.7"
+  }
+}
