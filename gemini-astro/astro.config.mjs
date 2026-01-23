@@ -2,13 +2,13 @@ import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import tailwind from '@astrojs/tailwind';
 import sitemap from '@astrojs/sitemap';
-import vercel from '@astrojs/vercel/serverless';
+import vercel from '@astrojs/vercel';
 import compress from 'astro-compress';
 
 // https://astro.build/config
 export default defineConfig({
   site: 'https://geminisoftware.mx',
-  output: 'hybrid',
+  output: 'static',
   adapter: vercel({
     runtime: 'nodejs20.x',
     webAnalytics: {
