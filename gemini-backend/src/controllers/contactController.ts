@@ -33,7 +33,7 @@ export const createContact = async (req: Request, res: Response) => {
     }
     
     // Create contact in database
-    const contact = await prisma.contact.create({
+    await prisma.contact.create({
       data: {
         name,
         email,

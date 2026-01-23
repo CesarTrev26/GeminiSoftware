@@ -10,6 +10,9 @@ import { seedAdminUser } from './controllers/authController';
 
 const app = express();
 
+// Trust proxy - Required for Fly.io and other reverse proxies
+app.set('trust proxy', 1);
+
 // CORS - Must be before other middleware
 app.use(cors({
   origin: (origin, callback) => {
@@ -89,7 +92,7 @@ app.use((req, res) => {
 });
 
 // Error handler
-app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+app.use((err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
   console.error('Error:', err);
   
   res.status(err.status || 500).json({
@@ -106,22 +109,41 @@ const start = async () => {
     await seedAdminUser();
     
     app.listen(config.port, () => {
+      // Determine server URL based on environment
+      const getServerUrl = () => {
+        if (process.env.FLY_APP_NAME) {
+          return `https://${process.env.FLY_APP_NAME}.fly.dev`;
+        }
+        if (config.nodeEnv === 'production' && process.env.RENDER_EXTERNAL_URL) {
+          return process.env.RENDER_EXTERNAL_URL;
+        }
+        return `http://localhost:${config.port}`;
+      };
+
+      const serverUrl = getServerUrl();
+
       console.log(`
 ╔═══════════════════════════════════════════════════════════╗
 ║                                                           ║
-║   🚀 Gemini Software API                                  ║
+║   Gemini Software API!!                                   ║
 ║                                                           ║
-║   Server running on: http://localhost:${config.port}              ║
-║   Environment: ${config.nodeEnv}                               ║
+║   Server running on ↓                                     ║
+║   ${serverUrl.padEnd(30)}                                 ║
+║   Environment ↓                                           ║
+║   ${config.nodeEnv.padEnd(39)}                            ║
 ║                                                           ║
 ║   Endpoints:                                              ║
+║   • GET  /               - API info                       ║
+║   • GET  /api/health     - Health check                   ║
 ║   • GET  /api/projects      - List all projects           ║
 ║   • GET  /api/projects/:id  - Get single project          ║
 ║   • POST /api/projects      - Create project (admin)      ║
 ║   • PUT  /api/projects/:id  - Update project (admin)      ║
 ║   • DEL  /api/projects/:id  - Delete project (admin)      ║
 ║   • POST /api/contacts      - Submit contact form         ║
+║   • GET  /api/contacts      - List contacts (admin)       ║
 ║   • POST /api/auth/login    - Login                       ║
+║   • POST /api/auth/register - Register (admin)            ║
 ║                                                           ║
 ╚═══════════════════════════════════════════════════════════╝
       `);

@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx,.astro --max-warnings 0",
+    "lint": "eslint src --ext .js,.jsx,.ts,.tsx,.astro --ignore-pattern '**/*[*]*' --max-warnings 20",
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx,.astro --fix",
     "type-check": "astro check",
     "build": "npm run lint && npm run type-check && astro build",

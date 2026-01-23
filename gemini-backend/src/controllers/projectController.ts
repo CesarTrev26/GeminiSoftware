@@ -280,7 +280,7 @@ export const updateProject = async (req: AuthRequest, res: Response) => {
       }
     }
     
-    const project = await prisma.project.update({
+    await prisma.project.update({
       where: { id },
       data: {
         slug,
