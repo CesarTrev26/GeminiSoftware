@@ -9,7 +9,11 @@ import compress from 'astro-compress';
 export default defineConfig({
   site: 'https://geminisoftware.mx',
   output: 'hybrid',
-  adapter: vercel(),
+  adapter: vercel({
+    webAnalytics: {
+      enabled: true
+    }
+  }),
   integrations: [
     react(),
     tailwind(),
