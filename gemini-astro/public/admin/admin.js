@@ -484,10 +484,33 @@ function renderServicesTable(services) {
   `).join('');
 }
 
+// Service Icon Selector
+function selectServiceIcon(iconName, element) {
+  // Update the input field
+  document.getElementById('serviceIcon').value = iconName;
+  
+  // Remove selected class from all icon options
+  document.querySelectorAll('.icon-option').forEach(option => {
+    option.classList.remove('border-cyan-600', 'bg-cyan-50', 'shadow-lg', 'scale-105');
+    option.classList.add('border-cyan-200');
+  });
+  
+  // Add selected class to clicked option
+  element.classList.remove('border-cyan-200');
+  element.classList.add('border-cyan-600', 'bg-cyan-50', 'shadow-lg', 'scale-105');
+}
+
 function openServiceModal() {
   document.getElementById('serviceModalTitle').textContent = 'Nuevo Servicio';
   document.getElementById('serviceForm').reset();
   document.getElementById('serviceId').value = '';
+  
+  // Reset icon selection visual state
+  document.querySelectorAll('.icon-option').forEach(option => {
+    option.classList.remove('border-cyan-600', 'bg-cyan-50', 'shadow-lg', 'scale-105');
+    option.classList.add('border-cyan-200');
+  });
+  
   document.getElementById('serviceModal').classList.add('active');
 }
 
@@ -504,6 +527,22 @@ function editService(service) {
   document.getElementById('serviceIcon').value = service.icon || '';
   document.getElementById('serviceOrder').value = service.order || 0;
   document.getElementById('servicePublished').checked = service.published;
+  
+  // Highlight the selected icon
+  document.querySelectorAll('.icon-option').forEach(option => {
+    option.classList.remove('border-cyan-600', 'bg-cyan-50', 'shadow-lg', 'scale-105');
+    option.classList.add('border-cyan-200');
+  });
+  
+  // Find and highlight the current icon
+  if (service.icon) {
+    const iconButton = document.querySelector(`[onclick*="selectServiceIcon('${service.icon}'"]`);
+    if (iconButton) {
+      iconButton.classList.remove('border-cyan-200');
+      iconButton.classList.add('border-cyan-600', 'bg-cyan-50', 'shadow-lg', 'scale-105');
+    }
+  }
+  
   document.getElementById('serviceModal').classList.add('active');
 }
 
