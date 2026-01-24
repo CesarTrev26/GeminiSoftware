@@ -99,12 +99,7 @@ export default function AIChat3DBackground({ burst = false }: { burst?: boolean 
   useEffect(() => {
     if (!containerRef.current || boxes.length === 0) return;
 
-    let lastTime = performance.now();
-    /* const baseRotationSpeed = 0.02; */ // degrees per millisecond
-
-    const animate = (currentTime: number) => {
-      /* const deltaTime = currentTime - lastTime; */
-      lastTime = currentTime;
+    const animate = () => {
       setBoxes(prevBoxes => {
         const newBoxes = [...prevBoxes];
         const containerRect = containerRef.current?.getBoundingClientRect();
@@ -182,7 +177,7 @@ export default function AIChat3DBackground({ burst = false }: { burst?: boolean 
       animationRef.current = requestAnimationFrame(animate);
     };
 
-    animate(performance.now());
+    animate();
 
     return () => {
       if (animationRef.current) {
