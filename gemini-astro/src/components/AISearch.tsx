@@ -98,7 +98,7 @@ export default function AISearch() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: -20 }}
               transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-              className="fixed top-4 sm:top-16 left-4 right-4 sm:left-0 sm:right-0 sm:mx-auto sm:w-[90%] sm:max-w-3xl z-[70] max-h-[calc(100vh-2rem)] sm:max-h-[calc(100vh-8rem)] flex flex-col"
+              className="fixed top-4 sm:top-16 left-4 right-4 sm:left-0 sm:right-0 sm:mx-auto sm:w-[90%] sm:max-w-3xl z-[70] max-h-[calc(100dvh-2rem)] sm:max-h-[calc(100dvh-8rem)] flex flex-col"
             >
               <div className="bg-white dark:bg-gray-900 rounded-xl sm:rounded-2xl shadow-2xl overflow-hidden flex flex-col border border-gray-200 dark:border-gray-700">
                 {/* Search Input */}
@@ -136,7 +136,7 @@ export default function AISearch() {
                 </div>
 
                 {/* Results */}
-                <div className="overflow-y-auto flex-1" style={{ maxHeight: 'calc(100vh - 16rem)' }}>
+                <div className="overflow-y-auto flex-1" style={{ maxHeight: 'calc(100dvh - 16rem)' }}>
                   {isLoading ? (
                     <div className="p-8 sm:p-12 text-center">
                       <motion.div
