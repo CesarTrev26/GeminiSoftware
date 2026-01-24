@@ -77,7 +77,6 @@ export default function AISearch() {
         </svg>
         <span className="hidden sm:inline text-sm font-medium">Buscar Proyectos</span>
         <kbd className="hidden lg:inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[10px] font-mono bg-white/10 rounded border border-white/20">
-          ⌘K
         </kbd>
       </motion.button>
 
