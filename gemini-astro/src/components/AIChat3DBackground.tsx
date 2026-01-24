@@ -100,10 +100,10 @@ export default function AIChat3DBackground({ burst = false }: { burst?: boolean 
     if (!containerRef.current || boxes.length === 0) return;
 
     let lastTime = performance.now();
-    const baseRotationSpeed = 0.02; // degrees per millisecond
+    /* const baseRotationSpeed = 0.02; */ // degrees per millisecond
 
     const animate = (currentTime: number) => {
-      const deltaTime = currentTime - lastTime;
+      /* const deltaTime = currentTime - lastTime; */
       lastTime = currentTime;
       setBoxes(prevBoxes => {
         const newBoxes = [...prevBoxes];
