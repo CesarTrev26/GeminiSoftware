@@ -74,14 +74,14 @@ async function searchRelatedProjects(query: string) {
       where: {
         published: true,
         OR: [
-          { title: { contains: query, mode: 'insensitive' } },
-          { description: { contains: query, mode: 'insensitive' } },
-          { category: { contains: query, mode: 'insensitive' } },
-          { tags: { contains: query, mode: 'insensitive' } },
-          ...keywords.map(k => ({ title: { contains: k, mode: 'insensitive' } })),
-          ...keywords.map(k => ({ description: { contains: k, mode: 'insensitive' } })),
-          ...keywords.map(k => ({ category: { contains: k, mode: 'insensitive' } })),
-          ...keywords.map(k => ({ tags: { contains: k, mode: 'insensitive' } })),
+          { title: { contains: query } },
+          { description: { contains: query } },
+          { category: { contains: query } },
+          { tags: { contains: query } },
+          ...keywords.map(k => ({ title: { contains: k } })),
+          ...keywords.map(k => ({ description: { contains: k } })),
+          ...keywords.map(k => ({ category: { contains: k } })),
+          ...keywords.map(k => ({ tags: { contains: k } })),
         ]
       },
       select: {
@@ -117,11 +117,11 @@ async function searchRelatedProjects(query: string) {
     where: {
       published: true,
       OR: [
-        { title: { contains: query, mode: 'insensitive' } },
-        { description: { contains: query, mode: 'insensitive' } },
-        { category: { contains: query, mode: 'insensitive' } },
-        { tags: { contains: query, mode: 'insensitive' } },
-        ...keywords.map(k => ({ tags: { contains: k, mode: 'insensitive' } })),
+        { title: { contains: query } },
+        { description: { contains: query } },
+        { category: { contains: query } },
+        { tags: { contains: query } },
+        ...keywords.map(k => ({ tags: { contains: k } })),
       ]
     },
     select: {

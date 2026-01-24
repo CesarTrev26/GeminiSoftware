@@ -1,4 +1,6 @@
 ---
+import AISearch from './AISearch';
+
 interface Props {
   variant?: 'transparent' | 'solid' | 'glass';
 }
@@ -65,6 +67,9 @@ const variantClasses = {
             )}
           </a>
         ))}
+        
+        <!-- AI Search -->
+        <AISearch client:load />
         
         <!-- CTA Button -->
         <a 
