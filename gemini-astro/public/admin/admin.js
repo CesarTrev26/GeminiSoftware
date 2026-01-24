@@ -1,4 +1,23 @@
-const API_URL = import.meta.env.PUBLIC_API_URL || 'http://localhost:3001/api';
+// Auto-detect API URL based on environment
+const API_URL = (() => {
+  const hostname = window.location.hostname;
+  
+  // Production
+  if (hostname === 'geminisoftware.mx' || hostname === 'www.geminisoftware.mx') {
+    return 'https://gemini-backend.fly.dev/api';
+  }
+  
+  // Vercel preview deployments
+  if (hostname.includes('vercel.app')) {
+    return 'https://gemini-backend.fly.dev/api';
+  }
+  
+  // Local development
+  return 'http://localhost:3001/api';
+})();
+
+/* console.log('Admin Panel - API URL:', API_URL); */
+
 let token = localStorage.getItem('token');
 let currentTab = 'projects';
 
