@@ -40,6 +40,10 @@ export const config = {
     email: process.env.ADMIN_EMAIL || 'admin@geminisoftware.mx',
     password: process.env.ADMIN_PASSWORD || 'admin123456',
   },
+
+  gemini: {
+    apiKey: process.env.GEMINI_API_KEY,
+  },
 };
 
 export default config;

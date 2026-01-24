@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@flydotio/litestream": "^1.0.1",
+    "@google/generative-ai": "^0.24.1",
     "@prisma/client": "^5.15.0",
     "@types/compression": "^1.8.1",
     "bcryptjs": "^2.4.3",

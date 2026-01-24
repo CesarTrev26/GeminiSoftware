@@ -4,6 +4,7 @@ import contactRoutes from './contactRoutes';
 import authRoutes from './authRoutes';
 import serviceRoutes from './serviceRoutes';
 import uploadRoutes from './uploadRoutes';
+import aiRoutes from './aiRoutes';
 
 const router = Router();
 
@@ -11,6 +12,7 @@ router.use('/projects', projectRoutes);
 router.use('/contacts', contactRoutes);
 router.use('/auth', authRoutes);
 router.use('/services', serviceRoutes);
+router.use('/ai', aiRoutes);
 router.use('/', uploadRoutes);
 
 // Health check

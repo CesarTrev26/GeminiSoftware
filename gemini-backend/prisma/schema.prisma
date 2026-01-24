@@ -189,3 +189,48 @@ model Setting {
 
   @@map("settings")
 }
+
+// ============================================
+// AI CHAT CONVERSATIONS
+// ============================================
+model ChatConversation {
+  id        String        @id @default(uuid())
+  sessionId String        @unique
+  messages  ChatMessage[]
+  
+  // User info (optional)
+  visitorName  String?
+  visitorEmail String?
+  
+  // Metadata
+  userAgent String?
+  ip        String?
+  source    String?   // página de origen
+  
+  // Status
+  status    String    @default("ACTIVE") // ACTIVE, CONVERTED, CLOSED
+  notes     String?
+  
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@map("chat_conversations")
+}
+
+model ChatMessage {
+  id             String           @id @default(uuid())
+  conversationId String
+  conversation   ChatConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  
+  role    String // user, assistant, system
+  content String
+  
+  // AI metadata
+  intent     String?
+  confidence Float?
+  projects   String? // JSON array of recommended project slugs
+  
+  createdAt DateTime @default(now())
+
+  @@map("chat_messages")
+}

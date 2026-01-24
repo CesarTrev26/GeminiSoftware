@@ -1,5 +1,6 @@
 ---
 import '@/styles/global.css';
+import AIChat from '@/components/AIChat';
 
 interface Props {
   title: string;
@@ -367,5 +368,8 @@ const fullImageURL = image.startsWith('http') ? image : `${siteURL}${image}`;
       );
     });
   </script>
+
+  <!-- AI Chat Component -->
+  <AIChat client:load />
 </body>
 </html>
