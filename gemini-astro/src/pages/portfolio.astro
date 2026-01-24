@@ -12,21 +12,40 @@ const seoData = {
 // Fetch projects from backend API
 const API_URL = import.meta.env.PUBLIC_API_URL || 'http://localhost:3001/api';
 
+console.log('=== PORTFOLIO BUILD LOG ===');
+console.log('API_URL:', API_URL);
+console.log('Environment:', import.meta.env.MODE);
+console.log('PUBLIC_API_URL from env:', import.meta.env.PUBLIC_API_URL);
+
 let projects: any[] = [];
 let categories: string[] = ['Todos'];
 
 try {
+  console.log('Fetching from:', `${API_URL}/projects`);
   const response = await fetch(`${API_URL}/projects`);
+  console.log('Response status:', response.status);
+  console.log('Response ok:', response.ok);
+  
   const data = await response.json();
+  console.log('Response data:', JSON.stringify(data, null, 2));
+  
   if (data.success && data.data) {
     projects = data.data;
+    console.log('Projects loaded:', projects.length);
     const uniqueCategories = [...new Set(projects.map((p: any) => p.category))] as string[];
     categories = ['Todos', ...uniqueCategories];
+    console.log('Categories:', categories);
+  } else {
+    console.log('No projects found in response or success=false');
   }
 } catch (error) {
-  console.error('Error fetching projects:', error);
+  console.error('❌ Error fetching projects:', error);
+  console.error('Error details:', error instanceof Error ? error.message : String(error));
   // Fallback to empty projects - page will still render
 }
+
+console.log('Final projects count:', projects.length);
+console.log('=== END PORTFOLIO BUILD LOG ===');
 
 const featuredProjects = projects.filter((p: any) => p.featured);
 ---
