@@ -18,9 +18,9 @@ export default defineConfig({
   integrations: [
     react(),
     tailwind(),
-    // sitemap({
-    //   filter: (page) => !page.includes('/admin'),
-    // }),
+    sitemap({
+      filter: (page) => !page.includes('/admin'),
+    }),
     compress({
       CSS: true,
       HTML: {
