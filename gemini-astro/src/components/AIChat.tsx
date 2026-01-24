@@ -51,7 +51,11 @@ function AIChat() {
   const [particleBurst, setParticleBurst] = useState(false);
   const [sessionId] = useState(getSessionId);
   const [historyLoaded, setHistoryLoaded] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startY, setStartY] = useState(0);
+  const [scrollTop, setScrollTop] = useState(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const scrollToBottom = () => {
@@ -210,7 +214,11 @@ function AIChat() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ type: 'spring', damping: 20, stiffness: 300 }}
-            className="fixed bottom-24 right-6 z-40 w-[400px] max-w-[calc(100vw-3rem)] h-[600px] max-h-[calc(100vh-8rem)] bg-gray-50 dark:bg-gray-900 rounded-2xl shadow-2xl overflow-hidden flex flex-col border border-gray-200 dark:border-gray-700"
+            className="fixed bottom-24 right-4 sm:right-6 z-40 w-[calc(100vw-2rem)] sm:w-[400px] sm:max-w-[calc(100vw-3rem)] h-[500px] sm:h-[600px] bg-gray-50 dark:bg-gray-900 rounded-2xl shadow-2xl overflow-hidden flex flex-col border border-gray-200 dark:border-gray-700"
+            style={{ 
+              top: 'max(5rem, calc(100vh - 500px - 6rem))',
+              maxHeight: 'calc(100vh - 10rem)'
+            }}
           >
             {/* 3D Background */}
             <AIChat3DBackground burst={particleBurst} />
@@ -235,7 +243,8 @@ function AIChat() {
 
             {/* Messages */}
             <div 
-              className="flex-1 overflow-y-auto overflow-x-hidden p-4 space-y-4 relative z-10" 
+              ref={messagesContainerRef}
+              className={`flex-1 overflow-y-auto overflow-x-hidden p-4 space-y-4 relative z-10 ${isDragging ? 'cursor-grabbing select-none' : 'cursor-grab'}`}
               style={{ WebkitOverflowScrolling: 'touch', overscrollBehavior: 'contain' }}
               onWheel={(e) => {
                 const target = e.currentTarget;
@@ -247,6 +256,34 @@ function AIChat() {
                   e.stopPropagation();
                 }
               }}
+              onMouseDown={(e) => {
+                if (!messagesContainerRef.current) return;
+                setIsDragging(true);
+                setStartY(e.pageY - messagesContainerRef.current.offsetTop);
+                setScrollTop(messagesContainerRef.current.scrollTop);
+              }}
+              onMouseMove={(e) => {
+                if (!isDragging || !messagesContainerRef.current) return;
+                e.preventDefault();
+                const y = e.pageY - messagesContainerRef.current.offsetTop;
+                const walk = (y - startY) * 1.5; // Scroll speed multiplier
+                messagesContainerRef.current.scrollTop = scrollTop - walk;
+              }}
+              onMouseUp={() => setIsDragging(false)}
+              onMouseLeave={() => setIsDragging(false)}
+              onTouchStart={(e) => {
+                if (!messagesContainerRef.current) return;
+                setIsDragging(true);
+                setStartY(e.touches[0].pageY - messagesContainerRef.current.offsetTop);
+                setScrollTop(messagesContainerRef.current.scrollTop);
+              }}
+              onTouchMove={(e) => {
+                if (!isDragging || !messagesContainerRef.current) return;
+                const y = e.touches[0].pageY - messagesContainerRef.current.offsetTop;
+                const walk = (y - startY) * 1.5;
+                messagesContainerRef.current.scrollTop = scrollTop - walk;
+              }}
+              onTouchEnd={() => setIsDragging(false)}
             >
               {messages.map((msg, idx) => (
                 <motion.div
