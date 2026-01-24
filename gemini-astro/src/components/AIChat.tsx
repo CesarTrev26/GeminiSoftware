@@ -37,7 +37,7 @@ const getSessionId = (): string => {
   return newId;
 };
 
-export default function AIChat() {
+function AIChat() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -386,3 +386,5 @@ export default function AIChat() {
     </>
   );
 }
+
+export default AIChat;

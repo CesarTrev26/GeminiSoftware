@@ -1,6 +1,6 @@
 ---
 import '@/styles/global.css';
-import AIChat from '@/components/AIChat';
+import AIChatWrapper from '@/components/AIChatWrapper';
 
 interface Props {
   title: string;
@@ -370,6 +370,6 @@ const fullImageURL = image.startsWith('http') ? image : `${siteURL}${image}`;
   </script>
 
   <!-- AI Chat Component -->
-  <AIChat client:only="react" />
+  <AIChatWrapper client:only="react" />
 </body>
 </html>
