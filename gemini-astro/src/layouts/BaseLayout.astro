@@ -343,7 +343,7 @@ const fullImageURL = image.startsWith('http') ? image : `${siteURL}${image}`;
     const lenis = (window as any).lenis;
     if (lenis) {
       lenis.on('scroll', ScrollTrigger.update);
-      gsap.ticker.add((time) => {
+      gsap.ticker.add((time: number) => {
         lenis.raf(time * 1000);
       });
       gsap.ticker.lagSmoothing(0);
