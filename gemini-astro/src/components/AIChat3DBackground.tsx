@@ -164,7 +164,7 @@ export default function AIChat3DBackground({ burst = false }: { burst?: boolean 
           }
 
           // Slow rotation based on velocity
-          box.rotation += (Math.abs(box.vx) + Math.abs(box.vy)) * 2;
+          box.rotation += (Math.abs(box.vx) + Math.abs(box.vy)) * 0.5;
 
           // Apply drag
           box.vx *= 0.995;
