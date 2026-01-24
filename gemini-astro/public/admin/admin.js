@@ -125,7 +125,7 @@ function switchTab(tab) {
   
   // Update tab buttons
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  event.target.classList.add('active');
+  event.target.closest('.tab').classList.add('active');
   
   // Update tab content
   document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
