@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:3001/api';
+const API_URL = import.meta.env.PUBLIC_API_URL || 'http://localhost:3001/api';
 let token = localStorage.getItem('token');
 let currentTab = 'projects';
 
