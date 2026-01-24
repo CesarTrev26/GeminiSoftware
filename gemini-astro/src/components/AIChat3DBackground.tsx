@@ -99,7 +99,12 @@ export default function AIChat3DBackground({ burst = false }: { burst?: boolean 
   useEffect(() => {
     if (!containerRef.current || boxes.length === 0) return;
 
-    const animate = () => {
+    let lastTime = performance.now();
+    const baseRotationSpeed = 0.02; // degrees per millisecond
+
+    const animate = (currentTime: number) => {
+      const deltaTime = currentTime - lastTime;
+      lastTime = currentTime;
       setBoxes(prevBoxes => {
         const newBoxes = [...prevBoxes];
         const containerRect = containerRef.current?.getBoundingClientRect();
@@ -164,7 +169,7 @@ export default function AIChat3DBackground({ burst = false }: { burst?: boolean 
           }
 
           // Slow rotation based on velocity
-          box.rotation += (Math.abs(box.vx) + Math.abs(box.vy)) * 0.5;
+          box.rotation += baseRotationSpeed * deltaTime;
 
           // Apply drag
           box.vx *= 0.995;
@@ -177,7 +182,7 @@ export default function AIChat3DBackground({ burst = false }: { burst?: boolean 
       animationRef.current = requestAnimationFrame(animate);
     };
 
-    animate();
+    animate(performance.now());
 
     return () => {
       if (animationRef.current) {
