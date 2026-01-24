@@ -71,13 +71,12 @@ export default function AISearch() {
         className="flex items-center gap-2 px-3 sm:px-4 py-2 text-white/90 hover:text-white bg-white/5 hover:bg-white/15 backdrop-blur-sm rounded-lg transition-all duration-200 border border-white/10"
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
+        aria-label="Buscar proyectos"
       >
-        <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
         </svg>
-        <span className="hidden sm:inline text-sm font-medium">Buscar Proyectos</span>
-        <kbd className="hidden lg:inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[10px] font-mono bg-white/10 rounded border border-white/20">
-        </kbd>
+        <span className="hidden md:inline text-sm font-medium">Buscar Proyectos</span>
       </motion.button>
 
       {/* Search Modal */}
@@ -99,7 +98,7 @@ export default function AISearch() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: -20 }}
               transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-              className="fixed top-4 sm:top-16 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] sm:w-[90%] max-w-3xl z-[70] max-h-[calc(100vh-2rem)] sm:max-h-[calc(100vh-8rem)] flex flex-col"
+              className="fixed top-4 sm:top-16 left-4 right-4 sm:left-0 sm:right-0 sm:mx-auto sm:w-[90%] sm:max-w-3xl z-[70] max-h-[calc(100vh-2rem)] sm:max-h-[calc(100vh-8rem)] flex flex-col"
             >
               <div className="bg-white dark:bg-gray-900 rounded-xl sm:rounded-2xl shadow-2xl overflow-hidden flex flex-col border border-gray-200 dark:border-gray-700">
                 {/* Search Input */}

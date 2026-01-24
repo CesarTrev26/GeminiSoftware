@@ -214,11 +214,7 @@ function AIChat() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ type: 'spring', damping: 20, stiffness: 300 }}
-            className="fixed bottom-24 right-4 sm:right-6 z-40 w-[calc(100vw-2rem)] sm:w-[400px] sm:max-w-[calc(100vw-3rem)] h-[500px] sm:h-[600px] bg-gray-50 dark:bg-gray-900 rounded-2xl shadow-2xl overflow-hidden flex flex-col border border-gray-200 dark:border-gray-700"
-            style={{ 
-              top: 'max(5rem, calc(100vh - 500px - 6rem))',
-              maxHeight: 'calc(100vh - 10rem)'
-            }}
+            className="fixed bottom-0 right-0 sm:bottom-24 sm:right-6 z-40 w-full sm:w-[400px] h-full sm:h-[600px] bg-gray-50 dark:bg-gray-900 rounded-none sm:rounded-2xl shadow-2xl overflow-hidden flex flex-col border-0 sm:border border-gray-200 dark:border-gray-700"
           >
             {/* 3D Background */}
             <AIChat3DBackground burst={particleBurst} />
@@ -238,6 +234,15 @@ function AIChat() {
                     En línea
                   </p>
                 </div>
+                <button
+                  onClick={() => setIsOpen(false)}
+                  className="sm:hidden p-2 hover:bg-white/10 rounded-lg transition-colors"
+                  aria-label="Cerrar chat"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
               </div>
             </div>
 
