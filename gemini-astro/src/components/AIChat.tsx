@@ -214,7 +214,7 @@ function AIChat() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ type: 'spring', damping: 20, stiffness: 300 }}
-            className="fixed bottom-0 right-0 sm:bottom-24 sm:right-6 z-40 w-full sm:w-[400px] h-full sm:h-[600px] bg-gray-50 dark:bg-gray-900 rounded-none sm:rounded-2xl shadow-2xl overflow-hidden flex flex-col border-0 sm:border border-gray-200 dark:border-gray-700"
+            className="fixed bottom-0 right-0 sm:bottom-24 sm:right-6 z-[10000] sm:z-40 w-full sm:w-[400px] h-full sm:h-[600px] bg-gray-50 dark:bg-gray-900 rounded-none sm:rounded-2xl shadow-2xl overflow-hidden flex flex-col border-0 sm:border border-gray-200 dark:border-gray-700"
           >
             {/* 3D Background */}
             <AIChat3DBackground burst={particleBurst} />
