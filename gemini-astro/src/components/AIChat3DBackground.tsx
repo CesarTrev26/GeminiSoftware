@@ -168,8 +168,8 @@ export default function AIChat3DBackground({ burst = false }: { burst?: boolean 
             }
           }
 
-          // Slow rotation based on velocity
-          box.rotation += baseRotationSpeed * deltaTime;
+          // Normalize rotation to prevent infinite growth
+          box.rotation = box.rotation % 360;
 
           // Apply drag
           box.vx *= 0.995;
@@ -193,10 +193,18 @@ export default function AIChat3DBackground({ burst = false }: { burst?: boolean 
 
   return (
     <div ref={containerRef} className="absolute inset-0 overflow-hidden pointer-events-none">
+      <style>
+        {`
+          @keyframes gentleRotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+          }
+        `}
+      </style>
       {boxes.map((box) => (
         <div
           key={box.id}
-          className={`absolute bg-gradient-to-br ${box.gradient} rounded-2xl flex items-center justify-center shadow-lg transition-transform ${
+          className={`absolute bg-gradient-to-br ${box.gradient} rounded-2xl flex items-center justify-center shadow-lg ${
             burstActive ? 'animate-ping' : ''
           }`}
           style={{
@@ -204,9 +212,10 @@ export default function AIChat3DBackground({ burst = false }: { burst?: boolean 
             top: `${box.y}%`,
             width: `${box.size}px`,
             height: `${box.size}px`,
-            transform: `rotate(${box.rotation}deg)`,
             opacity: 0.9,
             boxShadow: '0 0 30px rgba(6, 182, 212, 0.3)',
+            animation: burstActive ? undefined : 'gentleRotate 20s linear infinite',
+            willChange: 'transform',
           }}
         >
           {icons[box.icon]}
