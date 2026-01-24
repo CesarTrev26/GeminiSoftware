@@ -24,13 +24,28 @@ app.use(cors({
     console.log(`[CORS] Allowed origins:`, allowedOrigins);
     
     // Allow requests with no origin (like mobile apps, Postman, or SSR)
-    if (!origin || allowedOrigins.includes(origin)) {
-      console.log(`[CORS] ✓ Allowed`);
+    if (!origin) {
+      console.log(`[CORS] ✓ Allowed (no origin)`);
       callback(null, true);
-    } else {
-      console.log(`[CORS] ✗ Blocked`);
-      callback(new Error('Not allowed by CORS'));
+      return;
     }
+    
+    // Check exact match in allowed origins
+    if (allowedOrigins.includes(origin)) {
+      console.log(`[CORS] ✓ Allowed (exact match)`);
+      callback(null, true);
+      return;
+    }
+    
+    // Allow Vercel preview URLs (*.vercel.app)
+    if (origin.includes('.vercel.app')) {
+      console.log(`[CORS] ✓ Allowed (Vercel preview)`);
+      callback(null, true);
+      return;
+    }
+    
+    console.log(`[CORS] ✗ Blocked`);
+    callback(new Error('Not allowed by CORS'));
   },
   credentials: true,
 }));

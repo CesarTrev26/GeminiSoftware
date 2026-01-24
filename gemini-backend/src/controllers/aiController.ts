@@ -65,15 +65,63 @@ async function searchRelatedProjects(query: string) {
   const queryLower = query.toLowerCase();
   const keywords = queryLower.split(' ').filter(w => w.length > 2);
   
+  // Palabras clave específicas para buscar proyectos
+  const hasProjectKeywords = queryLower.match(/proyecto|portafolio|portfolio|ejemplo|muestra|caso|trabajo|web|sitio|app|móvil|mobile|ecommerce|e-commerce|tienda|shop|crm|sistema|desarrollo|next|react|astro|shopify/i);
+  
+  // Si menciona proyectos explícitamente, buscar todos los destacados
+  if (hasProjectKeywords) {
+    const projects = await prisma.project.findMany({
+      where: {
+        published: true,
+        OR: [
+          { title: { contains: query, mode: 'insensitive' } },
+          { description: { contains: query, mode: 'insensitive' } },
+          { category: { contains: query, mode: 'insensitive' } },
+          { tags: { contains: query, mode: 'insensitive' } },
+          ...keywords.map(k => ({ title: { contains: k, mode: 'insensitive' } })),
+          ...keywords.map(k => ({ description: { contains: k, mode: 'insensitive' } })),
+          ...keywords.map(k => ({ category: { contains: k, mode: 'insensitive' } })),
+          ...keywords.map(k => ({ tags: { contains: k, mode: 'insensitive' } })),
+        ]
+      },
+      select: {
+        slug: true,
+        title: true,
+        category: true,
+        description: true,
+      },
+      take: 5,
+      orderBy: { featured: 'desc' }
+    });
+    
+    // Si no hay coincidencias específicas, mostrar proyectos destacados
+    if (projects.length === 0) {
+      return await prisma.project.findMany({
+        where: { published: true, featured: true },
+        select: {
+          slug: true,
+          title: true,
+          category: true,
+          description: true,
+        },
+        take: 3,
+        orderBy: { order: 'asc' }
+      });
+    }
+    
+    return projects;
+  }
+  
+  // Búsqueda normal por keywords
   const projects = await prisma.project.findMany({
     where: {
       published: true,
       OR: [
-        { title: { contains: query } },
-        { description: { contains: query } },
-        { category: { contains: query } },
-        { tags: { contains: query } },
-        ...keywords.map(k => ({ tags: { contains: k } })),
+        { title: { contains: query, mode: 'insensitive' } },
+        { description: { contains: query, mode: 'insensitive' } },
+        { category: { contains: query, mode: 'insensitive' } },
+        { tags: { contains: query, mode: 'insensitive' } },
+        ...keywords.map(k => ({ tags: { contains: k, mode: 'insensitive' } })),
       ]
     },
     select: {

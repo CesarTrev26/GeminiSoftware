@@ -11,10 +11,10 @@ interface Message {
 
 const SUGGESTED_QUESTIONS = [
   "¿Qué servicios ofrecen?",
-  "Busco un sitio web e-commerce",
+  "Muéstrame proyectos de desarrollo web",
   "¿Tienen experiencia con React?",
   "Necesito una app móvil",
-  "Quiero un CRM personalizado"
+  "Quiero ver proyectos de e-commerce"
 ];
 
 // API URL - cambiar a localhost para desarrollo
