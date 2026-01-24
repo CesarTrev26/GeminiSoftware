@@ -248,6 +248,7 @@ Asistente:`;
     // Llamar a Google Gemini
     let assistantMessage = '';
     let isAIAvailable = true;
+    let aiMentionedProjects: Array<{ slug: string; title: string; category: string; description: string }> = [];
 
     try {
       if (!geminiModel) {
@@ -266,10 +267,41 @@ Asistente:`;
 
       const response = await result.response;
       assistantMessage = response.text() || 'Lo siento, no pude procesar tu mensaje.';
+      
+      // Extraer nombres de proyectos mencionados en la respuesta de la IA
+      const projectNames = ['ANIDA', 'Nature\'s Factory', 'RISE TOWER', 'NEST', 'WE2T', 'W3ST', 'CRM Ventas', 'Gemini Software'];
+      const mentionedProjects = projectNames.filter(name => 
+        assistantMessage.includes(name) || assistantMessage.toLowerCase().includes(name.toLowerCase())
+      );
+      
+      // Si la IA menciona proyectos, buscarlos en la DB
+      if (mentionedProjects.length > 0) {
+        aiMentionedProjects = await prisma.project.findMany({
+          where: {
+            published: true,
+            OR: mentionedProjects.map(name => ({ title: { contains: name } }))
+          },
+          select: {
+            slug: true,
+            title: true,
+            category: true,
+            description: true,
+          },
+          take: 5
+        });
+      }
     } catch (geminiError) {
       console.error('Gemini Error:', geminiError);
       isAIAvailable = false;
       assistantMessage = generateFallbackResponse(message, relatedProjects);
+    }
+
+    // Combinar proyectos relacionados con los mencionados por la IA
+    const allProjects = [...relatedProjects];
+    for (const aiProject of aiMentionedProjects) {
+      if (!allProjects.find(p => p.slug === aiProject.slug)) {
+        allProjects.push(aiProject);
+      }
     }
 
     // Guardar respuesta del asistente
@@ -278,7 +310,7 @@ Asistente:`;
         conversationId: conversation.id,
         role: 'assistant',
         content: assistantMessage,
-        projects: relatedProjects.length > 0 ? JSON.stringify(relatedProjects.map(p => p.slug)) : null,
+        projects: allProjects.length > 0 ? JSON.stringify(allProjects.map(p => p.slug)) : null,
       }
     });
 
@@ -286,7 +318,7 @@ Asistente:`;
       success: true,
       data: {
         message: assistantMessage,
-        projects: relatedProjects.length > 0 ? relatedProjects : undefined,
+        projects: allProjects.length > 0 ? allProjects : undefined,
         sessionId,
         isAI: isAIAvailable,
       }
