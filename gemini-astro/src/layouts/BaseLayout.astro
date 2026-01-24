@@ -370,6 +370,6 @@ const fullImageURL = image.startsWith('http') ? image : `${siteURL}${image}`;
   </script>
 
   <!-- AI Chat Component -->
-  <AIChat client:load />
+  <AIChat client:only="react" />
 </body>
 </html>
