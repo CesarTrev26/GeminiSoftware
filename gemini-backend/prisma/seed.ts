@@ -79,7 +79,6 @@ const projects = [
     year: '2024-2026',
     duration: '3 meses',
     website: 'https://www.geminisoftware.mx',
-    github: 'https://github.com/gemini-software',
     featured: true,
     published: true,
     order: 0,
