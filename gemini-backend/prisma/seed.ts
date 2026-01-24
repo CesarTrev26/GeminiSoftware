@@ -6,6 +6,85 @@ const prisma = new PrismaClient();
 // Real projects from Gemini Software portfolio documentation
 const projects = [
   {
+    slug: 'gemini-software-portfolio',
+    title: 'Gemini Software - Portafolio Web con IA',
+    subtitle: 'Sitio corporativo full-stack con asistente AI conversacional y búsqueda semántica',
+    category: 'Desarrollo Web',
+    client: 'Gemini Software (Proyecto Propio)',
+    description: 'Portafolio web empresarial con arquitectura moderna full-stack, integrando IA conversacional con Gemini 2.0 Flash, búsqueda semántica de proyectos, animaciones 3D con Three.js y panel de administración completo.',
+    longDescription: JSON.stringify([
+      {
+        type: 'text',
+        content: `<h3>🎯 El Desafío</h3>
+        <p>Crear la presencia digital de Gemini Software con tecnologías de vanguardia, demostrando capacidades técnicas mientras se ofrece una experiencia de usuario excepcional con herramientas de IA integradas.</p>`
+      },
+      {
+        type: 'highlight',
+        content: `<p>Sitio web full-stack con <strong>Astro + React</strong>, <strong>asistente AI conversacional</strong> con Gemini 2.0 Flash, <strong>búsqueda semántica inteligente</strong>, y <strong>panel de administración</strong> completo.</p>`
+      },
+      {
+        type: 'two-column',
+        left: `<h3>✨ Funcionalidades AI</h3>
+        <ul>
+          <li><strong>AI Chat:</strong> Asistente conversacional con historial de sesión</li>
+          <li><strong>AI Search:</strong> Búsqueda semántica de proyectos con IA</li>
+          <li><strong>Recomendaciones:</strong> Proyectos sugeridos contextualmente</li>
+          <li><strong>3D Background:</strong> Animaciones con Three.js y React Three Fiber</li>
+        </ul>`,
+        right: `<h3>📊 Panel de Administración</h3>
+        <ul>
+          <li><strong>CRUD Proyectos:</strong> Gestión completa con imágenes múltiples</li>
+          <li><strong>Editor de Bloques:</strong> Contenido estructurado en JSON</li>
+          <li><strong>Gestión de Contactos:</strong> Estados y seguimiento de leads</li>
+          <li><strong>Autenticación JWT:</strong> Login seguro con roles</li>
+        </ul>`
+      },
+      {
+        type: 'cards',
+        card1Title: 'Frontend Moderno',
+        card1Content: `<ul>
+          <li>Astro 5.x + React 18</li>
+          <li>TypeScript 5.x</li>
+          <li>Tailwind CSS 3.x</li>
+          <li>GSAP + Framer Motion</li>
+          <li>Three.js + React Three Fiber</li>
+          <li>Google Gemini AI SDK</li>
+        </ul>`,
+        card2Title: 'Backend Robusto',
+        card2Content: `<ul>
+          <li>Node.js 20 + Express</li>
+          <li>Prisma ORM + SQLite</li>
+          <li>Google Gemini 2.0 Flash API</li>
+          <li>JWT Auth + bcrypt</li>
+          <li>Sharp + Multer</li>
+          <li>Nodemailer</li>
+        </ul>`,
+        card3Title: 'Deployment',
+        card3Content: `<ul>
+          <li>Frontend: Vercel (SSR)</li>
+          <li>Backend: Fly.io</li>
+          <li>SSL automático</li>
+          <li>CI/CD GitHub</li>
+          <li>Score 95+ Lighthouse</li>
+        </ul>`
+      }
+    ]),
+    tags: JSON.stringify(['Astro', 'React', 'TypeScript', 'Tailwind CSS', 'Node.js', 'Express', 'Prisma', 'Gemini AI', 'Three.js', 'GSAP', 'Framer Motion']),
+    results: JSON.stringify([
+      { label: 'Performance', value: 'Score 95+' },
+      { label: 'AI Features', value: 'Chat + Search' },
+      { label: 'Tech Stack', value: '11 tecnologías' },
+      { label: 'Architecture', value: 'Full-Stack' }
+    ]),
+    year: '2024-2026',
+    duration: '3 meses',
+    website: 'https://www.geminisoftware.mx',
+    github: 'https://github.com/gemini-software',
+    featured: true,
+    published: true,
+    order: 0,
+  },
+  {
     slug: 'anida-sitio-inmobiliario',
     title: 'ANIDA - Sitio Web Inmobiliario',
     subtitle: 'Portal de marketing inmobiliario premium para desarrollo residencial de lujo',

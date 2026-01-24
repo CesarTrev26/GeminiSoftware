@@ -23,6 +23,8 @@
 - **Styling**: Tailwind CSS 3.x para diseño responsivo utility-first
 - **Animaciones**: GSAP + Framer Motion para transiciones fluidas
 - **Smooth Scroll**: Lenis para navegación suave premium
+- **AI Features**: Gemini 2.0 Flash para chat conversacional y búsqueda semántica
+- **3D Graphics**: Three.js + React Three Fiber para efectos visuales
 - **Deployment**: Vercel con SSR híbrido
 - **Build Tool**: Vite (integrado en Astro)
 
@@ -30,6 +32,7 @@
 - **Runtime**: Node.js 20+ con TypeScript
 - **Framework**: Express 4.x con middleware de seguridad
 - **ORM**: Prisma con SQLite (portable y sin servidor externo)
+- **AI Integration**: Google Gemini 2.0 Flash API para chat y búsqueda
 - **Autenticación**: JWT con roles (ADMIN, EDITOR)
 - **Seguridad**: Helmet, CORS, Rate Limiting, bcrypt
 - **Email**: Nodemailer para notificaciones
@@ -107,6 +110,9 @@ GeminiSoftware/
 - **Servicios**: Cards interactivas con iconos SVG
 - **Portafolio**: Grid responsivo con hover effects
 - **Página de Proyecto**: Carrusel de imágenes + descripción en bloques
+- **AI Chat**: Asistente conversacional con Gemini 2.0 Flash y historial de sesión
+- **AI Search**: Búsqueda semántica de proyectos con IA
+- **3D Background**: Animaciones interactivas con Three.js y React Three Fiber
 - **Contacto**: Formulario con validación y envío a backend
 - **SEO Avanzado**: Schema.org, Open Graph, sitemap automático
 
@@ -172,6 +178,8 @@ GeminiSoftware/
 - GSAP 3.x
 - Framer Motion
 - Lenis (smooth scroll)
+- Three.js + React Three Fiber
+- Google Gemini AI SDK
 
 ### Backend
 - Node.js 20+
@@ -183,6 +191,7 @@ GeminiSoftware/
 - Nodemailer
 - Sharp
 - Multer
+- Google Generative AI (Gemini)
 
 ### DevOps
 - Vercel (Frontend)
