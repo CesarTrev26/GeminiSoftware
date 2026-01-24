@@ -61,7 +61,8 @@ export default defineConfig({
           manualChunks: (id) => {
             // Split vendor libraries into separate chunks
             if (id.includes('node_modules')) {
-              if (id.includes('react') || id.includes('react-dom')) {
+              // React and ALL its dependencies must be in the same chunk
+              if (id.includes('react') || id.includes('react-dom') || id.includes('scheduler')) {
                 return 'vendor-react';
               }
               if (id.includes('gsap')) {
@@ -69,6 +70,9 @@ export default defineConfig({
               }
               if (id.includes('lenis')) {
                 return 'vendor-lenis';
+              }
+              if (id.includes('framer-motion')) {
+                return 'vendor-react'; // framer-motion depends on React
               }
               // Other vendor code
               return 'vendor';
