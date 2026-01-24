@@ -13,7 +13,7 @@ interface Props {
 const {
   title,
   description,
-  image = '/img/og-image.png',
+  image = '/img/og-image.webp',
   canonicalURL = Astro.url.href,
   type = 'website',
   noindex = false,
@@ -95,11 +95,11 @@ const fullImageURL = image.startsWith('http') ? image : `${siteURL}${image}`;
     "url": "https://geminisoftware.mx",
     "logo": {
       "@type": "ImageObject",
-      "url": "https://geminisoftware.mx/img/logo.png",
+      "url": "https://geminisoftware.mx/img/logo.webp",
       "width": 512,
       "height": 512
     },
-    "image": "https://geminisoftware.mx/img/og-image.png",
+    "image": "https://geminisoftware.mx/img/og-image.webp",
     "description": "Empresa especializada en desarrollo de software personalizado, sitios web, apps móviles y marketing digital para empresas en México, Latinoamérica y más allá.",
     "telephone": "+52 81 3660 0062",
     "email": "contacto@geminisoftware.mx",
@@ -144,7 +144,7 @@ const fullImageURL = image.startsWith('http') ? image : `${siteURL}${image}`;
     "@type": ["LocalBusiness", "ProfessionalService"],
     "@id": "https://geminisoftware.mx/#localbusiness",
     "name": "Gemini Software",
-    "image": "https://geminisoftware.mx/img/og-image.png",
+    "image": "https://geminisoftware.mx/img/og-image.webp",
     "url": "https://geminisoftware.mx",
     "telephone": "+52 81 3660 0062",
     "email": "contacto@geminisoftware.mx",
