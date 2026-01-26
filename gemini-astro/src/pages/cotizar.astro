@@ -1,0 +1,858 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<BaseLayout title="Cotiza tu Proyecto Web | Gemini Software" description="Completa nuestro cuestionario y recibe una cotización personalizada para tu proyecto web">
+  <Navbar variant="transparent" />
+  
+  <main class="min-h-screen hero-gradient relative overflow-hidden">
+    <!-- Animated Background Elements -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+      <!-- Gradient Orbs -->
+      <div class="orb orb-1 absolute w-[600px] h-[600px] rounded-full bg-cyan-500/10 blur-[100px]"></div>
+      <div class="orb orb-2 absolute w-[400px] h-[400px] rounded-full bg-blue-500/15 blur-[80px]"></div>
+      
+      <!-- Grid Pattern -->
+      <div class="absolute inset-0 bg-[linear-gradient(rgba(0,211,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,211,255,0.03)_1px,transparent_1px)] bg-[size:60px_60px]"></div>
+    </div>
+
+    <div class="container mx-auto px-4 md:px-6 lg:px-12 max-w-5xl pt-32 pb-16 relative z-10">
+      <!-- Header -->
+      <div class="text-center mb-12 md:mb-16">
+        <!-- Badge -->
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm mb-6">
+          <span class="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></span>
+          <span class="text-white/70 text-sm font-medium">Solicitud de Cotización</span>
+        </div>
+
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-montserrat-alt font-light text-white mb-4">
+          Cotiza tu Proyecto
+          <span class="block mt-2">
+            <span class="gradient-text-animated">Digital</span>
+          </span>
+        </h1>
+        <p class="text-lg md:text-xl text-white/60 max-w-2xl mx-auto">
+          Completa este cuestionario y recibe una propuesta personalizada en menos de 24 horas
+        </p>
+      </div>
+
+      <!-- Form Container -->
+      <div class="glass-dark rounded-3xl shadow-2xl border border-white/10 p-8 md:p-12 backdrop-blur-xl">
+        <form id="quoteForm" class="space-y-12">
+          
+          <!-- Sección 1: Información General -->
+          <section class="quote-section">
+            <div class="section-header">
+              <svg class="section-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <h2>1. Información General</h2>
+            </div>
+            
+            <div class="form-field">
+              <label for="companyName">Nombre de tu marca o empresa *</label>
+              <input type="text" id="companyName" name="companyName" required class="form-input">
+            </div>
+
+            <div class="form-field">
+              <label for="businessType">¿A qué se dedica tu negocio? *</label>
+              <textarea id="businessType" name="businessType" required rows="3" class="form-input"></textarea>
+            </div>
+
+            <div class="form-field">
+              <label for="websiteGoal">¿Cuál es el objetivo principal de tu sitio web?</label>
+              <select id="websiteGoal" name="websiteGoal" class="form-input">
+                <option value="">Selecciona una opción</option>
+                <option value="brand-presence">Dar presencia a mi marca</option>
+                <option value="sell-online">Vender productos en línea</option>
+                <option value="get-clients">Conseguir más clientes / contactos</option>
+                <option value="show-services">Mostrar servicios o portafolio</option>
+                <option value="other">Otro</option>
+              </select>
+            </div>
+          </section>
+
+          <!-- Sección 2: Plataforma -->
+          <section class="quote-section">
+            <div class="section-header">
+              <svg class="section-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="2" y="3" width="20" height="14" rx="2" stroke="currentColor" stroke-width="2"/>
+                <path d="M8 21H16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M12 17V21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              <h2>2. Plataforma</h2>
+            </div>
+
+            <div class="form-field">
+              <label for="platform">¿En qué plataforma te gustaría tu sitio web?</label>
+              <select id="platform" name="platform" class="form-input">
+                <option value="">Selecciona una opción</option>
+                <option value="shopify">Shopify</option>
+                <option value="wordpress">WordPress</option>
+                <option value="custom">Desarrollo a medida</option>
+                <option value="not-sure">No lo sé, quiero que me recomienden</option>
+              </select>
+            </div>
+
+            <div class="form-field">
+              <label for="platformReason">¿Por qué? (opcional)</label>
+              <input type="text" id="platformReason" name="platformReason" class="form-input">
+            </div>
+          </section>
+
+          <!-- Sección 3: Diseño y Marca -->
+          <section class="quote-section">
+            <div class="section-header">
+              <svg class="section-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                <path d="M12 2C12 2 8 6 8 12C8 18 12 22 12 22" stroke="currentColor" stroke-width="2"/>
+                <path d="M12 2C12 2 16 6 16 12C16 18 12 22 12 22" stroke="currentColor" stroke-width="2"/>
+                <path d="M2 12H22" stroke="currentColor" stroke-width="2"/>
+              </svg>
+              <h2>3. Diseño y Marca</h2>
+            </div>
+
+            <div class="form-field">
+              <label>¿Ya cuentas con un diseño del sitio?</label>
+              <div class="radio-group">
+                <label class="radio-option">
+                  <input type="radio" name="hasDesign" value="si-tengo-diseño">
+                  <span>Sí, ya tengo el diseño (Figma / imágenes / mockups)</span>
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="hasDesign" value="solo-idea">
+                  <span>Tengo una idea, pero no diseño final</span>
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="hasDesign" value="sin-diseño">
+                  <span>No, necesito que lo diseñen desde cero</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label>¿Cuentas con identidad visual? (puedes marcar varias)</label>
+              <div class="checkbox-group">
+                <label class="checkbox-option">
+                  <input type="checkbox" name="visualIdentity" value="logo">
+                  <span>Logo</span>
+                </label>
+                <label class="checkbox-option">
+                  <input type="checkbox" name="visualIdentity" value="colores-marca">
+                  <span>Colores de marca</span>
+                </label>
+                <label class="checkbox-option">
+                  <input type="checkbox" name="visualIdentity" value="tipografias">
+                  <span>Tipografías</span>
+                </label>
+                <label class="checkbox-option">
+                  <input type="checkbox" name="visualIdentity" value="manual-marca">
+                  <span>Manual de marca</span>
+                </label>
+                <label class="checkbox-option">
+                  <input type="checkbox" name="visualIdentity" value="nada">
+                  <span>Aún no tengo nada</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label for="inspirationUrls">Comparte sitios web que te gusten o te inspiren (opcional)</label>
+              <textarea id="inspirationUrls" name="inspirationUrls" rows="3" class="form-input" placeholder="Ej: www.ejemplo1.com, www.ejemplo2.com"></textarea>
+            </div>
+          </section>
+
+          <!-- Sección 4: Contenido y Páginas -->
+          <section class="quote-section">
+            <div class="section-header">
+              <svg class="section-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M14 2V8H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <h2>4. Contenido y Páginas</h2>
+            </div>
+
+            <div class="form-field">
+              <label>Aproximadamente, ¿cuántas secciones o páginas tendrá tu sitio?</label>
+              <div class="radio-group">
+                <label class="radio-option">
+                  <input type="radio" name="pageCount" value="1-5">
+                  <span>1 – 5</span>
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="pageCount" value="6-10">
+                  <span>6 – 10</span>
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="pageCount" value="11-20">
+                  <span>11 – 20</span>
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="pageCount" value="20+">
+                  <span>Más de 20</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label>¿Qué páginas te gustaría incluir? (marca las que apliquen)</label>
+              <div class="checkbox-group">
+                <label class="checkbox-option">
+                  <input type="checkbox" name="pages" value="inicio">
+                  <span>Inicio</span>
+                </label>
+                <label class="checkbox-option">
+                  <input type="checkbox" name="pages" value="nosotros">
+                  <span>Nosotros</span>
+                </label>
+                <label class="checkbox-option">
+                  <input type="checkbox" name="pages" value="servicios">
+                  <span>Servicios</span>
+                </label>
+                <label class="checkbox-option">
+                  <input type="checkbox" name="pages" value="productos">
+                  <span>Productos</span>
+                </label>
+                <label class="checkbox-option">
+                  <input type="checkbox" name="pages" value="blog">
+                  <span>Blog</span>
+                </label>
+                <label class="checkbox-option">
+                  <input type="checkbox" name="pages" value="contacto">
+                  <span>Contacto</span>
+                </label>
+                <label class="checkbox-option">
+                  <input type="checkbox" name="pages" value="preguntas-frecuentes">
+                  <span>Preguntas frecuentes</span>
+                </label>
+                <label class="checkbox-option">
+                  <input type="checkbox" name="pages" value="legales">
+                  <span>Políticas / legales</span>
+                </label>
+              </div>
+            </div>
+          </section>
+
+          <!-- Sección 5: Funciones -->
+          <section class="quote-section">
+            <div class="section-header">
+              <svg class="section-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+                <path d="M12 1V3M12 21V23M4.22 4.22L5.64 5.64M18.36 18.36L19.78 19.78M1 12H3M21 12H23M4.22 19.78L5.64 18.36M18.36 5.64L19.78 4.22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              <h2>5. Funciones del Sitio</h2>
+            </div>
+
+            <div class="form-field">
+              <label>¿Qué funciones te gustaría que tenga tu página?</label>
+              <div class="checkbox-group">
+                <label class="checkbox-option">
+                  <input type="checkbox" name="features" value="formulario-contacto">
+                  <span>Formulario de contacto</span>
+                </label>
+                <label class="checkbox-option">
+                  <input type="checkbox" name="features" value="whatsapp">
+                  <span>Botón de WhatsApp</span>
+                </label>
+                <label class="checkbox-option">
+                  <input type="checkbox" name="features" value="blog">
+                  <span>Blog administrable</span>
+                </label>
+                <label class="checkbox-option">
+                  <input type="checkbox" name="features" value="animaciones">
+                  <span>Animaciones o efectos visuales</span>
+                </label>
+                <label class="checkbox-option">
+                  <input type="checkbox" name="features" value="seo">
+                  <span>Optimización para Google (SEO básico)</span>
+                </label>
+                <label class="checkbox-option">
+                  <input type="checkbox" name="features" value="redes-sociales">
+                  <span>Integración con redes sociales</span>
+                </label>
+                <label class="checkbox-option">
+                  <input type="checkbox" name="features" value="estadisticas">
+                  <span>Estadísticas (Google Analytics / Pixel)</span>
+                </label>
+                <label class="checkbox-option">
+                  <input type="checkbox" name="features" value="multi-idioma">
+                  <span>Multi-idioma</span>
+                </label>
+              </div>
+            </div>
+          </section>
+
+          <!-- Sección 6: Tienda en Línea -->
+          <section class="quote-section">
+            <div class="section-header">
+              <svg class="section-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="9" cy="21" r="1" stroke="currentColor" stroke-width="2"/>
+                <circle cx="20" cy="21" r="1" stroke="currentColor" stroke-width="2"/>
+                <path d="M1 1H5L7.68 14.39C7.77144 14.8504 8.02191 15.264 8.38755 15.5583C8.75318 15.8526 9.2107 16.009 9.68 16H19.4C19.8693 16.009 20.3268 15.8526 20.6925 15.5583C21.0581 15.264 21.3086 14.8504 21.4 14.39L23 6H6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <h2>6. Tienda en Línea (solo si aplica)</h2>
+            </div>
+
+            <div class="form-field">
+              <label>¿Venderás productos en tu sitio?</label>
+              <div class="radio-group">
+                <label class="radio-option">
+                  <input type="radio" name="hasStore" value="si">
+                  <span>Sí</span>
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="hasStore" value="no">
+                  <span>No</span>
+                </label>
+              </div>
+            </div>
+
+            <div id="storeOptions" class="hidden space-y-6">
+              <div class="form-field">
+                <label>¿Cuántos productos aproximadamente?</label>
+                <div class="radio-group">
+                  <label class="radio-option">
+                    <input type="radio" name="productCount" value="1-10">
+                    <span>1 – 10</span>
+                  </label>
+                  <label class="radio-option">
+                    <input type="radio" name="productCount" value="11-50">
+                    <span>11 – 50</span>
+                  </label>
+                  <label class="radio-option">
+                    <input type="radio" name="productCount" value="51-200">
+                    <span>51 – 200</span>
+                  </label>
+                  <label class="radio-option">
+                    <input type="radio" name="productCount" value="200+">
+                    <span>Más de 200</span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-field">
+                <label>Funciones de tienda que te interesan:</label>
+                <div class="checkbox-group">
+                  <label class="checkbox-option">
+                    <input type="checkbox" name="storeFeatures" value="pagos-tarjeta">
+                    <span>Pagos con tarjeta</span>
+                  </label>
+                  <label class="checkbox-option">
+                    <input type="checkbox" name="storeFeatures" value="pagos-efectivo">
+                    <span>Pagos en efectivo / transferencia</span>
+                  </label>
+                  <label class="checkbox-option">
+                    <input type="checkbox" name="storeFeatures" value="envios-automaticos">
+                    <span>Envíos automáticos</span>
+                  </label>
+                  <label class="checkbox-option">
+                    <input type="checkbox" name="storeFeatures" value="codigos-descuento">
+                    <span>Códigos de descuento</span>
+                  </label>
+                  <label class="checkbox-option">
+                    <input type="checkbox" name="storeFeatures" value="recompensas">
+                    <span>Sistema de recompensas o puntos</span>
+                  </label>
+                  <label class="checkbox-option">
+                    <input type="checkbox" name="storeFeatures" value="cuentas-usuario">
+                    <span>Cuentas de usuario</span>
+                  </label>
+                  <label class="checkbox-option">
+                    <input type="checkbox" name="storeFeatures" value="suscripciones">
+                    <span>Suscripciones</span>
+                  </label>
+                  <label class="checkbox-option">
+                    <input type="checkbox" name="storeFeatures" value="lista-deseos">
+                    <span>Wishlist</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Sección 7: Contenido -->
+          <section class="quote-section">
+            <div class="section-header">
+              <svg class="section-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M17 3C17.2626 2.73735 17.5744 2.52901 17.9176 2.38687C18.2608 2.24473 18.6286 2.17157 19 2.17157C19.3714 2.17157 19.7392 2.24473 20.0824 2.38687C20.4256 2.52901 20.7374 2.73735 21 3C21.2626 3.26264 21.471 3.57444 21.6131 3.9176C21.7553 4.26077 21.8284 4.62856 21.8284 5C21.8284 5.37143 21.7553 5.73923 21.6131 6.08239C21.471 6.42555 21.2626 6.73735 21 7L7.5 20.5L2 22L3.5 16.5L17 3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <h2>7. Contenido</h2>
+            </div>
+
+            <div class="form-field">
+              <label>¿Quién proporcionará los textos e imágenes?</label>
+              <div class="radio-group">
+                <label class="radio-option">
+                  <input type="radio" name="contentProvider" value="cliente">
+                  <span>Yo como cliente</span>
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="contentProvider" value="apoyo-redaccion">
+                  <span>Necesito apoyo en redacción</span>
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="contentProvider" value="gemini">
+                  <span>Quiero que Gemini se encargue de todo</span>
+                </label>
+              </div>
+            </div>
+          </section>
+
+          <!-- Sección 8: Entrega y Soporte -->
+          <section class="quote-section">
+            <div class="section-header">
+              <svg class="section-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 12V22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <h2>8. Entrega y Soporte</h2>
+            </div>
+
+            <div class="form-field">
+              <label>¿Te gustaría recibir capacitación para administrar tu sitio?</label>
+              <div class="radio-group">
+                <label class="radio-option">
+                  <input type="radio" name="needsTraining" value="si">
+                  <span>Sí</span>
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="needsTraining" value="no">
+                  <span>No</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label>¿Te interesa soporte después de publicar el sitio?</label>
+              <div class="radio-group">
+                <label class="radio-option">
+                  <input type="radio" name="supportPeriod" value="7-days">
+                  <span>7 días</span>
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="supportPeriod" value="30-days">
+                  <span>30 días</span>
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="supportPeriod" value="monthly">
+                  <span>Mantenimiento mensual</span>
+                </label>
+              </div>
+            </div>
+          </section>
+
+          <!-- Sección 9: Tiempos -->
+          <section class="quote-section">
+            <div class="section-header">
+              <svg class="section-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              <h2>9. Tiempos</h2>
+            </div>
+
+            <div class="form-field">
+              <label for="launchDate">¿Cuándo te gustaría lanzar tu sitio? (fecha aproximada)</label>
+              <input type="text" id="launchDate" name="launchDate" class="form-input" placeholder="Ej: Marzo 2026">
+            </div>
+          </section>
+
+          <!-- Sección 10: Mensaje Final -->
+          <section class="quote-section">
+            <div class="section-header">
+              <svg class="section-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+              </svg>
+              <h2>10. Información de Contacto y Mensaje Final</h2>
+            </div>
+
+            <div class="form-field">
+              <label for="contactEmail">Tu correo electrónico *</label>
+              <input type="email" id="contactEmail" name="contactEmail" required class="form-input">
+            </div>
+
+            <div class="form-field">
+              <label for="contactPhone">Tu teléfono (opcional)</label>
+              <input type="tel" id="contactPhone" name="contactPhone" class="form-input">
+            </div>
+
+            <div class="form-field">
+              <label for="additionalInfo">¿Hay algo más que te gustaría contarnos sobre tu proyecto?</label>
+              <textarea id="additionalInfo" name="additionalInfo" rows="4" class="form-input"></textarea>
+            </div>
+          </section>
+
+          <!-- Submit Button -->
+          <div class="text-center pt-8">
+            <button type="submit" id="submitBtn" class="group relative inline-flex items-center justify-center gap-3 px-10 py-5 bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-lg font-medium rounded-full overflow-hidden transition-all duration-300 hover:shadow-glow hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none">
+              <span id="submitText" class="relative z-10 flex items-center gap-3">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Enviar Solicitud de Cotización
+              </span>
+              <span id="submitLoader" class="hidden relative z-10">
+                <svg class="animate-spin h-5 w-5 inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Enviando...
+              </span>
+              <div class="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            </button>
+            <p class="text-sm text-white/50 mt-6">
+              🔒 Tus datos están protegidos · Respuesta en menos de 24 horas
+            </p>
+          </div>
+
+        </form>
+
+        <!-- Success Message -->
+        <div id="successMessage" class="hidden">
+          <div class="glass-dark border border-green-500/30 rounded-2xl p-8 md:p-10 text-center backdrop-blur-xl animate-fade-in">
+            <div class="flex justify-center mb-6">
+              <div class="w-20 h-20 rounded-full bg-green-500/20 flex items-center justify-center animate-scale-in">
+                <svg class="w-10 h-10 text-green-400" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M9 12L11 14L15 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                </svg>
+              </div>
+            </div>
+            <h3 class="text-3xl font-montserrat-alt font-light text-white mb-4">¡Gracias por tu solicitud!</h3>
+            <p class="text-white/60 text-lg mb-6">Hemos recibido tu cuestionario y te contactaremos pronto con una propuesta personalizada.</p>
+            <p class="text-white/40 text-sm mb-6">
+              📧 Te enviaremos la cotización detallada a tu correo electrónico
+            </p>
+            <div class="flex flex-wrap gap-4 justify-center">
+              <a href="/" class="inline-flex items-center gap-2 px-6 py-3 bg-white/10 hover:bg-white/20 text-white rounded-full transition-all">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Volver al inicio
+              </a>
+              <a href="/portfolio" class="inline-flex items-center gap-2 px-6 py-3 bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 rounded-full transition-all">
+                Ver Portafolio
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Error Message -->
+        <div id="errorMessage" class="hidden">
+          <div class="glass-dark border border-red-500/30 rounded-2xl p-6 text-center backdrop-blur-xl animate-fade-in">
+            <div class="flex justify-center mb-4">
+              <div class="w-16 h-16 rounded-full bg-red-500/20 flex items-center justify-center">
+                <svg class="w-8 h-8 text-red-400" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+            </div>
+            <h4 class="text-xl font-semibold text-red-400 mb-2">Error al enviar</h4>
+            <p class="text-red-300/80 mb-4">Hubo un error al enviar tu solicitud. Por favor intenta de nuevo.</p>
+            <button onclick="location.reload()" class="inline-flex items-center gap-2 px-6 py-3 bg-red-500/20 hover:bg-red-500/30 text-red-300 rounded-full transition-all">
+              Intentar de nuevo
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  /* Orb Animations */
+  .orb-1 {
+    top: -10%;
+    left: -5%;
+    animation: float 20s ease-in-out infinite;
+  }
+
+  .orb-2 {
+    bottom: -10%;
+    right: -5%;
+    animation: float 25s ease-in-out infinite reverse;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(30px, -30px) scale(1.1); }
+    66% { transform: translate(-20px, 20px) scale(0.9); }
+  }
+
+  /* Section Styles */
+  .quote-section {
+    @apply space-y-6 pb-8 border-b border-white/10;
+  }
+
+  .quote-section:last-of-type {
+    @apply border-b-0;
+  }
+
+  .section-header {
+    @apply flex items-center gap-4 mb-6;
+  }
+
+  .section-header h2 {
+    @apply text-2xl md:text-3xl font-montserrat-alt font-light text-white;
+  }
+
+  .section-icon {
+    @apply w-8 h-8 text-cyan-400 flex-shrink-0;
+  }
+
+  /* Form Fields */
+  .form-field {
+    @apply space-y-3;
+  }
+
+  .form-field label {
+    @apply block text-sm font-medium text-white/80;
+  }
+
+  .form-input {
+    @apply w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl 
+           text-white placeholder:text-white/30
+           focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500/50 focus:bg-white/10
+           transition-all duration-300 backdrop-blur-sm;
+  }
+
+  .form-input:hover {
+    @apply border-white/20 bg-white/[0.08];
+  }
+
+  /* Radio and Checkbox Groups */
+  .radio-group,
+  .checkbox-group {
+    @apply space-y-3;
+  }
+
+  .radio-option,
+  .checkbox-option {
+    @apply flex items-center gap-3 p-4 rounded-xl border border-white/10 bg-white/5
+           hover:border-cyan-500/50 hover:bg-white/10 transition-all duration-300 cursor-pointer
+           backdrop-blur-sm;
+  }
+
+  .radio-option:has(input:checked),
+  .checkbox-option:has(input:checked) {
+    @apply border-cyan-500 bg-cyan-500/10;
+  }
+
+  .radio-option input,
+  .checkbox-option input {
+    @apply w-5 h-5 text-cyan-500 bg-white/10 border-white/30 
+           focus:ring-cyan-500 focus:ring-offset-0 cursor-pointer
+           transition-all duration-300;
+  }
+
+  .radio-option span,
+  .checkbox-option span {
+    @apply text-white/80;
+  }
+
+  .radio-option:has(input:checked) span,
+  .checkbox-option:has(input:checked) span {
+    @apply text-white;
+  }
+
+  /* Select Dropdown */
+  select.form-input {
+    @apply appearance-none cursor-pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='rgba(255,255,255,0.5)'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1.25rem;
+    padding-right: 3rem;
+  }
+
+  select.form-input option {
+    @apply bg-dark-blue-500 text-white;
+  }
+
+  /* Animations */
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes scaleIn {
+    from {
+      transform: scale(0.8);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-out;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 0.5s ease-out;
+  }
+
+  .quote-section {
+    animation: slideIn 0.6s ease-out;
+  }
+
+  .quote-section:nth-child(1) { animation-delay: 0.1s; }
+  .quote-section:nth-child(2) { animation-delay: 0.15s; }
+  .quote-section:nth-child(3) { animation-delay: 0.2s; }
+  .quote-section:nth-child(4) { animation-delay: 0.25s; }
+  .quote-section:nth-child(5) { animation-delay: 0.3s; }
+  .quote-section:nth-child(6) { animation-delay: 0.35s; }
+  .quote-section:nth-child(7) { animation-delay: 0.4s; }
+  .quote-section:nth-child(8) { animation-delay: 0.45s; }
+  .quote-section:nth-child(9) { animation-delay: 0.5s; }
+  .quote-section:nth-child(10) { animation-delay: 0.55s; }
+</style>
+
+<script>
+  // Auto-detect API URL based on environment
+  const API_URL = (() => {
+    const hostname = window.location.hostname;
+    
+    // Production
+    if (hostname === 'geminisoftware.mx' || hostname === 'www.geminisoftware.mx') {
+      return 'https://gemini-backend.fly.dev/api';
+    }
+    
+    // Vercel preview deployments
+    if (hostname.includes('vercel.app')) {
+      return 'https://gemini-backend.fly.dev/api';
+    }
+    
+    // Local development
+    return 'http://localhost:3001/api';
+  })();
+
+  const form = document.getElementById('quoteForm') as HTMLFormElement;
+  const submitBtn = document.getElementById('submitBtn') as HTMLButtonElement;
+  const submitText = document.getElementById('submitText') as HTMLSpanElement;
+  const submitLoader = document.getElementById('submitLoader') as HTMLSpanElement;
+  const successMessage = document.getElementById('successMessage') as HTMLDivElement;
+  const errorMessage = document.getElementById('errorMessage') as HTMLDivElement;
+
+  // Mostrar/ocultar opciones de tienda
+  const hasStoreInputs = document.querySelectorAll('input[name="hasStore"]');
+  const storeOptions = document.getElementById('storeOptions');
+
+  hasStoreInputs.forEach(input => {
+    input.addEventListener('change', (e) => {
+      const target = e.target as HTMLInputElement;
+      if (target.value === 'si') {
+        storeOptions?.classList.remove('hidden');
+      } else {
+        storeOptions?.classList.add('hidden');
+      }
+    });
+  });
+
+  // Manejar envío del formulario
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    // Deshabilitar botón
+    submitBtn.disabled = true;
+    submitText.classList.add('hidden');
+    submitLoader.classList.remove('hidden');
+    successMessage.classList.add('hidden');
+    errorMessage.classList.add('hidden');
+
+    // Recopilar datos del formulario
+    const formData = new FormData(form);
+    
+    // Procesar checkboxes múltiples
+    const visualIdentity: string[] = [];
+    const pages: string[] = [];
+    const features: string[] = [];
+    const storeFeatures: string[] = [];
+
+    formData.getAll('visualIdentity').forEach((val) => visualIdentity.push(val as string));
+    formData.getAll('pages').forEach((val) => pages.push(val as string));
+    formData.getAll('features').forEach((val) => features.push(val as string));
+    formData.getAll('storeFeatures').forEach((val) => storeFeatures.push(val as string));
+
+    const data = {
+      companyName: formData.get('companyName'),
+      businessType: formData.get('businessType'),
+      websiteGoal: formData.get('websiteGoal'),
+      platform: formData.get('platform'),
+      platformReason: formData.get('platformReason'),
+      hasDesign: formData.get('hasDesign'),
+      visualIdentity,
+      inspirationUrls: formData.get('inspirationUrls'),
+      pageCount: formData.get('pageCount'),
+      pages,
+      features,
+      hasStore: formData.get('hasStore') === 'si',
+      productCount: formData.get('productCount'),
+      storeFeatures,
+      contentProvider: formData.get('contentProvider'),
+      needsTraining: formData.get('needsTraining') === 'si',
+      supportPeriod: formData.get('supportPeriod'),
+      launchDate: formData.get('launchDate'),
+      additionalInfo: formData.get('additionalInfo'),
+      contactEmail: formData.get('contactEmail'),
+      contactPhone: formData.get('contactPhone')
+    };
+
+    try {
+      const response = await fetch(`${API_URL}/quotes`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to submit quote request');
+      }
+
+      // Mostrar mensaje de éxito
+      form.classList.add('hidden');
+      successMessage.classList.remove('hidden');
+
+      // Scroll al mensaje
+      successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      errorMessage.classList.remove('hidden');
+      errorMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } finally {
+      // Reactivar botón
+      submitBtn.disabled = false;
+      submitText.classList.remove('hidden');
+      submitLoader.classList.add('hidden');
+    }
+  });
+</script>

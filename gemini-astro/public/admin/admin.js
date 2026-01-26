@@ -121,6 +121,7 @@ function logout() {
 
 // Tab Functions
 function switchTab(tab) {
+  console.log(`🔄 Switching to tab: ${tab}`);
   currentTab = tab;
   
   // Update tab buttons
@@ -129,24 +130,36 @@ function switchTab(tab) {
   
   // Update tab content
   document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
-  document.getElementById(`${tab}Tab`).classList.remove('hidden');
+  const selectedTab = document.getElementById(`${tab}Tab`);
+  if (selectedTab) {
+    console.log(`✅ Found tab element: ${tab}Tab`);
+    selectedTab.classList.remove('hidden');
+  } else {
+    console.error(`❌ Tab element not found: ${tab}Tab`);
+  }
   
   // Load data
   if (tab === 'projects') loadProjects();
   else if (tab === 'services') loadServices();
   else if (tab === 'contacts') loadContacts();
+  else if (tab === 'quotes') {
+    console.log('📋 Calling loadQuotes()...');
+    loadQuotes();
+  }
 }
 
 // Stats Functions
 async function loadStats() {
   try {
-    const [projectsRes, servicesRes] = await Promise.all([
+    const [projectsRes, servicesRes, quotesRes] = await Promise.all([
       fetch(`${API_URL}/projects`),
-      fetch(`${API_URL}/services`)
+      fetch(`${API_URL}/services`),
+      fetch(`${API_URL}/quotes`)
     ]);
     
     const projectsData = await projectsRes.json();
     const servicesData = await servicesRes.json();
+    const quotesData = await quotesRes.json();
     
     if (projectsData.success) {
       const projects = projectsData.data;
@@ -156,6 +169,10 @@ async function loadStats() {
     
     if (servicesData.success) {
       document.getElementById('statsServices').textContent = servicesData.data.length;
+    }
+
+    if (quotesData.success) {
+      document.getElementById('statsQuotes').textContent = quotesData.data.length;
     }
   } catch (error) {
     console.error('Error loading stats:', error);
@@ -1517,3 +1534,310 @@ document.getElementById('serviceTitle').addEventListener('input', (e) => {
     document.getElementById('serviceSlug').value = slug;
   }
 });
+
+// ============================================
+// QUOTES MANAGEMENT
+// ============================================
+
+// Load all quotes
+async function loadQuotes() {
+  console.log('📋 Loading quotes...');
+  const tbody = document.getElementById('quotesTableBody');
+  
+  if (!tbody) {
+    console.error('❌ quotesTableBody element not found!');
+    return;
+  }
+  
+  tbody.innerHTML = '<tr><td colspan="8" class="text-center py-4 text-gray-500">Cargando cotizaciones...</td></tr>';
+  
+  try {
+    console.log('🔗 Fetching from:', `${API_URL}/quotes`);
+    const response = await apiCall(`${API_URL}/quotes`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    
+    console.log('📡 Response status:', response.status);
+    const data = await response.json();
+    console.log('📦 Data received:', data);
+    
+    if (data.success && data.data.length > 0) {
+      console.log(`✅ Found ${data.data.length} quotes`);
+      tbody.innerHTML = data.data.map(quote => {
+        const statusClass = quote.status === 'pending' ? 'bg-amber-100 text-amber-700' : 
+                           quote.status === 'reviewing' ? 'bg-blue-100 text-blue-700' :
+                           quote.status === 'quoted' ? 'bg-green-100 text-green-700' :
+                           'bg-gray-100 text-gray-700';
+        
+        return `
+          <tr class="hover-row group">
+            <td>
+              <div class="flex flex-col">
+                <span class="font-medium text-dark-blue-500">${quote.companyName}</span>
+                <span class="text-xs text-dark-blue-500/40">${quote.businessType || ''}</span>
+              </div>
+            </td>
+            <td>
+              <div class="flex flex-col">
+                <span class="text-sm">${quote.contactEmail || 'No proporcionado'}</span>
+                ${quote.contactPhone ? `<span class="text-xs text-dark-blue-500/40">${quote.contactPhone}</span>` : ''}
+              </div>
+            </td>
+            <td>
+              <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-cyan-100 text-cyan-700">
+                ${quote.platform || 'Sin especificar'}
+              </span>
+            </td>
+            <td>
+              <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${statusClass}">
+                ${quote.status === 'pending' ? 'Pendiente' : 
+                  quote.status === 'reviewing' ? 'Revisando' :
+                  quote.status === 'quoted' ? 'Cotizado' : 'Sin revisar'}
+              </span>
+            </td>
+            <td>
+              <span class="text-sm text-dark-blue-500/60">
+                ${new Date(quote.createdAt).toLocaleDateString('es-MX', { 
+                  year: 'numeric', 
+                  month: 'short', 
+                  day: 'numeric' 
+                })}
+              </span>
+            </td>
+            <td class="text-center">
+              <button 
+                onclick="openQuoteModal('${quote.id}')" 
+                class="inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-cyan-500 to-blue-500 rounded-lg hover:from-cyan-600 hover:to-blue-600 transition-all shadow-sm hover:shadow-md"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                </svg>
+                Ver Detalles
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    } else {
+      console.log('ℹ️ No quotes found');
+      tbody.innerHTML = '<tr><td colspan="6" class="text-center py-16"><div class="flex flex-col items-center gap-3"><svg class="w-12 h-12 text-dark-blue-500/20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg><p class="text-dark-blue-500/40 font-medium">No hay cotizaciones disponibles</p></div></td></tr>';
+    }
+  } catch (error) {
+    console.error('❌ Error loading quotes:', error);
+    tbody.innerHTML = '<tr><td colspan="6" class="text-center py-8 text-red-500">Error al cargar cotizaciones. Revisa la consola.</td></tr>';
+  }
+}
+
+// Open quote detail modal
+let currentQuoteId = null;
+
+async function openQuoteModal(id) {
+  console.log('Opening quote modal for ID:', id);
+  currentQuoteId = id;
+  
+  try {
+    const response = await fetch(`${API_URL}/quotes/${id}`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const quote = await response.json();
+    console.log('Quote data:', quote);
+    
+    // Fill company info
+    document.getElementById('quoteCompanyName').textContent = quote.companyName || 'No especificado';
+    document.getElementById('quoteBusinessType').textContent = quote.businessType || 'No especificado';
+    document.getElementById('quoteContactEmail').textContent = quote.contactEmail || 'No proporcionado';
+    document.getElementById('quoteContactPhone').textContent = quote.contactPhone || 'No proporcionado';
+    
+    // Fill project details
+    const detailsDiv = document.getElementById('quoteDetails');
+    let detailsHtml = '';
+    
+    if (quote.websiteGoal) detailsHtml += `<p><strong>Objetivo:</strong> ${quote.websiteGoal}</p>`;
+    if (quote.platform) detailsHtml += `<p><strong>Plataforma:</strong> ${quote.platform}</p>`;
+    if (quote.platformReason) detailsHtml += `<p><strong>Razón:</strong> ${quote.platformReason}</p>`;
+    if (quote.hasDesign) detailsHtml += `<p><strong>¿Tiene diseño?:</strong> ${quote.hasDesign}</p>`;
+    if (quote.pageCount) detailsHtml += `<p><strong>Cantidad de páginas:</strong> ${quote.pageCount}</p>`;
+    if (quote.hasStore) detailsHtml += `<p><strong>Tienda en línea:</strong> Sí</p>`;
+    if (quote.productCount) detailsHtml += `<p><strong>Productos:</strong> ${quote.productCount}</p>`;
+    if (quote.contentProvider) detailsHtml += `<p><strong>Proveedor de contenido:</strong> ${quote.contentProvider}</p>`;
+    if (quote.needsTraining) detailsHtml += `<p><strong>Capacitación:</strong> Sí</p>`;
+    if (quote.supportPeriod) detailsHtml += `<p><strong>Periodo de soporte:</strong> ${quote.supportPeriod}</p>`;
+    if (quote.launchDate) detailsHtml += `<p><strong>Fecha de lanzamiento:</strong> ${quote.launchDate}</p>`;
+    if (quote.additionalInfo) detailsHtml += `<p><strong>Información adicional:</strong> ${quote.additionalInfo}</p>`;
+    
+    detailsDiv.innerHTML = detailsHtml || '<p class="text-gray-500">Sin detalles adicionales</p>';
+    
+    // Set current status
+    document.getElementById('quoteStatus').value = quote.status || 'pending';
+    
+    // Show modal
+    document.getElementById('quoteModal').classList.add('active');
+  } catch (error) {
+    console.error('Error loading quote:', error);
+    alert('Error al cargar la cotización. Revisa la consola para más detalles.');
+  }
+}
+
+// Close quote modal
+function closeQuoteModal() {
+  document.getElementById('quoteModal').classList.remove('active');
+  currentQuoteId = null;
+}
+
+// Update quote status
+async function updateQuoteStatus() {
+  if (!currentQuoteId) return;
+  
+  const newStatus = document.getElementById('quoteStatus').value;
+  
+  try {
+    const response = await fetch(`${API_URL}/quotes/${currentQuoteId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ status: newStatus })
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    alert('Estado actualizado correctamente');
+    closeQuoteModal();
+    loadQuotes(); // Reload the list
+  } catch (error) {
+    console.error('Error updating quote status:', error);
+    alert('Error al actualizar el estado');
+  }
+}
+
+// Format helper functions (can be expanded as needed)
+function formatQuoteDate(dateString) {
+  return new Date(dateString).toLocaleDateString('es-MX');
+}
+
+// Helper functions for formatting
+function formatBudget(budget) {
+  const budgets = {
+    '15k-30k': '$15k - $30k',
+    '30k-50k': '$30k - $50k',
+    '50k-80k': '$50k - $80k',
+    '80k+': '$80k+'
+  };
+  return budgets[budget] || budget || 'No especificado';
+}
+
+function getBudgetClass(budget) {
+  if (budget === '80k+' || budget === '50k-80k') return 'badge-success';
+  return 'badge-warning';
+}
+
+function formatStatus(status) {
+  const statuses = {
+    'pending': 'Pendiente',
+    'reviewing': 'En revisión',
+    'quoted': 'Cotizado',
+    'accepted': 'Aceptado',
+    'rejected': 'Rechazado'
+  };
+  return statuses[status] || status || 'Pendiente';
+}
+
+function getStatusClass(status) {
+  if (status === 'accepted') return 'badge-success';
+  if (status === 'rejected') return 'badge bg-red-100 text-red-700';
+  return 'badge-warning';
+}
+
+function formatWebsiteGoal(goal) {
+  const goals = {
+    'brand-presence': 'Presencia de marca',
+    'sell-online': 'Vender en línea',
+    'get-clients': 'Conseguir clientes',
+    'show-services': 'Mostrar servicios',
+    'other': 'Otro'
+  };
+  return goals[goal] || goal || 'No especificado';
+}
+
+function formatPlatform(platform) {
+  const platforms = {
+    'shopify': 'Shopify',
+    'wordpress': 'WordPress',
+    'custom': 'Desarrollo a medida',
+    'not-sure': 'No está seguro'
+  };
+  return platforms[platform] || platform || 'No especificado';
+}
+
+function formatPageCount(count) {
+  return count || 'No especificado';
+}
+
+function formatHasDesign(hasDesign) {
+  const designs = {
+    'yes-design': 'Sí, tiene diseño',
+    'idea-only': 'Solo idea',
+    'no-design': 'No, necesita diseño'
+  };
+  return designs[hasDesign] || hasDesign || 'No especificado';
+}
+
+function formatContentProvider(provider) {
+  const providers = {
+    'client': 'Cliente',
+    'support': 'Necesita apoyo',
+    'gemini': 'Gemini completo'
+  };
+  return providers[provider] || provider || 'No especificado';
+}
+
+function formatPageName(page) {
+  const pages = {
+    'home': 'Inicio',
+    'about': 'Nosotros',
+    'services': 'Servicios',
+    'products': 'Productos',
+    'blog': 'Blog',
+    'contact': 'Contacto',
+    'faq': 'FAQ',
+    'legal': 'Legales'
+  };
+  return pages[page] || page;
+}
+
+function formatFeatureName(feature) {
+  const features = {
+    'contact-form': 'Formulario contacto',
+    'whatsapp': 'WhatsApp',
+    'blog': 'Blog',
+    'animations': 'Animaciones',
+    'seo': 'SEO',
+    'social-media': 'Redes sociales',
+    'analytics': 'Analytics',
+    'multilanguage': 'Multi-idioma'
+  };
+  return features[feature] || feature;
+}
+
+function formatStoreFeatureName(feature) {
+  const features = {
+    'card-payment': 'Pago con tarjeta',
+    'cash-transfer': 'Efectivo/Transferencia',
+    'shipping': 'Envíos',
+    'discount-codes': 'Descuentos',
+    'rewards': 'Recompensas',
+    'user-accounts': 'Cuentas usuario',
+    'subscriptions': 'Suscripciones',
+    'wishlist': 'Lista de deseos'
+  };
+  return features[feature] || feature;
+}

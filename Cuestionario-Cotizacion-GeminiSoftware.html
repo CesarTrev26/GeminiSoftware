@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuestionario de Cotización - Gemini Software</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @page {
+            margin: 2cm;
+        }
+
+        body {
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: #01183D;
+            background: #ffffff;
+            padding: 40px;
+            max-width: 210mm;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #00D3FF;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .logo-image {
+            width: 200px;
+            height: auto;
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            font-size: 20px;
+            color: #003799;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .contact-info {
+            font-size: 12px;
+            color: #666;
+            margin-top: 8px;
+        }
+
+        .section {
+            margin-bottom: 35px;
+            page-break-inside: avoid;
+        }
+
+        .section-header {
+            background: linear-gradient(135deg, #003799 0%, #00D3FF 100%);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 18px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-header svg {
+            width: 24px;
+            height: 24px;
+            flex-shrink: 0;
+        }
+
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-left: 4px solid #00D3FF;
+            border-radius: 4px;
+        }
+
+        .question-number {
+            font-weight: 600;
+            color: #003799;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .question-text {
+            font-size: 15px;
+            color: #01183D;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .question-hint {
+            font-size: 12px;
+            color: #666;
+            font-style: italic;
+            margin-bottom: 8px;
+        }
+
+        .options {
+            margin-top: 10px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            padding: 8px;
+            transition: background 0.2s;
+        }
+
+        .option:hover {
+            background: #e8f4f8;
+            border-radius: 4px;
+        }
+
+        .checkbox {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #003799;
+            border-radius: 3px;
+            margin-right: 10px;
+            flex-shrink: 0;
+            background: white;
+        }
+
+        .option-text {
+            font-size: 14px;
+            color: #333;
+        }
+
+        .answer-line {
+            border-bottom: 1px solid #00D3FF;
+            height: 40px;
+            margin-top: 8px;
+        }
+
+        .answer-box {
+            border: 1px solid #00D3FF;
+            border-radius: 4px;
+            min-height: 80px;
+            padding: 10px;
+            margin-top: 8px;
+            background: white;
+        }
+
+        .table-container {
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,55,153,0.1);
+        }
+
+        th {
+            background: #003799;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 13px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        .footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 2px solid #00D3FF;
+            text-align: center;
+            color: #666;
+            font-size: 12px;
+        }
+
+        .footer-logo {
+            font-size: 20px;
+            font-weight: 600;
+            color: #003799;
+            margin-bottom: 10px;
+        }
+
+        .footer-logo span {
+            color: #00D3FF;
+        }
+
+        .thank-you {
+            background: linear-gradient(135deg, #e8f4f8 0%, #d0ebf5 100%);
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 30px;
+            border: 2px solid #00D3FF;
+        }
+
+        .thank-you h3 {
+            color: #003799;
+            font-size: 20px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .thank-you p {
+            color: #01183D;
+            font-size: 14px;
+        }
+
+        @media print {
+            body {
+                padding: 0;
+            }
+            
+            .question:hover,
+            .option:hover,
+            tr:hover {
+                background: transparent !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <div class="header">
+        <img src="gemini-astro/public/img/Gradient_Logo.webp" alt="Gemini Software Logo" class="logo-image">
+        <div class="subtitle">Cuestionario de Cotización Web</div>
+        <div class="contact-info">
+            contacto@geminisoftware.mx | www.geminisoftware.mx
+        </div>
+    </div>
+
+    <!-- SECTION 1: INFORMACIÓN GENERAL -->
+    <div class="section">
+        <div class="section-header">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>1. Información General</span>
+        </div>
+
+        <div class="question">
+            <div class="question-number">1. Nombre de tu marca o empresa:</div>
+            <div class="question-hint">(respuesta corta)</div>
+            <div class="answer-line"></div>
+        </div>
+
+        <div class="question">
+            <div class="question-number">2. ¿A qué se dedica tu negocio?</div>
+            <div class="question-hint">(respuesta larga / descripción breve)</div>
+            <div class="answer-box"></div>
+        </div>
+
+        <div class="question">
+            <div class="question-number">3. ¿Cuál es el objetivo principal de tu sitio web?</div>
+            <div class="question-hint">(elige una opción)</div>
+            <div class="options">
+                <div class="option">
+                    <div class="checkbox"></div>
+                    <div class="option-text">Dar presencia a mi marca</div>
+                </div>
+                <div class="option">
+                    <div class="checkbox"></div>
+                    <div class="option-text">Vender productos en línea</div>
+                </div>
+                <div class="option">
+                    <div class="checkbox"></div>
+                    <div class="option-text">Conseguir más clientes / contactos</div>
+                </div>
+                <div class="option">
+                    <div class="checkbox"></div>
+                    <div class="option-text">Mostrar servicios o portafolio</div>
+                </div>
+                <div class="option">
+                    <div class="checkbox"></div>
+                    <div class="option-text">Otro: ___________________________</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 2: PLATAFORMA -->
+    <div class="section">
+        <div class="section-header">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="2" y="3" width="20" height="14" rx="2" stroke="currentColor" stroke-width="2"/>
+                <path d="M8 21H16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M12 17V21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <span>2. Plataforma</span>
+        </div>
+
+        <div class="question">
+            <div class="question-number">4. ¿En qué plataforma te gustaría tu sitio web?</div>
+            <div class="question-hint">(no pasa nada si no estás seguro)</div>
+            <div class="options">
+                <div class="option">
+                    <div class="checkbox"></div>
+                    <div class="option-text">Shopify</div>
+                </div>
+                <div class="option">
+                    <div class="checkbox"></div>
+                    <div class="option-text">WordPress</div>
+                </div>
+                <div class="option">
+                    <div class="checkbox"></div>
+                    <div class="option-text">No lo sé, quiero que me recomienden</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="question">
+            <div class="question-number">5. ¿Por qué? (opcional)</div>
+            <div class="question-hint">(respuesta corta)</div>
+            <div class="answer-line"></div>
+        </div>
+    </div>
+
+    <!-- SECTION 3: DISEÑO Y MARCA -->
+    <div class="section">
+        <div class="section-header">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                <path d="M12 2C12 2 8 6 8 12C8 18 12 22 12 22" stroke="currentColor" stroke-width="2"/>
+                <path d="M12 2C12 2 16 6 16 12C16 18 12 22 12 22" stroke="currentColor" stroke-width="2"/>
+                <path d="M2 12H22" stroke="currentColor" stroke-width="2"/>
+            </svg>
+            <span>3. Diseño y Marca</span>
+        </div>
+
+        <div class="question">
+            <div class="question-number">6. ¿Ya cuentas con un diseño del sitio?</div>
+            <div class="options">
+                <div class="option">
+                    <div class="checkbox"></div>
+                    <div class="option-text">Sí, ya tengo el diseño (Figma / imágenes / mockups)</div>
+                </div>
+                <div class="option">
+                    <div class="checkbox"></div>
+                    <div class="option-text">Tengo una idea, pero no diseño final</div>
+                </div>
+                <div class="option">
+                    <div class="checkbox"></div>
+                    <div class="option-text">No, necesito que lo diseñen desde cero</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="question">
+            <div class="question-number">7. ¿Cuentas con identidad visual?</div>
+            <div class="question-hint">(puedes marcar varias)</div>
+            <div class="options">
+                <div class="option">
+                    <div class="checkbox"></div>
+                    <div class="option-text">Logo</div>
+                </div>
+                <div class="option">
+                    <div class="checkbox"></div>
+                    <div class="option-text">Colores de marca</div>
+                </div>
+                <div class="option">
+                    <div class="checkbox"></div>
+                    <div class="option-text">Tipografías</div>
+                </div>
+                <div class="option">
+                    <div class="checkbox"></div>
+                    <div class="option-text">Manual de marca</div>
+                </div>
+                <div class="option">
+                    <div class="checkbox"></div>
+                    <div class="option-text">Aún no tengo nada</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="question">
+            <div class="question-number">8. Comparte sitios web que te gusten o te inspiren</div>
+            <div class="question-hint">(links, opcional)</div>
+            <div class="answer-box"></div>
+        </div>
+    </div>
+
+    <!-- SECTION 4: CONTENIDO Y PÁGINAS -->
+    <div class="section">
+        <div class="section-header">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M14 2V8H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>4. Contenido y Páginas</span>
+        </div>
+
+        <div class="question">
+            <div class="question-number">9. Aproximadamente, ¿cuántas secciones o páginas tendrá tu sitio?</div>
+            <div class="options">
+                <div class="option">
+                    <div class="checkbox"></div>
+                    <div class="option-text">1 – 5</div>
+                </div>
+                <div class="option">
+                    <div class="checkbox"></div>
+                    <div class="option-text">6 – 10</div>
+                </div>
+                <div class="option">
+                    <div class="checkbox"></div>
+                    <div class="option-text">11 – 20</div>
+                </div>
+                <div class="option">
+                    <div class="checkbox"></div>
+                    <div class="option-text">Más de 20</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="question">
+            <div class="question-number">10. ¿Qué páginas te gustaría incluir?</div>
+            <div class="question-hint">(marca las que apliquen)</div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 40px;"></th>
+                            <th>Página</th>
+                            <th style="width: 40px;"></th>
+                            <th>Página</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><div class="checkbox"></div></td>
+                            <td>Inicio</td>
+                            <td><div class="checkbox"></div></td>
+                            <td>Blog</td>
+                        </tr>
+                        <tr>
+                            <td><div class="checkbox"></div></td>
+                            <td>Nosotros</td>
+                            <td><div class="checkbox"></div></td>
+                            <td>Contacto</td>
+                        </tr>
+                        <tr>
+                            <td><div class="checkbox"></div></td>
+                            <td>Servicios</td>
+                            <td><div class="checkbox"></div></td>
+                            <td>Preguntas frecuentes</td>
+                        </tr>
+                        <tr>
+                            <td><div class="checkbox"></div></td>
+                            <td>Productos</td>
+                            <td><div class="checkbox"></div></td>
+                            <td>Políticas / legales</td>
+                        </tr>
+                        <tr>
+                            <td colspan="4" style="padding-top: 15px;">
+                                <strong>Otras:</strong> _________________________________________________
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 5: FUNCIONES DEL SITIO -->
+    <div class="section">
+        <div class="section-header">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+                <path d="M12 1V3M12 21V23M4.22 4.22L5.64 5.64M18.36 18.36L19.78 19.78M1 12H3M21 12H23M4.22 19.78L5.64 18.36M18.36 5.64L19.78 4.22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <span>5. Funciones del Sitio</span>
+        </div>
+
+        <div class="question">
+            <div class="question-number">11. ¿Qué funciones te gustaría que tenga tu página?</div>
+            <div class="question-hint">(elige solo las que realmente usarías)</div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 40px;"></th>
+                            <th>Función</th>
+                            <th style="width: 40px;"></th>
+                            <th>Función</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><div class="checkbox"></div></td>
+                            <td>Formulario de contacto</td>
+                            <td><div class="checkbox"></div></td>
+                            <td>Optimización para Google (SEO básico)</td>
+                        </tr>
+                        <tr>
+                            <td><div class="checkbox"></div></td>
+                            <td>Botón de WhatsApp</td>
+                            <td><div class="checkbox"></div></td>
+                            <td>Integración con redes sociales</td>
+                        </tr>
+                        <tr>
+                            <td><div class="checkbox"></div></td>
+                            <td>Blog administrable</td>
+                            <td><div class="checkbox"></div></td>
+                            <td>Estadísticas (Google Analytics / Pixel)</td>
+                        </tr>
+                        <tr>
+                            <td><div class="checkbox"></div></td>
+                            <td>Animaciones o efectos visuales</td>
+                            <td><div class="checkbox"></div></td>
+                            <td>Multi-idioma</td>
+                        </tr>
+                        <tr>
+                            <td colspan="4" style="padding-top: 15px;">
+                                <strong>Otro:</strong> _________________________________________________
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 6: TIENDA EN LÍNEA -->
+    <div class="section">
+        <div class="section-header">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="9" cy="21" r="1" stroke="currentColor" stroke-width="2"/>
+                <circle cx="20" cy="21" r="1" stroke="currentColor" stroke-width="2"/>
+                <path d="M1 1H5L7.68 14.39C7.77144 14.8504 8.02191 15.264 8.38755 15.5583C8.75318 15.8526 9.2107 16.009 9.68 16H19.4C19.8693 16.009 20.3268 15.8526 20.6925 15.5583C21.0581 15.264 21.3086 14.8504 21.4 14.39L23 6H6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>6. Tienda en Línea (solo si aplica)</span>
+        </div>
+
+        <div class="question">
+            <div class="question-number">12. ¿Venderás productos en tu sitio?</div>
+            <div class="options">
+                <div class="option">
+                    <div class="checkbox"></div>
+                    <div class="option-text">Sí</div>
+                </div>
+                <div class="option">
+                    <div class="checkbox"></div>
+                    <div class="option-text">No</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="question">
+            <div class="question-number">13. ¿Cuántos productos aproximadamente?</div>
+            <div class="options">
+                <div class="option">
+                    <div class="checkbox"></div>
+                    <div class="option-text">1 – 10</div>
+                </div>
+                <div class="option">
+                    <div class="checkbox"></div>
+                    <div class="option-text">11 – 50</div>
+                </div>
+                <div class="option">
+                    <div class="checkbox"></div>
+                    <div class="option-text">51 – 200</div>
+                </div>
+                <div class="option">
+                    <div class="checkbox"></div>
+                    <div class="option-text">Más de 200</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="question">
+            <div class="question-number">14. Funciones de tienda que te interesan:</div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 40px;"></th>
+                            <th>Función</th>
+                            <th style="width: 40px;"></th>
+                            <th>Función</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><div class="checkbox"></div></td>
+                            <td>Pagos con tarjeta</td>
+                            <td><div class="checkbox"></div></td>
+                            <td>Códigos de descuento</td>
+                        </tr>
+                        <tr>
+                            <td><div class="checkbox"></div></td>
+                            <td>Pagos en efectivo / transferencia</td>
+                            <td><div class="checkbox"></div></td>
+                            <td>Sistema de recompensas o puntos</td>
+                        </tr>
+                        <tr>
+                            <td><div class="checkbox"></div></td>
+                            <td>Envíos automáticos</td>
+                            <td><div class="checkbox"></div></td>
+                            <td>Cuentas de usuario</td>
+                        </tr>
+                        <tr>
+                            <td><div class="checkbox"></div></td>
+                            <td>Suscripciones</td>
+                            <td><div class="checkbox"></div></td>
+                            <td>Wishlist</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 7: CONTENIDO -->
+    <div class="section">
+        <div class="section-header">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M17 3C17.2626 2.73735 17.5744 2.52901 17.9176 2.38687C18.2608 2.24473 18.6286 2.17157 19 2.17157C19.3714 2.17157 19.7392 2.24473 20.0824 2.38687C20.4256 2.52901 20.7374 2.73735 21 3C21.2626 3.26264 21.471 3.57444 21.6131 3.9176C21.7553 4.26077 21.8284 4.62856 21.8284 5C21.8284 5.37143 21.7553 5.73923 21.6131 6.08239C21.471 6.42555 21.2626 6.73735 21 7L7.5 20.5L2 22L3.5 16.5L17 3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>7. Contenido</span>
+        </div>
+
+        <div class="question">
+            <div class="question-number">15. ¿Quién proporcionará los textos e imágenes?</div>
+            <div class="options">
+                <div class="option">
+                    <div class="checkbox"></div>
+                    <div class="option-text">Yo como cliente</div>
+                </div>
+                <div class="option">
+                    <div class="checkbox"></div>
+                    <div class="option-text">Necesito apoyo en redacción</div>
+                </div>
+                <div class="option">
+                    <div class="checkbox"></div>
+                    <div class="option-text">Quiero que Gemini se encargue de todo</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 8: ENTREGA Y SOPORTE -->
+    <div class="section">
+        <div class="section-header">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 12V22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>8. Entrega y Soporte</span>
+        </div>
+
+        <div class="question">
+            <div class="question-number">16. ¿Te gustaría recibir capacitación para administrar tu sitio?</div>
+            <div class="options">
+                <div class="option">
+                    <div class="checkbox"></div>
+                    <div class="option-text">Sí</div>
+                </div>
+                <div class="option">
+                    <div class="checkbox"></div>
+                    <div class="option-text">No</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="question">
+            <div class="question-number">17. ¿Te interesa soporte después de publicar el sitio?</div>
+            <div class="options">
+                <div class="option">
+                    <div class="checkbox"></div>
+                    <div class="option-text">7 días</div>
+                </div>
+                <div class="option">
+                    <div class="checkbox"></div>
+                    <div class="option-text">30 días</div>
+                </div>
+                <div class="option">
+                    <div class="checkbox"></div>
+                    <div class="option-text">Mantenimiento mensual</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 9: TIEMPOS Y PRESUPUESTO -->
+    <div class="section">
+        <div class="section-header">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <span>9. Tiempos y Presupuesto</span>
+        </div>
+
+        <div class="question">
+            <div class="question-number">18. ¿Cuándo te gustaría lanzar tu sitio?</div>
+            <div class="question-hint">(fecha aproximada)</div>
+            <div class="answer-line"></div>
+        </div>
+
+        <div class="question">
+            <div class="question-number">19. Presupuesto estimado para tu proyecto</div>
+            <div class="question-hint">(esto nos ayuda a proponerte la mejor solución)</div>
+            <div class="options">
+                <div class="option">
+                    <div class="checkbox"></div>
+                    <div class="option-text">$15,000 – $30,000 MXN</div>
+                </div>
+                <div class="option">
+                    <div class="checkbox"></div>
+                    <div class="option-text">$30,000 – $50,000 MXN</div>
+                </div>
+                <div class="option">
+                    <div class="checkbox"></div>
+                    <div class="option-text">$50,000 – $80,000 MXN</div>
+                </div>
+                <div class="option">
+                    <div class="checkbox"></div>
+                    <div class="option-text">$80,000+ MXN</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 10: MENSAJE FINAL -->
+    <div class="section">
+        <div class="section-header">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+            </svg>
+            <span>Mensaje Final</span>
+        </div>
+
+        <div class="question">
+            <div class="question-number">20. ¿Hay algo más que te gustaría contarnos sobre tu proyecto?</div>
+            <div class="question-hint">(respuesta abierta)</div>
+            <div class="answer-box" style="min-height: 120px;"></div>
+        </div>
+    </div>
+
+    <!-- THANK YOU MESSAGE -->
+    <div class="thank-you">
+        <h3>¡Gracias por tu interés en trabajar con nosotros!</h3>
+        <p>Revisaremos tu información y nos pondremos en contacto contigo a la brevedad con una propuesta personalizada.</p>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+        <div class="footer-logo">GEMINI <span>SOFTWARE</span></div>
+        <p>Desarrollo de Software y Sitios Web Profesionales</p>
+        <p style="margin-top: 8px;">
+            contacto@geminisoftware.mx | www.geminisoftware.mx<br>
+            Documento generado en Enero 2026
+        </p>
+    </div>
+</body>
+</html>

@@ -26,6 +26,7 @@ model User {
 
   projects  Project[]
   contacts  Contact[]
+  quoteRequests QuoteRequest[]
 
   @@map("users")
 }
@@ -123,6 +124,77 @@ model Contact {
   assignedTo   User?      @relation(fields: [assignedToId], references: [id])
 
   @@map("contacts")
+}
+
+// ============================================
+// QUOTE REQUESTS (CUESTIONARIOS DE COTIZACIÓN)
+// ============================================
+model QuoteRequest {
+  id        String   @id @default(uuid())
+  
+  // Información General
+  companyName    String
+  businessType   String
+  websiteGoal    String?
+  
+  // Plataforma
+  platform       String?
+  platformReason String?
+  
+  // Diseño y Marca
+  hasDesign      String?
+  visualIdentity String? // JSON array
+  inspirationUrls String?
+  
+  // Contenido y Páginas
+  pageCount      String?
+  pages          String? // JSON array
+  
+  // Funciones
+  features       String? // JSON array
+  
+  // Tienda en Línea
+  hasStore       Boolean @default(false)
+  productCount   String?
+  storeFeatures  String? // JSON array
+  
+  // Contenido
+  contentProvider String?
+  
+  // Entrega y Soporte
+  needsTraining  Boolean @default(false)
+  supportPeriod  String?
+  
+  // Tiempos y Presupuesto
+  launchDate     String?
+  budget         String?
+  
+  // Mensaje Final
+  additionalInfo String?
+  
+  // Contact Info
+  contactEmail   String?
+  contactPhone   String?
+  
+  // Status tracking
+  status    String   @default("NEW") // NEW, QUOTED, WON, LOST
+  quotedAmount Decimal?
+  notes     String?
+  
+  // Metadata
+  ip        String?
+  userAgent String?
+  source    String?
+  
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  // Relations
+  assignedToId String?
+  assignedTo   User?   @relation(fields: [assignedToId], references: [id])
+
+  @@map("quote_requests")
 }
 
 // ============================================

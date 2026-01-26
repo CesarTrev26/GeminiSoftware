@@ -10,11 +10,14 @@ const prisma = new PrismaClient();
 const transporter = nodemailer.createTransport({
   host: config.email.host,
   port: config.email.port,
-  secure: false,
+  secure: config.email.secure, // true for 465, false for 587
   auth: {
     user: config.email.user,
     pass: config.email.pass,
   },
+  tls: {
+    rejectUnauthorized: false // Para desarrollo
+  }
 });
 
 // ============================================
@@ -48,59 +51,107 @@ export const createContact = async (req: Request, res: Response) => {
     
     // Send notification email to admin
     try {
-      await transporter.sendMail({
-        from: config.email.from,
-        to: config.admin.email,
-        subject: `🚀 Nuevo contacto: ${name} - ${service || 'General'}`,
-        html: `
-          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-            <div style="background: linear-gradient(135deg, #01183D 0%, #003799 50%, #00D3FF 100%); padding: 30px; text-align: center;">
-              <h1 style="color: white; margin: 0;">Nuevo Contacto</h1>
+      const emailHtml = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        </head>
+        <body style="margin: 0; padding: 20px; background: #f0f4f8; font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;">
+          <div style="max-width: 600px; margin: 0 auto; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,55,153,0.1);">
+            
+            <!-- Header with Gradient -->
+            <div style="background: linear-gradient(135deg, #01183D 0%, #003799 50%, #00D3FF 100%); padding: 40px 30px; text-align: center; position: relative;">
+              <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url('data:image/svg+xml,%3Csvg width=\"20\" height=\"20\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cpath d=\"M0 0h20v20H0z\" fill=\"none\"/%3E%3Cpath d=\"M0 0h1v1H0zM19 19h1v1h-1z\" fill=\"rgba(255,255,255,0.1)\"/%3E%3C/svg%3E'); opacity: 0.3;"></div>
+              <h1 style="color: white; margin: 0; font-size: 28px; font-weight: 600; position: relative; z-index: 1;">💬 Nuevo Contacto</h1>
+              <p style="color: rgba(255,255,255,0.9); margin: 10px 0 0; font-size: 14px; position: relative; z-index: 1;">Formulario de Contacto Web</p>
             </div>
-            <div style="padding: 30px; background: #f5f5f5;">
-              <h2 style="color: #01183D;">Información del contacto</h2>
-              <table style="width: 100%; border-collapse: collapse;">
-                <tr>
-                  <td style="padding: 10px; border-bottom: 1px solid #ddd;"><strong>Nombre:</strong></td>
-                  <td style="padding: 10px; border-bottom: 1px solid #ddd;">${name}</td>
-                </tr>
-                <tr>
-                  <td style="padding: 10px; border-bottom: 1px solid #ddd;"><strong>Email:</strong></td>
-                  <td style="padding: 10px; border-bottom: 1px solid #ddd;"><a href="mailto:${email}">${email}</a></td>
-                </tr>
+            
+            <!-- Content -->
+            <div style="padding: 40px 30px;">
+              
+              <!-- Contact Info Card -->
+              <div style="background: linear-gradient(135deg, #f8f9ff 0%, #e8f4ff 100%); border-radius: 12px; padding: 25px; margin-bottom: 25px; border-left: 4px solid #00D3FF;">
+                <h2 style="color: #01183D; margin: 0 0 20px; font-size: 20px; font-weight: 600;">👤 Información del Cliente</h2>
+                
+                <div style="margin-bottom: 15px;">
+                  <div style="color: #666; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px;">Nombre Completo</div>
+                  <div style="color: #01183D; font-size: 16px; font-weight: 500;">${name}</div>
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                  <div style="color: #666; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px;">Email</div>
+                  <div><a href="mailto:${email}" style="color: #003799; font-size: 16px; text-decoration: none; font-weight: 500;">${email}</a></div>
+                </div>
+                
                 ${phone ? `
-                <tr>
-                  <td style="padding: 10px; border-bottom: 1px solid #ddd;"><strong>Teléfono:</strong></td>
-                  <td style="padding: 10px; border-bottom: 1px solid #ddd;"><a href="tel:${phone}">${phone}</a></td>
-                </tr>
+                <div style="margin-bottom: 15px;">
+                  <div style="color: #666; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px;">Teléfono</div>
+                  <div><a href="tel:${phone}" style="color: #003799; font-size: 16px; text-decoration: none; font-weight: 500;">${phone}</a></div>
+                </div>
                 ` : ''}
+                
                 ${service ? `
-                <tr>
-                  <td style="padding: 10px; border-bottom: 1px solid #ddd;"><strong>Servicio:</strong></td>
-                  <td style="padding: 10px; border-bottom: 1px solid #ddd;">${service}</td>
-                </tr>
+                <div>
+                  <div style="color: #666; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px;">Servicio de Interés</div>
+                  <div style="display: inline-block; background: #00D3FF; color: #01183D; padding: 6px 12px; border-radius: 20px; font-size: 13px; font-weight: 600;">${service}</div>
+                </div>
                 ` : ''}
-              </table>
-              <div style="margin-top: 20px; padding: 20px; background: white; border-radius: 8px;">
-                <h3 style="color: #01183D; margin-top: 0;">Mensaje:</h3>
-                <p style="color: #333; line-height: 1.6;">${message}</p>
               </div>
-              <div style="margin-top: 20px; text-align: center;">
-                <a href="https://wa.me/52${phone?.replace(/\D/g, '')}" 
-                   style="display: inline-block; padding: 12px 24px; background: #25D366; color: white; text-decoration: none; border-radius: 25px; margin-right: 10px;">
-                  Responder por WhatsApp
+              
+              <!-- Message Card -->
+              <div style="background: white; border: 2px solid #e8f4ff; border-radius: 12px; padding: 25px; margin-bottom: 30px;">
+                <h3 style="color: #01183D; margin: 0 0 15px; font-size: 16px; font-weight: 600;">💬 Mensaje:</h3>
+                <p style="color: #333; line-height: 1.8; margin: 0; font-size: 15px;">${message}</p>
+              </div>
+              
+              <!-- Action Buttons -->
+              <div style="text-align: center; margin-bottom: 25px;">
+                ${phone ? `
+                <a href="https://wa.me/52${phone.replace(/\D/g, '')}" 
+                   style="display: inline-block; padding: 14px 28px; background: linear-gradient(135deg, #25D366 0%, #128C7E 100%); color: white; text-decoration: none; border-radius: 8px; margin: 5px; font-weight: 600; font-size: 14px; box-shadow: 0 4px 12px rgba(37,211,102,0.3);">
+                  📱 WhatsApp
                 </a>
+                ` : ''}
                 <a href="mailto:${email}" 
-                   style="display: inline-block; padding: 12px 24px; background: #003799; color: white; text-decoration: none; border-radius: 25px;">
-                  Responder por Email
+                   style="display: inline-block; padding: 14px 28px; background: linear-gradient(135deg, #003799 0%, #00D3FF 100%); color: white; text-decoration: none; border-radius: 8px; margin: 5px; font-weight: 600; font-size: 14px; box-shadow: 0 4px 12px rgba(0,55,153,0.3);">
+                  📧 Email
+                </a>
+                <a href="${process.env.FRONTEND_URL || 'https://geminisoftware.mx'}/admin" 
+                   style="display: inline-block; padding: 14px 28px; background: linear-gradient(135deg, #01183D 0%, #003799 100%); color: white; text-decoration: none; border-radius: 8px; margin: 5px; font-weight: 600; font-size: 14px; box-shadow: 0 4px 12px rgba(1,24,61,0.3);">
+                  🎛️ Admin Panel
                 </a>
               </div>
+              
+              <!-- Timestamp -->
+              <div style="text-align: center; padding: 15px; background: #f8f9ff; border-radius: 8px;">
+                <p style="margin: 0; color: #666; font-size: 13px;">
+                  <strong>Recibido:</strong> ${new Date().toLocaleString('es-MX', { 
+                    dateStyle: 'full', 
+                    timeStyle: 'short' 
+                  })}
+                </p>
+              </div>
+              
             </div>
-            <div style="padding: 20px; text-align: center; color: #666; font-size: 12px;">
-              <p>Gemini Software - Panel de Administración</p>
+            
+            <!-- Footer -->
+            <div style="background: linear-gradient(135deg, #01183D 0%, #003799 100%); padding: 25px 30px; text-align: center;">
+              <p style="color: rgba(255,255,255,0.9); margin: 0; font-size: 13px;">Gemini Software</p>
+              <p style="color: rgba(0,211,255,0.9); margin: 5px 0 0; font-size: 12px; font-weight: 500;">Desarrollo de Software y Sitios Web Profesionales</p>
             </div>
+            
           </div>
-        `,
+        </body>
+        </html>
+      `;
+      
+      await transporter.sendMail({
+        from: `"Gemini Software" <${config.email.from}>`,
+        to: `${config.email.user}, ${config.admin.email}`,
+        subject: `🚀 Nuevo Contacto: ${name} - ${service || 'Consulta General'}`,
+        html: emailHtml,
       });
     } catch (emailError) {
       console.error('Error sending notification email:', emailError);

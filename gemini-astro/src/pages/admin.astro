@@ -1006,6 +1006,21 @@ const pageTitle = 'Admin | Gemini Software';
             </div>
           </div>
         </div>
+        
+        <!-- Quotes Stat -->
+        <div class="card stat-card p-4 opacity-0 animate-fadeInUp delay-500">
+          <div class="flex items-center justify-between">
+            <div class="flex-1 min-w-0">
+              <p class="text-dark-blue-500/50 text-xs font-medium uppercase tracking-wide mb-1.5">Cotizaciones</p>
+              <p id="statsQuotes" class="text-3xl font-bold text-purple-600">0</p>
+            </div>
+            <div class="stat-icon w-14 h-14 flex-shrink-0 rounded-2xl bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center shadow-lg shadow-purple-500/25">
+              <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- Tabs Card -->
@@ -1035,6 +1050,14 @@ const pageTitle = 'Admin | Gemini Software';
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
               </svg>
               Contactos
+            </span>
+          </button>
+          <button class="tab" onclick="switchTab('quotes')">
+            <span class="flex items-center gap-2">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+              Cotizaciones
             </span>
           </button>
         </div>
@@ -1167,7 +1190,48 @@ const pageTitle = 'Admin | Gemini Software';
             </table>
           </div>
         </div>
+
+        <!-- Quotes Tab Content -->
+      <div id="quotesTab" class="tab-content hidden">
+        <!-- Header -->
+        <div class="p-5 sm:p-6 lg:p-8 border-b border-dark-blue-500/5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div class="flex-1 min-w-0">
+            <h3 class="text-xl lg:text-2xl font-montserrat-alt text-dark-blue-500 mb-2">
+              Gestión de Cotizaciones
+            </h3>
+            <p class="text-dark-blue-500/50 text-sm">Administra las solicitudes de cotización</p>
+          </div>
+        </div>
+        
+        <!-- Table -->
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Empresa</th>
+                <th>Contacto</th>
+                <th>Plataforma</th>
+                <th>Estado</th>
+                <th>Fecha</th>
+                <th class="text-center">Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="quotesTableBody">
+              <tr>
+                <td colspan="6" class="text-center py-16">
+                  <div class="flex flex-col items-center gap-3">
+                    <svg class="w-12 h-12 text-dark-blue-500/20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                    <p class="text-dark-blue-500/40 font-medium">Cargando cotizaciones...</p>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
+    </div>
       
     </main>
     
@@ -1585,6 +1649,76 @@ const pageTitle = 'Admin | Gemini Software';
           </button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- ========== QUOTE MODAL ========== -->
+  <div id="quoteModal" class="modal">
+    <div class="card-static max-w-4xl w-full max-h-[90vh] overflow-y-auto modal-content">
+      <!-- Modal Header -->
+      <div class="sticky top-0 z-10 px-6 py-5 lg:px-8 lg:py-6 border-b border-dark-blue-500/5 bg-white/95 backdrop-blur flex items-center justify-between gap-4">
+        <h3 class="text-xl lg:text-2xl font-montserrat-alt text-dark-blue-500 flex-1 min-w-0 truncate">
+          Detalles de Cotización
+        </h3>
+        <button onclick="closeQuoteModal()" class="w-10 h-10 flex-shrink-0 rounded-xl bg-dark-blue-500/5 hover:bg-red-50 text-dark-blue-500/40 hover:text-red-500 transition-all flex items-center justify-center">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+      
+      <!-- Modal Body -->
+      <div class="p-6 lg:p-8 space-y-6">
+        <!-- Company Info -->
+        <div class="bg-gradient-to-br from-cyan-50 to-blue-50 rounded-2xl p-6 border border-cyan-100">
+          <h4 class="text-lg font-semibold text-dark-blue-500 mb-4 flex items-center gap-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+            </svg>
+            Información de la Empresa
+          </h4>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <p class="text-xs text-dark-blue-500/50 mb-1">Empresa</p>
+              <p id="quoteCompanyName" class="font-semibold text-dark-blue-500"></p>
+            </div>
+            <div>
+              <p class="text-xs text-dark-blue-500/50 mb-1">Giro del Negocio</p>
+              <p id="quoteBusinessType" class="text-dark-blue-500"></p>
+            </div>
+            <div>
+              <p class="text-xs text-dark-blue-500/50 mb-1">Email</p>
+              <p id="quoteContactEmail" class="text-dark-blue-500"></p>
+            </div>
+            <div>
+              <p class="text-xs text-dark-blue-500/50 mb-1">Teléfono</p>
+              <p id="quoteContactPhone" class="text-dark-blue-500"></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project Details -->
+        <div class="space-y-4">
+          <h4 class="text-lg font-semibold text-dark-blue-500">Detalles del Proyecto</h4>
+          <div id="quoteDetails" class="space-y-3 text-sm text-dark-blue-500/70"></div>
+        </div>
+
+        <!-- Admin Actions -->
+        <div class="border-t border-dark-blue-500/10 pt-6">
+          <h4 class="text-lg font-semibold text-dark-blue-500 mb-4">Actualizar Estado</h4>
+          <div class="flex gap-4">
+            <select id="quoteStatus" class="flex-1 px-4 py-2 border border-dark-blue-500/20 rounded-lg focus:ring-2 focus:ring-cyan-400 outline-none">
+              <option value="pending">Pendiente</option>
+              <option value="reviewing">Revisando</option>
+              <option value="quoted">Cotizado</option>
+              <option value="rejected">Rechazado</option>
+            </select>
+            <button onclick="updateQuoteStatus()" class="btn-primary px-6">
+              Actualizar
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
