@@ -137,140 +137,210 @@ router.post('/', async (req: Request, res: Response): Promise<void> => {
         <head>
           <meta charset="utf-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <style>
+            body { margin: 0; padding: 0; }
+            table { border-spacing: 0; border-collapse: collapse; }
+            img { border: 0; line-height: 100%; outline: none; text-decoration: none; }
+          </style>
         </head>
-        <body style="margin: 0; padding: 20px; background: #f0f4f8; font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;">
-          <div style="max-width: 650px; margin: 0 auto; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,55,153,0.1);">
-            
-            <!-- Header with Gradient -->
-            <div style="background: linear-gradient(135deg, #01183D 0%, #003799 50%, #00D3FF 100%); padding: 40px 30px; text-align: center; position: relative;">
-              <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url('data:image/svg+xml,%3Csvg width=\"20\" height=\"20\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cpath d=\"M0 0h20v20H0z\" fill=\"none\"/%3E%3Cpath d=\"M0 0h1v1H0zM19 19h1v1h-1z\" fill=\"rgba(255,255,255,0.1)\"/%3E%3C/svg%3E'); opacity: 0.3;"></div>
-              <h1 style="color: white; margin: 0; font-size: 28px; font-weight: 600; position: relative; z-index: 1;">💼 Nueva Cotización</h1>
-              <p style="color: rgba(255,255,255,0.9); margin: 10px 0 0; font-size: 14px; position: relative; z-index: 1;">Solicitud desde el formulario web</p>
-            </div>
-            
-            <!-- Content -->
-            <div style="padding: 40px 30px;">
-              
-              <!-- Company Info -->
-              <div style="background: linear-gradient(135deg, #f8f9ff 0%, #e8f4ff 100%); border-radius: 12px; padding: 25px; margin-bottom: 20px; border-left: 4px solid #00D3FF;">
-                <h2 style="color: #01183D; margin: 0 0 20px; font-size: 20px; font-weight: 600;">🏢 Información de la Empresa</h2>
-                <div style="display: grid; gap: 15px;">
-                  <div>
-                    <div style="color: #666; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px;">Empresa</div>
-                    <div style="color: #01183D; font-size: 18px; font-weight: 600;">${companyName}</div>
-                  </div>
-                  <div>
-                    <div style="color: #666; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px;">Giro del Negocio</div>
-                    <div style="color: #01183D; font-size: 16px; font-weight: 500;">${businessType}</div>
-                  </div>
-                  ${websiteGoal ? `
-                  <div>
-                    <div style="color: #666; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px;">Objetivo del Sitio</div>
-                    <div style="color: #333; font-size: 15px;">${websiteGoal}</div>
-                  </div>
-                  ` : ''}
-                </div>
-              </div>
-              
-              <!-- Contact Info -->
-              <div style="background: white; border: 2px solid #e8f4ff; border-radius: 12px; padding: 20px; margin-bottom: 20px;">
-                <h3 style="color: #01183D; margin: 0 0 15px; font-size: 16px; font-weight: 600;">📞 Información de Contacto</h3>
-                ${contactEmail ? `<p style="margin: 8px 0;">📧 <a href="mailto:${contactEmail}" style="color: #003799; text-decoration: none; font-weight: 500;">${contactEmail}</a></p>` : ''}
-                ${contactPhone ? `<p style="margin: 8px 0;">📱 <a href="tel:${contactPhone}" style="color: #003799; text-decoration: none; font-weight: 500;">${contactPhone}</a></p>` : ''}
-              </div>
-              
-              <!-- Platform -->
-              ${platform ? `
-              <div style="background: white; border: 2px solid #e8f4ff; border-radius: 12px; padding: 20px; margin-bottom: 20px;">
-                <h3 style="color: #01183D; margin: 0 0 15px; font-size: 16px; font-weight: 600;">🖥️ Plataforma</h3>
-                <p style="margin: 8px 0;"><strong>Preferencia:</strong> <span style="display: inline-block; background: #00D3FF; color: #01183D; padding: 4px 12px; border-radius: 15px; font-size: 13px; font-weight: 600;">${platform}</span></p>
-                ${platformReason ? `<p style="margin: 8px 0; color: #555;">Razón: ${platformReason}</p>` : ''}
-              </div>
-              ` : ''}
-              
-              <!-- Design -->
-              <div style="background: white; border: 2px solid #e8f4ff; border-radius: 12px; padding: 20px; margin-bottom: 20px;">
-                <h3 style="color: #01183D; margin: 0 0 15px; font-size: 16px; font-weight: 600;">🎨 Diseño</h3>
-                <p style="margin: 8px 0;"><strong>¿Tiene diseño?</strong> ${hasDesign || 'No especificado'}</p>
-                ${visualIdentity ? `<p style="margin: 8px 0;"><strong>Identidad Visual:</strong> ${safeJsonParse(visualIdentity).join(', ')}</p>` : ''}
-                ${inspirationUrls ? `<p style="margin: 8px 0;"><strong>Referencias:</strong> ${inspirationUrls}</p>` : ''}
-              </div>
-              
-              <!-- Content & Pages -->
-              <div style="background: white; border: 2px solid #e8f4ff; border-radius: 12px; padding: 20px; margin-bottom: 20px;">
-                <h3 style="color: #01183D; margin: 0 0 15px; font-size: 16px; font-weight: 600;">📄 Contenido del Sitio</h3>
-                ${pageCount ? `<p style="margin: 8px 0;"><strong>Cantidad de páginas:</strong> ${pageCount}</p>` : ''}
-                ${pages ? `<p style="margin: 8px 0;"><strong>Páginas solicitadas:</strong><br>${safeJsonParse(pages).map((p: string) => `<span style="display: inline-block; background: #f0f4f8; padding: 4px 10px; border-radius: 12px; margin: 3px; font-size: 13px;">${p}</span>`).join('')}</p>` : ''}
-                ${features ? `<p style="margin: 8px 0;"><strong>Funcionalidades:</strong><br>${safeJsonParse(features).map((f: string) => `<span style="display: inline-block; background: #e8f4ff; padding: 4px 10px; border-radius: 12px; margin: 3px; font-size: 13px;">✓ ${f}</span>`).join('')}</p>` : ''}
-              </div>
-              
-              <!-- Store -->
-              ${hasStore ? `
-              <div style="background: linear-gradient(135deg, #fff5e6 0%, #ffe8cc 100%); border-radius: 12px; padding: 20px; margin-bottom: 20px; border-left: 4px solid #F59E0B;">
-                <h3 style="color: #01183D; margin: 0 0 15px; font-size: 16px; font-weight: 600;">🛒 Tienda en Línea</h3>
-                ${productCount ? `<p style="margin: 8px 0;"><strong>Cantidad de productos:</strong> ${productCount}</p>` : ''}
-                ${storeFeatures ? `<p style="margin: 8px 0;"><strong>Características de la tienda:</strong><br>${safeJsonParse(storeFeatures).map((f: string) => `<span style="display: inline-block; background: white; padding: 4px 10px; border-radius: 12px; margin: 3px; font-size: 13px;">🛍️ ${f}</span>`).join('')}</p>` : ''}
-              </div>
-              ` : ''}
-              
-              <!-- Support & Training -->
-              <div style="background: white; border: 2px solid #e8f4ff; border-radius: 12px; padding: 20px; margin-bottom: 20px;">
-                <h3 style="color: #01183D; margin: 0 0 15px; font-size: 16px; font-weight: 600;">🎓 Soporte y Capacitación</h3>
-                ${contentProvider ? `<p style="margin: 8px 0;"><strong>Proveedor de contenido:</strong> ${contentProvider}</p>` : ''}
-                ${needsTraining ? `<p style="margin: 8px 0;">✅ Requiere capacitación</p>` : ''}
-                ${supportPeriod ? `<p style="margin: 8px 0;"><strong>Periodo de soporte:</strong> ${supportPeriod}</p>` : ''}
-              </div>
-              
-              <!-- Timeline & Budget -->
-              <div style="background: linear-gradient(135deg, #e6f7ff 0%, #cceeff 100%); border-radius: 12px; padding: 20px; margin-bottom: 20px; border-left: 4px solid #003799;">
-                <h3 style="color: #01183D; margin: 0 0 15px; font-size: 16px; font-weight: 600;">💰 Presupuesto y Tiempos</h3>
-                ${launchDate ? `<p style="margin: 8px 0;">📅 <strong>Fecha de lanzamiento deseada:</strong> ${launchDate}</p>` : ''}
-                ${budget ? `<p style="margin: 8px 0;">💵 <strong>Presupuesto:</strong> ${budget}</p>` : ''}
-              </div>
-              
-              <!-- Additional Info -->
-              ${additionalInfo ? `
-              <div style="background: white; border: 2px solid #e8f4ff; border-radius: 12px; padding: 20px; margin-bottom: 20px;">
-                <h3 style="color: #01183D; margin: 0 0 15px; font-size: 16px; font-weight: 600;">💬 Información Adicional</h3>
-                <p style="color: #333; line-height: 1.6; margin: 0;">${additionalInfo}</p>
-              </div>
-              ` : ''}
-              
-              <!-- Request ID & Timestamp -->
-              <div style="background: linear-gradient(135deg, #f8f9ff 0%, #e8f4ff 100%); border-radius: 12px; padding: 20px; margin-bottom: 25px; border-left: 4px solid #00D3FF;">
-                <p style="margin: 0 0 10px; color: #01183D;"><strong>🆔 ID de Solicitud:</strong> <code style="background: white; padding: 4px 8px; border-radius: 4px; font-family: monospace;">${quoteRequest.id}</code></p>
-                <p style="margin: 0; color: #666;"><strong>📅 Recibido:</strong> ${new Date().toLocaleString('es-MX', { dateStyle: 'full', timeStyle: 'short' })}</p>
-              </div>
-              
-              <!-- Action Buttons -->
-              <div style="text-align: center;">
-                ${contactPhone ? `
-                <a href="https://wa.me/52${contactPhone.replace(/\D/g, '')}" 
-                   style="display: inline-block; padding: 14px 28px; background: linear-gradient(135deg, #25D366 0%, #128C7E 100%); color: white; text-decoration: none; border-radius: 8px; margin: 5px; font-weight: 600; font-size: 14px; box-shadow: 0 4px 12px rgba(37,211,102,0.3);">
-                  📱 WhatsApp
-                </a>
-                ` : ''}
-                ${contactEmail ? `
-                <a href="mailto:${contactEmail}" 
-                   style="display: inline-block; padding: 14px 28px; background: linear-gradient(135deg, #003799 0%, #00D3FF 100%); color: white; text-decoration: none; border-radius: 8px; margin: 5px; font-weight: 600; font-size: 14px; box-shadow: 0 4px 12px rgba(0,55,153,0.3);">
-                  📧 Email
-                </a>
-                ` : ''}
-                <a href="${process.env.FRONTEND_URL || 'https://geminisoftware.mx'}/admin" 
-                   style="display: inline-block; padding: 14px 28px; background: linear-gradient(135deg, #01183D 0%, #003799 100%); color: white; text-decoration: none; border-radius: 8px; margin: 5px; font-weight: 600; font-size: 14px; box-shadow: 0 4px 12px rgba(1,24,61,0.3);">
-                  🎛️ Ver en Admin Panel
-                </a>
-              </div>
-              
-            </div>
-            
-            <!-- Footer -->
-            <div style="background: linear-gradient(135deg, #01183D 0%, #003799 100%); padding: 25px 30px; text-align: center;">
-              <p style="color: rgba(255,255,255,0.9); margin: 0; font-size: 13px;">Gemini Software</p>
-              <p style="color: rgba(0,211,255,0.9); margin: 5px 0 0; font-size: 12px; font-weight: 500;">Desarrollo de Software y Sitios Web Profesionales</p>
-            </div>
-            
-          </div>
+        <body style="margin: 0; padding: 0; background-color: #f0f4f8; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+            <tr>
+              <td align="center" style="padding: 20px 10px;">
+                <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width: 600px; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,55,153,0.08);">
+                  
+                  <!-- Header -->
+                  <tr>
+                    <td style="background: linear-gradient(135deg, #01183D 0%, #003799 50%, #00D3FF 100%); padding: 35px 20px; text-align: center;">
+                      <h1 style="color: white; margin: 0 0 8px; font-size: 26px; font-weight: 600; line-height: 1.2;">💼 Nueva Cotización</h1>
+                      <p style="color: rgba(255,255,255,0.9); margin: 0; font-size: 14px; line-height: 1.4;">Solicitud desde el formulario web</p>
+                    </td>
+                  </tr>
+                  
+                  <!-- Content -->
+                  <tr>
+                    <td style="padding: 30px 25px;">
+                      
+                      <!-- Company Info -->
+                      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: linear-gradient(135deg, #f8f9ff 0%, #e8f4ff 100%); border-radius: 10px; margin-bottom: 18px; border-left: 4px solid #00D3FF;">
+                        <tr>
+                          <td style="padding: 22px 20px;">
+                            <h2 style="color: #01183D; margin: 0 0 16px; font-size: 18px; font-weight: 600; line-height: 1.3;">🏢 Información de la Empresa</h2>
+                            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                              <tr>
+                                <td style="padding-bottom: 12px;">
+                                  <div style="color: #666; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; line-height: 1.4;">Empresa</div>
+                                  <div style="color: #01183D; font-size: 17px; font-weight: 600; line-height: 1.4;">${companyName}</div>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td style="padding-bottom: 12px;">
+                                  <div style="color: #666; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; line-height: 1.4;">Giro del Negocio</div>
+                                  <div style="color: #01183D; font-size: 15px; font-weight: 500; line-height: 1.5;">${businessType}</div>
+                                </td>
+                              </tr>
+                              ${websiteGoal ? `
+                              <tr>
+                                <td>
+                                  <div style="color: #666; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; line-height: 1.4;">Objetivo del Sitio</div>
+                                  <div style="color: #333; font-size: 14px; line-height: 1.5;">${websiteGoal}</div>
+                                </td>
+                              </tr>
+                              ` : ''}
+                            </table>
+                          </td>
+                        </tr>
+                      </table>
+                      
+                      <!-- Contact Info -->
+                      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: white; border: 2px solid #e8f4ff; border-radius: 10px; margin-bottom: 18px;">
+                        <tr>
+                          <td style="padding: 18px 20px;">
+                            <h3 style="color: #01183D; margin: 0 0 12px; font-size: 15px; font-weight: 600; line-height: 1.3;">📞 Información de Contacto</h3>
+                            ${contactEmail ? `<p style="margin: 0 0 8px; line-height: 1.6; color: #333; font-size: 14px;">📧 <a href="mailto:${contactEmail}" style="color: #003799; text-decoration: none; font-weight: 500;">${contactEmail}</a></p>` : ''}
+                            ${contactPhone ? `<p style="margin: 0; line-height: 1.6; color: #333; font-size: 14px;">📱 <a href="tel:${contactPhone}" style="color: #003799; text-decoration: none; font-weight: 500;">${contactPhone}</a></p>` : ''}
+                          </td>
+                        </tr>
+                      </table>
+                      
+                      <!-- Platform -->
+                      ${platform ? `
+                      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: white; border: 2px solid #e8f4ff; border-radius: 10px; margin-bottom: 18px;">
+                        <tr>
+                          <td style="padding: 18px 20px;">
+                            <h3 style="color: #01183D; margin: 0 0 12px; font-size: 15px; font-weight: 600; line-height: 1.3;">🖥️ Plataforma</h3>
+                            <p style="margin: 0 0 8px; line-height: 1.6; color: #333; font-size: 14px;"><strong style="color: #01183D;">Preferencia:</strong> <span style="display: inline-block; background: #00D3FF; color: #01183D; padding: 4px 12px; border-radius: 15px; font-size: 13px; font-weight: 600; line-height: 1.4;">${platform}</span></p>
+                            ${platformReason ? `<p style="margin: 0; line-height: 1.6; color: #555; font-size: 14px;">Razón: ${platformReason}</p>` : ''}
+                          </td>
+                        </tr>
+                      </table>
+                      ` : ''}
+                      
+                      <!-- Design -->
+                      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: white; border: 2px solid #e8f4ff; border-radius: 10px; margin-bottom: 18px;">
+                        <tr>
+                          <td style="padding: 18px 20px;">
+                            <h3 style="color: #01183D; margin: 0 0 12px; font-size: 15px; font-weight: 600; line-height: 1.3;">🎨 Diseño</h3>
+                            <p style="margin: 0 0 8px; line-height: 1.6; color: #333; font-size: 14px;"><strong style="color: #01183D;">¿Tiene diseño?</strong> ${hasDesign || 'No especificado'}</p>
+                            ${visualIdentity ? `<p style="margin: 0 0 8px; line-height: 1.6; color: #333; font-size: 14px;"><strong style="color: #01183D;">Identidad Visual:</strong> ${safeJsonParse(visualIdentity).join(', ')}</p>` : ''}
+                            ${inspirationUrls ? `<p style="margin: 0; line-height: 1.6; color: #333; font-size: 14px;"><strong style="color: #01183D;">Referencias:</strong> ${inspirationUrls}</p>` : ''}
+                          </td>
+                        </tr>
+                      </table>
+                      
+                      <!-- Content & Pages -->
+                      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: white; border: 2px solid #e8f4ff; border-radius: 10px; margin-bottom: 18px;">
+                        <tr>
+                          <td style="padding: 18px 20px;">
+                            <h3 style="color: #01183D; margin: 0 0 12px; font-size: 15px; font-weight: 600; line-height: 1.3;">📄 Contenido del Sitio</h3>
+                            ${pageCount ? `<p style="margin: 0 0 8px; line-height: 1.6; color: #333; font-size: 14px;"><strong style="color: #01183D;">Cantidad de páginas:</strong> ${pageCount}</p>` : ''}
+                            ${pages ? `<p style="margin: 0 0 8px; line-height: 1.6; color: #333; font-size: 14px;"><strong style="color: #01183D;">Páginas solicitadas:</strong><br>${safeJsonParse(pages).map((p: string) => `<span style="display: inline-block; background: #f0f4f8; color: #333; padding: 4px 10px; border-radius: 12px; margin: 3px 3px 3px 0; font-size: 13px; line-height: 1.4;">${p}</span>`).join('')}</p>` : ''}
+                            ${features ? `<p style="margin: 0; line-height: 1.6; color: #333; font-size: 14px;"><strong style="color: #01183D;">Funcionalidades:</strong><br>${safeJsonParse(features).map((f: string) => `<span style="display: inline-block; background: #e8f4ff; color: #01183D; padding: 4px 10px; border-radius: 12px; margin: 3px 3px 3px 0; font-size: 13px; line-height: 1.4;">✓ ${f}</span>`).join('')}</p>` : ''}
+                          </td>
+                        </tr>
+                      </table>
+                      
+                      <!-- Store -->
+                      ${hasStore ? `
+                      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: linear-gradient(135deg, #fff5e6 0%, #ffe8cc 100%); border-radius: 10px; margin-bottom: 18px; border-left: 4px solid #F59E0B;">
+                        <tr>
+                          <td style="padding: 18px 20px;">
+                            <h3 style="color: #01183D; margin: 0 0 12px; font-size: 15px; font-weight: 600; line-height: 1.3;">🛒 Tienda en Línea</h3>
+                            ${productCount ? `<p style="margin: 0 0 8px; line-height: 1.6; color: #333; font-size: 14px;"><strong style="color: #01183D;">Cantidad de productos:</strong> ${productCount}</p>` : ''}
+                            ${storeFeatures ? `<p style="margin: 0; line-height: 1.6; color: #333; font-size: 14px;"><strong style="color: #01183D;">Características de la tienda:</strong><br>${safeJsonParse(storeFeatures).map((f: string) => `<span style="display: inline-block; background: white; color: #333; padding: 4px 10px; border-radius: 12px; margin: 3px 3px 3px 0; font-size: 13px; line-height: 1.4;">🛍️ ${f}</span>`).join('')}</p>` : ''}
+                          </td>
+                        </tr>
+                      </table>
+                      ` : ''}
+                      
+                      <!-- Support & Training -->
+                      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: white; border: 2px solid #e8f4ff; border-radius: 10px; margin-bottom: 18px;">
+                        <tr>
+                          <td style="padding: 18px 20px;">
+                            <h3 style="color: #01183D; margin: 0 0 12px; font-size: 15px; font-weight: 600; line-height: 1.3;">🎓 Soporte y Capacitación</h3>
+                            ${contentProvider ? `<p style="margin: 0 0 8px; line-height: 1.6; color: #333; font-size: 14px;"><strong style="color: #01183D;">Proveedor de contenido:</strong> ${contentProvider}</p>` : ''}
+                            ${needsTraining ? `<p style="margin: 0 0 8px; line-height: 1.6; color: #333; font-size: 14px;">✅ Requiere capacitación</p>` : ''}
+                            ${supportPeriod ? `<p style="margin: 0; line-height: 1.6; color: #333; font-size: 14px;"><strong style="color: #01183D;">Periodo de soporte:</strong> ${supportPeriod}</p>` : ''}
+                          </td>
+                        </tr>
+                      </table>
+                      
+                      <!-- Timeline -->
+                      ${launchDate ? `
+                      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: linear-gradient(135deg, #e6f7ff 0%, #cceeff 100%); border-radius: 10px; margin-bottom: 18px; border-left: 4px solid #003799;">
+                        <tr>
+                          <td style="padding: 18px 20px;">
+                            <h3 style="color: #01183D; margin: 0 0 12px; font-size: 15px; font-weight: 600; line-height: 1.3;">⏰ Tiempos</h3>
+                            <p style="margin: 0; line-height: 1.6; color: #333; font-size: 14px;">📅 <strong style="color: #01183D;">Fecha de lanzamiento deseada:</strong> ${launchDate}</p>
+                          </td>
+                        </tr>
+                      </table>
+                      ` : ''}
+                      
+                      <!-- Additional Info -->
+                      ${additionalInfo ? `
+                      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: white; border: 2px solid #e8f4ff; border-radius: 10px; margin-bottom: 18px;">
+                        <tr>
+                          <td style="padding: 18px 20px;">
+                            <h3 style="color: #01183D; margin: 0 0 12px; font-size: 15px; font-weight: 600; line-height: 1.3;">💬 Información Adicional</h3>
+                            <p style="color: #333; line-height: 1.6; margin: 0; font-size: 14px;">${additionalInfo}</p>
+                          </td>
+                        </tr>
+                      </table>
+                      ` : ''}
+                      
+                      <!-- Request ID & Timestamp -->
+                      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: linear-gradient(135deg, #f8f9ff 0%, #e8f4ff 100%); border-radius: 10px; margin-bottom: 22px; border-left: 4px solid #00D3FF;">
+                        <tr>
+                          <td style="padding: 18px 20px;">
+                            <p style="margin: 0 0 10px; line-height: 1.6; color: #01183D; font-size: 14px;"><strong>🆔 ID de Solicitud:</strong> <code style="background: white; padding: 4px 8px; border-radius: 4px; font-family: 'Courier New', monospace; color: #01183D; font-size: 13px;">${quoteRequest.id}</code></p>
+                            <p style="margin: 0; line-height: 1.6; color: #666; font-size: 14px;"><strong>📅 Recibido:</strong> ${new Date().toLocaleString('es-MX', { dateStyle: 'full', timeStyle: 'short' })}</p>
+                          </td>
+                        </tr>
+                      </table>
+                      
+                      <!-- Action Buttons -->
+                      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                        <tr>
+                          <td align="center" style="padding: 10px 0;">
+                            <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                              <tr>
+                                ${contactPhone ? `
+                                <td style="padding: 0 5px;">
+                                  <a href="https://wa.me/52${contactPhone.replace(/\D/g, '')}" style="display: inline-block; padding: 12px 24px; background: linear-gradient(135deg, #25D366 0%, #128C7E 100%); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 14px; line-height: 1.4;">📱 WhatsApp</a>
+                                </td>
+                                ` : ''}
+                                ${contactEmail ? `
+                                <td style="padding: 0 5px;">
+                                  <a href="mailto:${contactEmail}" style="display: inline-block; padding: 12px 24px; background: linear-gradient(135deg, #003799 0%, #00D3FF 100%); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 14px; line-height: 1.4;">📧 Email</a>
+                                </td>
+                                ` : ''}
+                              </tr>
+                              <tr>
+                                <td colspan="2" align="center" style="padding: 10px 5px 0;">
+                                  <a href="${process.env.FRONTEND_URL || 'https://geminisoftware.mx'}/admin" style="display: inline-block; padding: 12px 24px; background: linear-gradient(135deg, #01183D 0%, #003799 100%); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 14px; line-height: 1.4;">🎛️ Ver en Admin Panel</a>
+                                </td>
+                              </tr>
+                            </table>
+                          </td>
+                        </tr>
+                      </table>
+                      
+                    </td>
+                  </tr>
+                  
+                  <!-- Footer -->
+                  <tr>
+                    <td style="background: linear-gradient(135deg, #01183D 0%, #003799 100%); padding: 22px 20px; text-align: center;">
+                      <p style="color: rgba(255,255,255,0.95); margin: 0 0 4px; font-size: 14px; font-weight: 500; line-height: 1.4;">Gemini Software</p>
+                      <p style="color: rgba(0,211,255,0.9); margin: 0; font-size: 13px; font-weight: 400; line-height: 1.4;">Desarrollo de Software y Sitios Web Profesionales</p>
+                    </td>
+                  </tr>
+                  
+                </table>
+              </td>
+            </tr>
+          </table>
         </body>
         </html>
       `;
