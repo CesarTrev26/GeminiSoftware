@@ -90,8 +90,8 @@ const featuredProjects = projects.filter((p: any) => p.featured);
 
           <div class="grid lg:grid-cols-2 gap-8 mb-20">
             {featuredProjects.slice(0, 2).map((project: any) => (
-              <article class="group relative rounded-3xl overflow-hidden bg-white shadow-lg hover:shadow-xl transition-all duration-500">
-                <div class="relative aspect-video overflow-hidden project-carousel" data-project-id={project.id}>
+              <article class="featured-project-card group relative rounded-3xl overflow-hidden bg-white shadow-lg hover:shadow-xl transition-all duration-500 cursor-pointer" data-project-slug={project.slug}>
+                <div class="relative aspect-[16/10] sm:aspect-video overflow-hidden project-carousel" data-project-id={project.id}>
                   <!-- Carousel Images -->
                   <div class="carousel-track absolute inset-0 flex transition-transform duration-500 ease-out">
                     {project.images && project.images.length > 0 ? (
@@ -125,7 +125,7 @@ const featuredProjects = projects.filter((p: any) => p.featured);
                   {project.images && project.images.length > 1 && (
                     <>
                       <button 
-                        class="carousel-prev absolute left-4 sm:left-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/95 backdrop-blur-md shadow-xl flex items-center justify-center text-dark-blue-500 opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-cyan-500 hover:text-white hover:scale-110 z-20 border border-white/20"
+                        class="carousel-prev absolute left-4 sm:left-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/95 backdrop-blur-md shadow-xl flex items-center justify-center text-dark-blue-500 sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-300 hover:bg-cyan-500 hover:text-white hover:scale-110 z-20 border border-white/20"
                         aria-label="Previous image"
                       >
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
@@ -133,7 +133,7 @@ const featuredProjects = projects.filter((p: any) => p.featured);
                         </svg>
                       </button>
                       <button 
-                        class="carousel-next absolute right-4 sm:right-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/95 backdrop-blur-md shadow-xl flex items-center justify-center text-dark-blue-500 opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-cyan-500 hover:text-white hover:scale-110 z-20 border border-white/20"
+                        class="carousel-next absolute right-4 sm:right-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/95 backdrop-blur-md shadow-xl flex items-center justify-center text-dark-blue-500 sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-300 hover:bg-cyan-500 hover:text-white hover:scale-110 z-20 border border-white/20"
                         aria-label="Next image"
                       >
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
@@ -176,38 +176,53 @@ const featuredProjects = projects.filter((p: any) => p.featured);
                   </div>
                 </div>
                 
-                <div class="p-8">
-                  <div class="flex items-center gap-2 text-sm text-dark-blue-500/50 mb-3">
+                <div class="p-5 sm:p-6 lg:p-8">
+                  <div class="flex items-center gap-2 text-xs sm:text-sm text-dark-blue-500/50 mb-2 sm:mb-3">
                     <span>{project.client || 'Cliente'}</span>
                     <span>•</span>
                     <span>{project.year || '2024'}</span>
                   </div>
                   
-                  <h3 class="text-2xl font-montserrat-alt font-medium text-dark-blue-500 mb-3 group-hover:text-blue-500 transition-colors">
+                  <h3 class="text-lg sm:text-xl lg:text-2xl font-montserrat-alt font-medium text-dark-blue-500 mb-2 sm:mb-3 group-hover:text-blue-500 transition-colors">
                     {project.title}
                   </h3>
                   
-                  <p class="text-dark-blue-500/60 mb-6">
+                  <p class="text-dark-blue-500/60 mb-3 sm:mb-4 text-sm sm:text-base line-clamp-2 sm:line-clamp-3">
                     {project.description}
                   </p>
                   
                   {project.results && project.results.length > 0 && (
-                    <div class="flex flex-wrap gap-3 mb-6">
+                    <div class="flex flex-wrap gap-2 mb-4">
                       {project.results.slice(0, 3).map((result: any) => (
-                        <span class="px-3 py-1 bg-cyan-500/10 text-cyan-600 text-sm rounded-full font-medium">
+                        <span class="px-2.5 py-1 bg-cyan-500/10 text-cyan-600 text-xs font-medium rounded-full">
                           {typeof result === 'object' ? `${result.value} ${result.label}` : result}
                         </span>
                       ))}
                     </div>
                   )}
                   
-                  <div class="flex flex-wrap gap-2">
-                    {project.tags && project.tags.slice(0, 4).map((tag: string) => (
-                      <span class="px-3 py-1 bg-dark-blue-500/5 text-dark-blue-500/70 text-xs rounded-full">
+                  <div class="flex flex-wrap gap-2 mb-4 sm:mb-5">
+                    {project.tags && project.tags.slice(0, 3).map((tag: string) => (
+                      <span class="px-2.5 py-1 bg-dark-blue-500/5 text-dark-blue-500/70 text-xs rounded-full">
                         {tag}
                       </span>
                     ))}
+                    {project.tags && project.tags.length > 3 && (
+                      <span class="px-2.5 py-1 bg-gray-200 text-dark-blue-500/60 text-xs rounded-full">
+                        +{project.tags.length - 3}
+                      </span>
+                    )}
                   </div>
+                  
+                  <a 
+                    href={`/portfolio/${project.slug}`}
+                    class="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-sm font-medium rounded-full hover:shadow-lg hover:scale-105 transition-all duration-300"
+                  >
+                    Ver Proyecto
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                    </svg>
+                  </a>
                 </div>
               </article>
             ))}
@@ -266,185 +281,34 @@ const featuredProjects = projects.filter((p: any) => p.featured);
 </BaseLayout>
 
 <script>
-  // Dynamically render all projects from API
-  document.addEventListener('DOMContentLoaded', async () => {
-    const API_URL = window.location.hostname === 'localhost' 
-      ? 'http://localhost:3001/api' 
-      : 'https://gemini-backend.fly.dev/api';
+  // Card click functionality - navigate to project detail page
+  function setupCardClicks() {
+    const projectCards = document.querySelectorAll('.featured-project-card, .project-card');
     
-    const projectsGrid = document.getElementById('projects-grid');
-    const categoryFilter = document.getElementById('category-filter');
-    
-    try {
-      const response = await fetch(`${API_URL}/projects`);
-      const data = await response.json();
-      
-      if (data.success && data.data && projectsGrid && categoryFilter) {
-        const projects = data.data;
+    projectCards.forEach((card) => {
+      card.addEventListener('click', (e) => {
+        const target = e.target as HTMLElement;
         
-        // Build categories
-        const categories = ['Todos', ...new Set(projects.map((p: any) => p.category))];
-        categoryFilter.innerHTML = categories.map((cat, idx) => `
-          <button
-            data-category="${cat}"
-            class="px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
-              idx === 0 
-                ? 'bg-cyan-500 text-white' 
-                : 'bg-gray-100 text-dark-blue-500/70 hover:bg-gray-200'
-            }"
-          >
-            ${cat}
-          </button>
-        `).join('');
+        // Don't navigate if clicking on carousel controls or buttons
+        if (
+          target.closest('.carousel-prev') ||
+          target.closest('.carousel-next') ||
+          target.closest('.carousel-indicator') ||
+          target.closest('a') // Don't double-navigate on "Ver Proyecto" button
+        ) {
+          return;
+        }
         
-        // Render projects
-        projectsGrid.innerHTML = projects.map((project: any) => {
-          const hasImages = project.images && project.images.length > 0;
-          const tags = Array.isArray(project.tags) ? project.tags : (typeof project.tags === 'string' ? JSON.parse(project.tags) : []);
-          
-          return `
-            <article 
-              class="group project-card rounded-2xl overflow-hidden bg-gray-50 hover:bg-white shadow hover:shadow-lg transition-all duration-500 animate-fade-in"
-              data-category="${project.category}"
-            >
-              <div class="relative aspect-[4/3] overflow-hidden project-carousel" data-project-id="${project.id}">
-                <div class="carousel-track absolute inset-0 flex transition-transform duration-500 ease-out">
-                  ${hasImages ? project.images.map((img: any) => `
-                    <div class="carousel-slide min-w-full h-full relative">
-                      <div class="absolute inset-0 bg-gradient-to-br from-dark-blue-500 via-blue-500 to-cyan-500 opacity-20"></div>
-                      <img 
-                        src="${img.url}" 
-                        alt="${img.alt || project.title}"
-                        class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                        loading="lazy"
-                      />
-                    </div>
-                  `).join('') : `
-                    <div class="carousel-slide min-w-full h-full relative">
-                      <div class="absolute inset-0 bg-gradient-to-br from-dark-blue-500 via-blue-500 to-cyan-500 opacity-90"></div>
-                    </div>
-                  `}
-                </div>
-                
-                ${hasImages && project.images.length > 1 ? `
-                  <button 
-                    class="carousel-prev absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm shadow-lg flex items-center justify-center text-dark-blue-500 opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-white hover:scale-110 z-10"
-                    aria-label="Previous image"
-                  >
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-                    </svg>
-                  </button>
-                  <button 
-                    class="carousel-next absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm shadow-lg flex items-center justify-center text-dark-blue-500 opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-white hover:scale-110 z-10"
-                    aria-label="Next image"
-                  >
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                    </svg>
-                  </button>
-                  <div class="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
-                    ${project.images.map((_: any, idx: number) => `
-                      <button 
-                        class="carousel-indicator w-1.5 h-1.5 rounded-full bg-white/50 hover:bg-white transition-all duration-300"
-                        data-index="${idx}"
-                        aria-label="Go to image ${idx + 1}"
-                      ></button>
-                    `).join('')}
-                  </div>
-                ` : ''}
-                
-                <div class="absolute top-3 left-3 px-3 py-1 bg-white/90 backdrop-blur-sm rounded-full text-xs font-medium text-dark-blue-500 z-10">
-                  ${project.category}
-                </div>
-                ${project.featured ? `
-                  <div class="absolute top-3 right-3 px-3 py-1 bg-cyan-500 text-white text-xs font-medium rounded-full z-10">
-                    ⭐
-                  </div>
-                ` : ''}
-              </div>
-              
-              <div class="p-6">
-                <h3 class="text-lg font-montserrat-alt font-medium text-dark-blue-500 mb-2 group-hover:text-blue-500 transition-colors">
-                  ${project.title}
-                </h3>
-                <p class="text-dark-blue-500/60 text-sm mb-4 line-clamp-2">
-                  ${project.description}
-                </p>
-                <div class="flex flex-wrap gap-2 mb-4">
-                  ${tags.slice(0, 3).map((tag: string) => `
-                    <span class="px-2 py-0.5 bg-dark-blue-500/5 text-dark-blue-500/60 text-xs rounded">
-                      ${tag}
-                    </span>
-                  `).join('')}
-                </div>
-                <a 
-                  href="/portfolio/${project.slug}"
-                  class="inline-flex items-center gap-2 text-cyan-500 text-sm font-medium hover:gap-3 transition-all"
-                >
-                  Ver proyecto
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-                  </svg>
-                </a>
-              </div>
-            </article>
-          `;
-        }).join('');
-        
-        // Setup filter functionality
-        setupFilters();
-        
-        // Setup carousels
-        setupCarousels();
-      }
-    } catch (error) {
-      console.error('Error loading projects:', error);
-      if (projectsGrid) {
-        projectsGrid.innerHTML = `
-          <div class="col-span-full text-center py-12">
-            <p class="text-dark-blue-500/60 text-lg">
-              Error al cargar los proyectos. Por favor, intenta nuevamente más tarde.
-            </p>
-          </div>
-        `;
-      }
-    }
-  });
-  
-  function setupFilters() {
-    const filterButtons = document.querySelectorAll('#category-filter button');
-    const projectCards = document.querySelectorAll('.project-card');
-
-    filterButtons.forEach(button => {
-      button.addEventListener('click', () => {
-        const category = button.getAttribute('data-category');
-
-        // Update active button
-        filterButtons.forEach(btn => {
-          btn.classList.remove('bg-cyan-500', 'text-white');
-          btn.classList.add('bg-gray-100', 'text-dark-blue-500/70');
-        });
-        button.classList.remove('bg-gray-100', 'text-dark-blue-500/70');
-        button.classList.add('bg-cyan-500', 'text-white');
-
-        // Filter projects with animation
-        projectCards.forEach(card => {
-          const cardCategory = card.getAttribute('data-category');
-          const shouldShow = category === 'Todos' || cardCategory === category;
-          
-          if (shouldShow) {
-            card.classList.remove('hidden');
-            card.classList.add('animate-fade-in');
-          } else {
-            card.classList.add('hidden');
-            card.classList.remove('animate-fade-in');
-          }
-        });
+        // Navigate to project detail page
+        const slug = card.getAttribute('data-project-slug');
+        if (slug) {
+          window.location.href = `/portfolio/${slug}`;
+        }
       });
     });
   }
   
+  // Carousel setup function
   function setupCarousels() {
     const carousels = document.querySelectorAll('.project-carousel');
     
@@ -531,31 +395,234 @@ const featuredProjects = projects.filter((p: any) => p.featured);
       carousel.addEventListener('mouseenter', stopAutoplay);
       carousel.addEventListener('mouseleave', startAutoplay);
       
-      // Touch/swipe support
+      // Touch/swipe support for mobile
       let touchStartX = 0;
       let touchEndX = 0;
+      let isDragging = false;
       
       carousel.addEventListener('touchstart', (e) => {
         touchStartX = (e as TouchEvent).changedTouches[0].screenX;
+        isDragging = true;
         stopAutoplay();
-      });
+      }, { passive: true });
+      
+      carousel.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        touchEndX = (e as TouchEvent).changedTouches[0].screenX;
+      }, { passive: true });
       
       carousel.addEventListener('touchend', (e) => {
-        touchEndX = (e as TouchEvent).changedTouches[0].screenX;
+        if (!isDragging) return;
+        isDragging = false;
+        
         const diff = touchStartX - touchEndX;
         
+        // Minimum swipe distance threshold (50px)
         if (Math.abs(diff) > 50) {
           if (diff > 0) {
+            // Swiped left, go to next
             nextSlide();
           } else {
+            // Swiped right, go to previous
             prevSlide();
           }
         }
-      });
+        
+        touchStartX = 0;
+        touchEndX = 0;
+      }, { passive: true });
       
       // Initialize
       updateCarousel();
       startAutoplay();
+    });
+  }
+  
+  // Dynamically render all projects from API
+  document.addEventListener('DOMContentLoaded', async () => {
+    // Initialize carousels for featured projects (server-rendered)
+    setupCarousels();
+    // Initialize click handlers for featured projects
+    setupCardClicks();
+    
+    const API_URL = window.location.hostname === 'localhost' 
+      ? 'http://localhost:3001/api' 
+      : 'https://gemini-backend.fly.dev/api';
+    
+    const projectsGrid = document.getElementById('projects-grid');
+    const categoryFilter = document.getElementById('category-filter');
+    
+    try {
+      const response = await fetch(`${API_URL}/projects`);
+      const data = await response.json();
+      
+      if (data.success && data.data && projectsGrid && categoryFilter) {
+        const projects = data.data;
+        
+        // Build categories
+        const categories = ['Todos', ...new Set(projects.map((p: any) => p.category))];
+        categoryFilter.innerHTML = categories.map((cat, idx) => `
+          <button
+            data-category="${cat}"
+            class="px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+              idx === 0 
+                ? 'bg-cyan-500 text-white' 
+                : 'bg-gray-100 text-dark-blue-500/70 hover:bg-gray-200'
+            }"
+          >
+            ${cat}
+          </button>
+        `).join('');
+        
+        // Render projects
+        projectsGrid.innerHTML = projects.map((project: any) => {
+          const hasImages = project.images && project.images.length > 0;
+          const tags = Array.isArray(project.tags) ? project.tags : (typeof project.tags === 'string' ? JSON.parse(project.tags) : []);
+          
+          return `
+            <article 
+              class="group project-card rounded-2xl overflow-hidden bg-gray-50 hover:bg-white shadow hover:shadow-lg transition-all duration-500 animate-fade-in cursor-pointer"
+              data-category="${project.category}"
+              data-project-slug="${project.slug}"
+            >
+              <div class="relative aspect-[4/3] overflow-hidden project-carousel" data-project-id="${project.id}">
+                <div class="carousel-track absolute inset-0 flex transition-transform duration-500 ease-out">
+                  ${hasImages ? project.images.map((img: any) => `
+                    <div class="carousel-slide min-w-full h-full relative">
+                      <div class="absolute inset-0 bg-gradient-to-br from-dark-blue-500 via-blue-500 to-cyan-500 opacity-20"></div>
+                      <img 
+                        src="${img.url}" 
+                        alt="${img.alt || project.title}"
+                        class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                        loading="lazy"
+                      />
+                    </div>
+                  `).join('') : `
+                    <div class="carousel-slide min-w-full h-full relative">
+                      <div class="absolute inset-0 bg-gradient-to-br from-dark-blue-500 via-blue-500 to-cyan-500 opacity-90"></div>
+                    </div>
+                  `}
+                </div>
+                
+                ${hasImages && project.images.length > 1 ? `
+                  <button 
+                    class="carousel-prev absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm shadow-lg flex items-center justify-center text-dark-blue-500 opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-white hover:scale-110 z-10"
+                    aria-label="Previous image"
+                  >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                    </svg>
+                  </button>
+                  <button 
+                    class="carousel-next absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm shadow-lg flex items-center justify-center text-dark-blue-500 opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-white hover:scale-110 z-10"
+                    aria-label="Next image"
+                  >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                  </button>
+                  <div class="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
+                    ${project.images.map((_: any, idx: number) => `
+                      <button 
+                        class="carousel-indicator w-1.5 h-1.5 rounded-full bg-white/50 hover:bg-white transition-all duration-300"
+                        data-index="${idx}"
+                        aria-label="Go to image ${idx + 1}"
+                      ></button>
+                    `).join('')}
+                  </div>
+                ` : ''}
+                
+                <div class="absolute top-3 left-3 px-3 py-1 bg-white/90 backdrop-blur-sm rounded-full text-xs font-medium text-dark-blue-500 z-10">
+                  ${project.category}
+                </div>
+                ${project.featured ? `
+                  <div class="absolute top-3 right-3 px-3 py-1 bg-cyan-500 text-white text-xs font-medium rounded-full z-10">
+                    ⭐
+                  </div>
+                ` : ''}
+              </div>
+              
+              <div class="p-6">
+                <h3 class="text-lg font-montserrat-alt font-medium text-dark-blue-500 mb-2 group-hover:text-blue-500 transition-colors">
+                  ${project.title}
+                </h3>
+                <p class="text-dark-blue-500/60 text-sm mb-4 line-clamp-2">
+                  ${project.description}
+                </p>
+                <div class="flex flex-wrap gap-2 mb-4">
+                  ${tags.slice(0, 3).map((tag: string) => `
+                    <span class="px-2 py-0.5 bg-dark-blue-500/5 text-dark-blue-500/60 text-xs rounded">
+                      ${tag}
+                    </span>
+                  `).join('')}
+                </div>
+                <a 
+                  href="/portfolio/${project.slug}"
+                  class="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-sm font-medium rounded-full hover:shadow-lg hover:scale-105 transition-all duration-300"
+                >
+                  Ver Proyecto
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                  </svg>
+                </a>
+              </div>
+            </article>
+          `;
+        }).join('');
+        
+        // Setup filter functionality
+        setupFilters();
+        
+        // Setup carousels for dynamically loaded projects
+        setupCarousels();
+        
+        // Setup click handlers for dynamically loaded projects
+        setupCardClicks();
+      }
+    } catch (error) {
+      console.error('Error loading projects:', error);
+      if (projectsGrid) {
+        projectsGrid.innerHTML = `
+          <div class="col-span-full text-center py-12">
+            <p class="text-dark-blue-500/60 text-lg">
+              Error al cargar los proyectos. Por favor, intenta nuevamente más tarde.
+            </p>
+          </div>
+        `;
+      }
+    }
+  });
+  
+  function setupFilters() {
+    const filterButtons = document.querySelectorAll('#category-filter button');
+    const projectCards = document.querySelectorAll('.project-card');
+
+    filterButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const category = button.getAttribute('data-category');
+
+        // Update active button
+        filterButtons.forEach(btn => {
+          btn.classList.remove('bg-cyan-500', 'text-white');
+          btn.classList.add('bg-gray-100', 'text-dark-blue-500/70');
+        });
+        button.classList.remove('bg-gray-100', 'text-dark-blue-500/70');
+        button.classList.add('bg-cyan-500', 'text-white');
+
+        // Filter projects with animation
+        projectCards.forEach(card => {
+          const cardCategory = card.getAttribute('data-category');
+          const shouldShow = category === 'Todos' || cardCategory === category;
+          
+          if (shouldShow) {
+            card.classList.remove('hidden');
+            card.classList.add('animate-fade-in');
+          } else {
+            card.classList.add('hidden');
+            card.classList.remove('animate-fade-in');
+          }
+        });
+      });
     });
   }
 </script>

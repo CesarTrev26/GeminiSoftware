@@ -136,8 +136,9 @@ const categories = ['Todos', ...new Set(parsedProjects.map(p => p.category))];
     <div class="grid md:grid-cols-2 gap-6 lg:gap-8" id="portfolio-grid">
       {displayProjects.map((project, index) => (
         <article 
-          class="portfolio-item group relative rounded-3xl overflow-hidden bg-white shadow-lg hover:shadow-xl transition-all duration-500"
+          class="portfolio-item group relative rounded-3xl overflow-hidden bg-white shadow-lg hover:shadow-xl transition-all duration-500 cursor-pointer"
           data-category={project.category}
+          data-project-slug={project.slug}
           style={`animation-delay: ${index * 100}ms`}
         >
           <!-- Image Container with Carousel -->
@@ -173,7 +174,7 @@ const categories = ['Todos', ...new Set(parsedProjects.map(p => p.category))];
             {project.images && project.images.length > 1 && (
               <>
                 <button 
-                  class="carousel-prev absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/95 backdrop-blur-md shadow-xl flex items-center justify-center text-dark-blue-500 opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-cyan-500 hover:text-white hover:scale-110 z-20 border border-white/20"
+                  class="carousel-prev absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/95 backdrop-blur-md shadow-xl flex items-center justify-center text-dark-blue-500 sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-300 hover:bg-cyan-500 hover:text-white hover:scale-110 z-20 border border-white/20"
                   aria-label="Imagen anterior"
                 >
                   <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
@@ -181,7 +182,7 @@ const categories = ['Todos', ...new Set(parsedProjects.map(p => p.category))];
                   </svg>
                 </button>
                 <button 
-                  class="carousel-next absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/95 backdrop-blur-md shadow-xl flex items-center justify-center text-dark-blue-500 opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-cyan-500 hover:text-white hover:scale-110 z-20 border border-white/20"
+                  class="carousel-next absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/95 backdrop-blur-md shadow-xl flex items-center justify-center text-dark-blue-500 sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-300 hover:bg-cyan-500 hover:text-white hover:scale-110 z-20 border border-white/20"
                   aria-label="Siguiente imagen"
                 >
                   <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
@@ -350,6 +351,29 @@ const categories = ['Todos', ...new Set(parsedProjects.map(p => p.category))];
   const filterBtns = document.querySelectorAll('.filter-btn');
   const portfolioItems = document.querySelectorAll('.portfolio-item');
   
+  // Card click functionality - navigate to project detail page
+  portfolioItems.forEach((item) => {
+    item.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      
+      // Don't navigate if clicking on carousel controls
+      if (
+        target.closest('.carousel-prev') ||
+        target.closest('.carousel-next') ||
+        target.closest('.carousel-indicator') ||
+        target.closest('a') // Don't double-navigate on "Ver Proyecto" button
+      ) {
+        return;
+      }
+      
+      // Navigate to project detail page
+      const slug = item.getAttribute('data-project-slug');
+      if (slug) {
+        window.location.href = `/portfolio/${slug}`;
+      }
+    });
+  });
+  
   filterBtns.forEach((btn) => {
     btn.addEventListener('click', () => {
       const category = btn.getAttribute('data-category');
@@ -447,6 +471,42 @@ const categories = ['Todos', ...new Set(parsedProjects.map(p => p.category))];
         updateCarousel();
       });
     });
+    
+    // Touch/swipe support for mobile
+    let touchStartX = 0;
+    let touchEndX = 0;
+    let isDragging = false;
+    
+    carousel.addEventListener('touchstart', (e) => {
+      touchStartX = (e as TouchEvent).changedTouches[0].screenX;
+      isDragging = true;
+    }, { passive: true });
+    
+    carousel.addEventListener('touchmove', (e) => {
+      if (!isDragging) return;
+      touchEndX = (e as TouchEvent).changedTouches[0].screenX;
+    }, { passive: true });
+    
+    carousel.addEventListener('touchend', (e) => {
+      if (!isDragging) return;
+      isDragging = false;
+      
+      const diff = touchStartX - touchEndX;
+      
+      // Minimum swipe distance threshold (50px)
+      if (Math.abs(diff) > 50) {
+        if (diff > 0) {
+          // Swiped left, go to next
+          nextSlide();
+        } else {
+          // Swiped right, go to previous
+          prevSlide();
+        }
+      }
+      
+      touchStartX = 0;
+      touchEndX = 0;
+    }, { passive: true });
     
     // Initialize first indicator
     updateCarousel();
