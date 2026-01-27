@@ -1654,10 +1654,10 @@ const pageTitle = 'Admin | Gemini Software';
 
   <!-- ========== QUOTE MODAL ========== -->
   <div id="quoteModal" class="modal">
-    <div class="card-static max-w-4xl w-full max-h-[90vh] overflow-y-auto modal-content">
+    <div class="card-static w-full max-w-4xl max-h-[90vh] overflow-y-auto modal-content mx-4">
       <!-- Modal Header -->
-      <div class="sticky top-0 z-10 px-6 py-5 lg:px-8 lg:py-6 border-b border-dark-blue-500/5 bg-white/95 backdrop-blur flex items-center justify-between gap-4">
-        <h3 class="text-xl lg:text-2xl font-montserrat-alt text-dark-blue-500 flex-1 min-w-0 truncate">
+      <div class="sticky top-0 z-10 px-4 py-4 sm:px-6 sm:py-5 lg:px-8 lg:py-6 border-b border-dark-blue-500/5 bg-white/95 backdrop-blur flex items-center justify-between gap-4">
+        <h3 class="text-lg sm:text-xl lg:text-2xl font-montserrat-alt text-dark-blue-500 flex-1 min-w-0 truncate">
           Detalles de Cotización
         </h3>
         <button onclick="closeQuoteModal()" class="w-10 h-10 flex-shrink-0 rounded-xl bg-dark-blue-500/5 hover:bg-red-50 text-dark-blue-500/40 hover:text-red-500 transition-all flex items-center justify-center">
@@ -1668,52 +1668,52 @@ const pageTitle = 'Admin | Gemini Software';
       </div>
       
       <!-- Modal Body -->
-      <div class="p-6 lg:p-8 space-y-6">
+      <div class="p-4 sm:p-6 lg:p-8 space-y-4 sm:space-y-6">
         <!-- Company Info -->
-        <div class="bg-gradient-to-br from-cyan-50 to-blue-50 rounded-2xl p-6 border border-cyan-100">
-          <h4 class="text-lg font-semibold text-dark-blue-500 mb-4 flex items-center gap-2">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="bg-gradient-to-br from-cyan-50 to-blue-50 rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-cyan-100">
+          <h4 class="text-base sm:text-lg font-semibold text-dark-blue-500 mb-3 sm:mb-4 flex items-center gap-2">
+            <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
             </svg>
             Información de la Empresa
           </h4>
-          <div class="grid grid-cols-2 gap-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             <div>
               <p class="text-xs text-dark-blue-500/50 mb-1">Empresa</p>
-              <p id="quoteCompanyName" class="font-semibold text-dark-blue-500"></p>
+              <p id="quoteCompanyName" class="font-semibold text-dark-blue-500 text-sm sm:text-base"></p>
             </div>
             <div>
               <p class="text-xs text-dark-blue-500/50 mb-1">Giro del Negocio</p>
-              <p id="quoteBusinessType" class="text-dark-blue-500"></p>
+              <p id="quoteBusinessType" class="text-dark-blue-500 text-sm sm:text-base"></p>
             </div>
             <div>
               <p class="text-xs text-dark-blue-500/50 mb-1">Email</p>
-              <p id="quoteContactEmail" class="text-dark-blue-500"></p>
+              <p id="quoteContactEmail" class="text-dark-blue-500 text-sm break-all"></p>
             </div>
             <div>
               <p class="text-xs text-dark-blue-500/50 mb-1">Teléfono</p>
-              <p id="quoteContactPhone" class="text-dark-blue-500"></p>
+              <p id="quoteContactPhone" class="text-dark-blue-500 text-sm"></p>
             </div>
           </div>
         </div>
 
         <!-- Project Details -->
-        <div class="space-y-4">
-          <h4 class="text-lg font-semibold text-dark-blue-500">Detalles del Proyecto</h4>
-          <div id="quoteDetails" class="space-y-3 text-sm text-dark-blue-500/70"></div>
+        <div class="space-y-3 sm:space-y-4">
+          <h4 class="text-base sm:text-lg font-semibold text-dark-blue-500">Detalles del Proyecto</h4>
+          <div id="quoteDetails" class="space-y-2 sm:space-y-3 text-xs sm:text-sm text-dark-blue-500/70"></div>
         </div>
 
         <!-- Admin Actions -->
-        <div class="border-t border-dark-blue-500/10 pt-6">
-          <h4 class="text-lg font-semibold text-dark-blue-500 mb-4">Actualizar Estado</h4>
-          <div class="flex gap-4">
-            <select id="quoteStatus" class="flex-1 px-4 py-2 border border-dark-blue-500/20 rounded-lg focus:ring-2 focus:ring-cyan-400 outline-none">
+        <div class="border-t border-dark-blue-500/10 pt-4 sm:pt-6">
+          <h4 class="text-base sm:text-lg font-semibold text-dark-blue-500 mb-3 sm:mb-4">Actualizar Estado</h4>
+          <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
+            <select id="quoteStatus" class="flex-1 px-3 sm:px-4 py-2 text-sm sm:text-base border border-dark-blue-500/20 rounded-lg focus:ring-2 focus:ring-cyan-400 outline-none">
               <option value="pending">Pendiente</option>
               <option value="reviewing">Revisando</option>
               <option value="quoted">Cotizado</option>
               <option value="rejected">Rechazado</option>
             </select>
-            <button onclick="updateQuoteStatus()" class="btn-primary px-6">
+            <button onclick="updateQuoteStatus()" class="btn-primary px-6 py-2 text-sm sm:text-base whitespace-nowrap">
               Actualizar
             </button>
           </div>

@@ -1564,9 +1564,10 @@ async function loadQuotes() {
     if (data.success && data.data.length > 0) {
       console.log(`✅ Found ${data.data.length} quotes`);
       tbody.innerHTML = data.data.map(quote => {
-        const statusClass = quote.status === 'pending' ? 'bg-amber-100 text-amber-700' : 
+        const statusClass = quote.status === 'pending' ? 'bg-amber-100 text-amber-700' :
                            quote.status === 'reviewing' ? 'bg-blue-100 text-blue-700' :
                            quote.status === 'quoted' ? 'bg-green-100 text-green-700' :
+                           quote.status === 'rejected' ? 'bg-red-100 text-red-700' :
                            'bg-gray-100 text-gray-700';
         
         return `
@@ -1592,7 +1593,8 @@ async function loadQuotes() {
               <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${statusClass}">
                 ${quote.status === 'pending' ? 'Pendiente' : 
                   quote.status === 'reviewing' ? 'Revisando' :
-                  quote.status === 'quoted' ? 'Cotizado' : 'Sin revisar'}
+                  quote.status === 'quoted' ? 'Cotizado' : 
+                  quote.status === 'rejected' ? 'Rechazado' : 'Sin revisar'}
               </span>
             </td>
             <td>
