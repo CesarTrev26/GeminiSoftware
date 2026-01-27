@@ -482,12 +482,12 @@ const categories = ['Todos', ...new Set(parsedProjects.map(p => p.category))];
       isDragging = true;
     }, { passive: true });
     
-    carousel.addEventListener('touchmove', (e) => {
+    carousel.addEventListener('touchmove', (_e) => {
       if (!isDragging) return;
-      touchEndX = (e as TouchEvent).changedTouches[0].screenX;
+      touchEndX = (_e as TouchEvent).changedTouches[0].screenX;
     }, { passive: true });
     
-    carousel.addEventListener('touchend', (e) => {
+    carousel.addEventListener('touchend', () => {
       if (!isDragging) return;
       isDragging = false;
       
