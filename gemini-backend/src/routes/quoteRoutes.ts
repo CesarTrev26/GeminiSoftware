@@ -137,23 +137,30 @@ router.post('/', async (req: Request, res: Response): Promise<void> => {
         <head>
           <meta charset="utf-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <meta name="color-scheme" content="light only">
+          <meta name="supported-color-schemes" content="light">
           <style>
             body { margin: 0; padding: 0; }
             table { border-spacing: 0; border-collapse: collapse; }
             img { border: 0; line-height: 100%; outline: none; text-decoration: none; }
+            @media (prefers-color-scheme: dark) {
+              body { background-color: #f0f4f8 !important; }
+              table { background-color: white !important; }
+              h1, h2, h3, p, span, div, td { color: inherit !important; }
+            }
           </style>
         </head>
-        <body style="margin: 0; padding: 0; background-color: #f0f4f8; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;">
+        <body style="margin: 0; padding: 0; background-color: #f0f4f8 !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;">
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
             <tr>
-              <td align="center" style="padding: 20px 10px;">
-                <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width: 600px; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,55,153,0.08);">
+              <td align="center" style="padding: 20px 10px; background-color: #f0f4f8 !important;">
+                <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width: 600px; background-color: #ffffff !important; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,55,153,0.08);">
                   
                   <!-- Header -->
                   <tr>
                     <td style="background: linear-gradient(135deg, #01183D 0%, #003799 50%, #00D3FF 100%); padding: 35px 20px; text-align: center;">
-                      <h1 style="color: white; margin: 0 0 8px; font-size: 26px; font-weight: 600; line-height: 1.2;">💼 Nueva Cotización</h1>
-                      <p style="color: rgba(255,255,255,0.9); margin: 0; font-size: 14px; line-height: 1.4;">Solicitud desde el formulario web</p>
+                      <h1 style="color: white !important; margin: 0 0 8px; font-size: 26px; font-weight: 600; line-height: 1.2;">💼 Nueva Cotización</h1>
+                      <p style="color: rgba(255,255,255,0.9) !important; margin: 0; font-size: 14px; line-height: 1.4;">Solicitud desde el formulario web</p>
                     </td>
                   </tr>
                   
@@ -162,28 +169,28 @@ router.post('/', async (req: Request, res: Response): Promise<void> => {
                     <td style="padding: 30px 25px;">
                       
                       <!-- Company Info -->
-                      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: linear-gradient(135deg, #f8f9ff 0%, #e8f4ff 100%); border-radius: 10px; margin-bottom: 18px; border-left: 4px solid #00D3FF;">
+                      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: linear-gradient(135deg, #f8f9ff 0%, #e8f4ff 100%); background-color: #f8f9ff !important; border-radius: 10px; margin-bottom: 18px; border-left: 4px solid #00D3FF;">
                         <tr>
-                          <td style="padding: 22px 20px;">
-                            <h2 style="color: #01183D; margin: 0 0 16px; font-size: 18px; font-weight: 600; line-height: 1.3;">🏢 Información de la Empresa</h2>
+                          <td style="padding: 22px 20px; background-color: transparent !important;">
+                            <h2 style="color: #01183D !important; margin: 0 0 16px; font-size: 18px; font-weight: 600; line-height: 1.3;">🏢 Información de la Empresa</h2>
                             <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
                               <tr>
                                 <td style="padding-bottom: 12px;">
-                                  <div style="color: #666; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; line-height: 1.4;">Empresa</div>
-                                  <div style="color: #01183D; font-size: 17px; font-weight: 600; line-height: 1.4;">${companyName}</div>
+                                  <div style="color: #666 !important; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; line-height: 1.4;">Empresa</div>
+                                  <div style="color: #01183D !important; font-size: 17px; font-weight: 600; line-height: 1.4;">${companyName}</div>
                                 </td>
                               </tr>
                               <tr>
                                 <td style="padding-bottom: 12px;">
-                                  <div style="color: #666; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; line-height: 1.4;">Giro del Negocio</div>
-                                  <div style="color: #01183D; font-size: 15px; font-weight: 500; line-height: 1.5;">${businessType}</div>
+                                  <div style="color: #666 !important; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; line-height: 1.4;">Giro del Negocio</div>
+                                  <div style="color: #01183D !important; font-size: 15px; font-weight: 500; line-height: 1.5;">${businessType}</div>
                                 </td>
                               </tr>
                               ${websiteGoal ? `
                               <tr>
                                 <td>
-                                  <div style="color: #666; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; line-height: 1.4;">Objetivo del Sitio</div>
-                                  <div style="color: #333; font-size: 14px; line-height: 1.5;">${websiteGoal}</div>
+                                  <div style="color: #666 !important; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; line-height: 1.4;">Objetivo del Sitio</div>
+                                  <div style="color: #333 !important; font-size: 14px; line-height: 1.5;">${websiteGoal}</div>
                                 </td>
                               </tr>
                               ` : ''}
@@ -193,23 +200,23 @@ router.post('/', async (req: Request, res: Response): Promise<void> => {
                       </table>
                       
                       <!-- Contact Info -->
-                      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: white; border: 2px solid #e8f4ff; border-radius: 10px; margin-bottom: 18px;">
+                      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #ffffff !important; border: 2px solid #e8f4ff; border-radius: 10px; margin-bottom: 18px;">
                         <tr>
                           <td style="padding: 18px 20px;">
-                            <h3 style="color: #01183D; margin: 0 0 12px; font-size: 15px; font-weight: 600; line-height: 1.3;">📞 Información de Contacto</h3>
-                            ${contactEmail ? `<p style="margin: 0 0 8px; line-height: 1.6; color: #333; font-size: 14px;">📧 <a href="mailto:${contactEmail}" style="color: #003799; text-decoration: none; font-weight: 500;">${contactEmail}</a></p>` : ''}
-                            ${contactPhone ? `<p style="margin: 0; line-height: 1.6; color: #333; font-size: 14px;">📱 <a href="tel:${contactPhone}" style="color: #003799; text-decoration: none; font-weight: 500;">${contactPhone}</a></p>` : ''}
+                            <h3 style="color: #01183D !important; margin: 0 0 12px; font-size: 15px; font-weight: 600; line-height: 1.3;">📞 Información de Contacto</h3>
+                            ${contactEmail ? `<p style="margin: 0 0 8px; line-height: 1.6; color: #333 !important; font-size: 14px;">📧 <a href="mailto:${contactEmail}" style="color: #003799 !important; text-decoration: none; font-weight: 500;">${contactEmail}</a></p>` : ''}
+                            ${contactPhone ? `<p style="margin: 0; line-height: 1.6; color: #333 !important; font-size: 14px;">📱 <a href="tel:${contactPhone}" style="color: #003799 !important; text-decoration: none; font-weight: 500;">${contactPhone}</a></p>` : ''}
                           </td>
                         </tr>
                       </table>
                       
                       <!-- Platform -->
                       ${platform ? `
-                      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: white; border: 2px solid #e8f4ff; border-radius: 10px; margin-bottom: 18px;">
+                      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #ffffff !important; border: 2px solid #e8f4ff; border-radius: 10px; margin-bottom: 18px;">
                         <tr>
                           <td style="padding: 18px 20px;">
-                            <h3 style="color: #01183D; margin: 0 0 12px; font-size: 15px; font-weight: 600; line-height: 1.3;">🖥️ Plataforma</h3>
-                            <p style="margin: 0 0 8px; line-height: 1.6; color: #333; font-size: 14px;"><strong style="color: #01183D;">Preferencia:</strong> <span style="display: inline-block; background: #00D3FF; color: #01183D; padding: 4px 12px; border-radius: 15px; font-size: 13px; font-weight: 600; line-height: 1.4;">${platform}</span></p>
+                            <h3 style="color: #01183D !important; margin: 0 0 12px; font-size: 15px; font-weight: 600; line-height: 1.3;">🖥️ Plataforma</h3>
+                            <p style="margin: 0 0 8px; line-height: 1.6; color: #333 !important; font-size: 14px;"><strong style="color: #01183D !important;">Preferencia:</strong> <span style="display: inline-block; background: #00D3FF; color: #01183D !important; padding: 4px 12px; border-radius: 15px; font-size: 13px; font-weight: 600; line-height: 1.4;">${platform}</span></p>
                             ${platformReason ? `<p style="margin: 0; line-height: 1.6; color: #555; font-size: 14px;">Razón: ${platformReason}</p>` : ''}
                           </td>
                         </tr>
@@ -217,25 +224,25 @@ router.post('/', async (req: Request, res: Response): Promise<void> => {
                       ` : ''}
                       
                       <!-- Design -->
-                      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: white; border: 2px solid #e8f4ff; border-radius: 10px; margin-bottom: 18px;">
+                      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #ffffff !important; border: 2px solid #e8f4ff; border-radius: 10px; margin-bottom: 18px;">
                         <tr>
                           <td style="padding: 18px 20px;">
-                            <h3 style="color: #01183D; margin: 0 0 12px; font-size: 15px; font-weight: 600; line-height: 1.3;">🎨 Diseño</h3>
-                            <p style="margin: 0 0 8px; line-height: 1.6; color: #333; font-size: 14px;"><strong style="color: #01183D;">¿Tiene diseño?</strong> ${hasDesign || 'No especificado'}</p>
-                            ${visualIdentity ? `<p style="margin: 0 0 8px; line-height: 1.6; color: #333; font-size: 14px;"><strong style="color: #01183D;">Identidad Visual:</strong> ${safeJsonParse(visualIdentity).join(', ')}</p>` : ''}
-                            ${inspirationUrls ? `<p style="margin: 0; line-height: 1.6; color: #333; font-size: 14px;"><strong style="color: #01183D;">Referencias:</strong> ${inspirationUrls}</p>` : ''}
+                            <h3 style="color: #01183D !important; margin: 0 0 12px; font-size: 15px; font-weight: 600; line-height: 1.3;">🎨 Diseño</h3>
+                            <p style="margin: 0 0 8px; line-height: 1.6; color: #333 !important; font-size: 14px;"><strong style="color: #01183D !important;">¿Tiene diseño?</strong> ${hasDesign || 'No especificado'}</p>
+                            ${visualIdentity ? `<p style="margin: 0 0 8px; line-height: 1.6; color: #333 !important; font-size: 14px;"><strong style="color: #01183D !important;">Identidad Visual:</strong> ${safeJsonParse(visualIdentity).join(', ')}</p>` : ''}
+                            ${inspirationUrls ? `<p style="margin: 0; line-height: 1.6; color: #333 !important; font-size: 14px;"><strong style="color: #01183D !important;">Referencias:</strong> ${inspirationUrls}</p>` : ''}
                           </td>
                         </tr>
                       </table>
                       
                       <!-- Content & Pages -->
-                      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: white; border: 2px solid #e8f4ff; border-radius: 10px; margin-bottom: 18px;">
+                      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #ffffff !important; border: 2px solid #e8f4ff; border-radius: 10px; margin-bottom: 18px;">
                         <tr>
                           <td style="padding: 18px 20px;">
-                            <h3 style="color: #01183D; margin: 0 0 12px; font-size: 15px; font-weight: 600; line-height: 1.3;">📄 Contenido del Sitio</h3>
-                            ${pageCount ? `<p style="margin: 0 0 8px; line-height: 1.6; color: #333; font-size: 14px;"><strong style="color: #01183D;">Cantidad de páginas:</strong> ${pageCount}</p>` : ''}
-                            ${pages ? `<p style="margin: 0 0 8px; line-height: 1.6; color: #333; font-size: 14px;"><strong style="color: #01183D;">Páginas solicitadas:</strong><br>${safeJsonParse(pages).map((p: string) => `<span style="display: inline-block; background: #f0f4f8; color: #333; padding: 4px 10px; border-radius: 12px; margin: 3px 3px 3px 0; font-size: 13px; line-height: 1.4;">${p}</span>`).join('')}</p>` : ''}
-                            ${features ? `<p style="margin: 0; line-height: 1.6; color: #333; font-size: 14px;"><strong style="color: #01183D;">Funcionalidades:</strong><br>${safeJsonParse(features).map((f: string) => `<span style="display: inline-block; background: #e8f4ff; color: #01183D; padding: 4px 10px; border-radius: 12px; margin: 3px 3px 3px 0; font-size: 13px; line-height: 1.4;">✓ ${f}</span>`).join('')}</p>` : ''}
+                            <h3 style="color: #01183D !important; margin: 0 0 12px; font-size: 15px; font-weight: 600; line-height: 1.3;">📄 Contenido del Sitio</h3>
+                            ${pageCount ? `<p style="margin: 0 0 8px; line-height: 1.6; color: #333 !important; font-size: 14px;"><strong style="color: #01183D !important;">Cantidad de páginas:</strong> ${pageCount}</p>` : ''}
+                            ${pages ? `<p style="margin: 0 0 8px; line-height: 1.6; color: #333 !important; font-size: 14px;"><strong style="color: #01183D !important;">Páginas solicitadas:</strong><br>${safeJsonParse(pages).map((p: string) => `<span style="display: inline-block; background: #f0f4f8; color: #333 !important; padding: 4px 10px; border-radius: 12px; margin: 3px 3px 3px 0; font-size: 13px; line-height: 1.4;">${p}</span>`).join('')}</p>` : ''}
+                            ${features ? `<p style="margin: 0; line-height: 1.6; color: #333 !important; font-size: 14px;"><strong style="color: #01183D !important;">Funcionalidades:</strong><br>${safeJsonParse(features).map((f: string) => `<span style="display: inline-block; background: #e8f4ff; color: #01183D !important; padding: 4px 10px; border-radius: 12px; margin: 3px 3px 3px 0; font-size: 13px; line-height: 1.4;">✓ ${f}</span>`).join('')}</p>` : ''}
                           </td>
                         </tr>
                       </table>
@@ -245,22 +252,22 @@ router.post('/', async (req: Request, res: Response): Promise<void> => {
                       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: linear-gradient(135deg, #fff5e6 0%, #ffe8cc 100%); border-radius: 10px; margin-bottom: 18px; border-left: 4px solid #F59E0B;">
                         <tr>
                           <td style="padding: 18px 20px;">
-                            <h3 style="color: #01183D; margin: 0 0 12px; font-size: 15px; font-weight: 600; line-height: 1.3;">🛒 Tienda en Línea</h3>
-                            ${productCount ? `<p style="margin: 0 0 8px; line-height: 1.6; color: #333; font-size: 14px;"><strong style="color: #01183D;">Cantidad de productos:</strong> ${productCount}</p>` : ''}
-                            ${storeFeatures ? `<p style="margin: 0; line-height: 1.6; color: #333; font-size: 14px;"><strong style="color: #01183D;">Características de la tienda:</strong><br>${safeJsonParse(storeFeatures).map((f: string) => `<span style="display: inline-block; background: white; color: #333; padding: 4px 10px; border-radius: 12px; margin: 3px 3px 3px 0; font-size: 13px; line-height: 1.4;">🛍️ ${f}</span>`).join('')}</p>` : ''}
+                            <h3 style="color: #01183D !important; margin: 0 0 12px; font-size: 15px; font-weight: 600; line-height: 1.3;">🛒 Tienda en Línea</h3>
+                            ${productCount ? `<p style="margin: 0 0 8px; line-height: 1.6; color: #333 !important; font-size: 14px;"><strong style="color: #01183D !important;">Cantidad de productos:</strong> ${productCount}</p>` : ''}
+                            ${storeFeatures ? `<p style="margin: 0; line-height: 1.6; color: #333 !important; font-size: 14px;"><strong style="color: #01183D !important;">Características de la tienda:</strong><br>${safeJsonParse(storeFeatures).map((f: string) => `<span style="display: inline-block; background-color: #ffffff !important; color: #333 !important; padding: 4px 10px; border-radius: 12px; margin: 3px 3px 3px 0; font-size: 13px; line-height: 1.4;">🛍️ ${f}</span>`).join('')}</p>` : ''}
                           </td>
                         </tr>
                       </table>
                       ` : ''}
                       
                       <!-- Support & Training -->
-                      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: white; border: 2px solid #e8f4ff; border-radius: 10px; margin-bottom: 18px;">
+                      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #ffffff !important; border: 2px solid #e8f4ff; border-radius: 10px; margin-bottom: 18px;">
                         <tr>
                           <td style="padding: 18px 20px;">
-                            <h3 style="color: #01183D; margin: 0 0 12px; font-size: 15px; font-weight: 600; line-height: 1.3;">🎓 Soporte y Capacitación</h3>
-                            ${contentProvider ? `<p style="margin: 0 0 8px; line-height: 1.6; color: #333; font-size: 14px;"><strong style="color: #01183D;">Proveedor de contenido:</strong> ${contentProvider}</p>` : ''}
-                            ${needsTraining ? `<p style="margin: 0 0 8px; line-height: 1.6; color: #333; font-size: 14px;">✅ Requiere capacitación</p>` : ''}
-                            ${supportPeriod ? `<p style="margin: 0; line-height: 1.6; color: #333; font-size: 14px;"><strong style="color: #01183D;">Periodo de soporte:</strong> ${supportPeriod}</p>` : ''}
+                            <h3 style="color: #01183D !important; margin: 0 0 12px; font-size: 15px; font-weight: 600; line-height: 1.3;">🎓 Soporte y Capacitación</h3>
+                            ${contentProvider ? `<p style="margin: 0 0 8px; line-height: 1.6; color: #333 !important; font-size: 14px;"><strong style="color: #01183D !important;">Proveedor de contenido:</strong> ${contentProvider}</p>` : ''}
+                            ${needsTraining ? `<p style="margin: 0 0 8px; line-height: 1.6; color: #333 !important; font-size: 14px;">✅ Requiere capacitación</p>` : ''}
+                            ${supportPeriod ? `<p style="margin: 0; line-height: 1.6; color: #333 !important; font-size: 14px;"><strong style="color: #01183D !important;">Periodo de soporte:</strong> ${supportPeriod}</p>` : ''}
                           </td>
                         </tr>
                       </table>
@@ -270,8 +277,8 @@ router.post('/', async (req: Request, res: Response): Promise<void> => {
                       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: linear-gradient(135deg, #e6f7ff 0%, #cceeff 100%); border-radius: 10px; margin-bottom: 18px; border-left: 4px solid #003799;">
                         <tr>
                           <td style="padding: 18px 20px;">
-                            <h3 style="color: #01183D; margin: 0 0 12px; font-size: 15px; font-weight: 600; line-height: 1.3;">⏰ Tiempos</h3>
-                            <p style="margin: 0; line-height: 1.6; color: #333; font-size: 14px;">📅 <strong style="color: #01183D;">Fecha de lanzamiento deseada:</strong> ${launchDate}</p>
+                            <h3 style="color: #01183D !important; margin: 0 0 12px; font-size: 15px; font-weight: 600; line-height: 1.3;">⏰ Tiempos</h3>
+                            <p style="margin: 0; line-height: 1.6; color: #333 !important; font-size: 14px;">📅 <strong style="color: #01183D !important;">Fecha de lanzamiento deseada:</strong> ${launchDate}</p>
                           </td>
                         </tr>
                       </table>
@@ -279,11 +286,11 @@ router.post('/', async (req: Request, res: Response): Promise<void> => {
                       
                       <!-- Additional Info -->
                       ${additionalInfo ? `
-                      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: white; border: 2px solid #e8f4ff; border-radius: 10px; margin-bottom: 18px;">
+                      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #ffffff !important; border: 2px solid #e8f4ff; border-radius: 10px; margin-bottom: 18px;">
                         <tr>
                           <td style="padding: 18px 20px;">
-                            <h3 style="color: #01183D; margin: 0 0 12px; font-size: 15px; font-weight: 600; line-height: 1.3;">💬 Información Adicional</h3>
-                            <p style="color: #333; line-height: 1.6; margin: 0; font-size: 14px;">${additionalInfo}</p>
+                            <h3 style="color: #01183D !important; margin: 0 0 12px; font-size: 15px; font-weight: 600; line-height: 1.3;">💬 Información Adicional</h3>
+                            <p style="color: #333 !important; line-height: 1.6; margin: 0; font-size: 14px;">${additionalInfo}</p>
                           </td>
                         </tr>
                       </table>
@@ -293,8 +300,8 @@ router.post('/', async (req: Request, res: Response): Promise<void> => {
                       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: linear-gradient(135deg, #f8f9ff 0%, #e8f4ff 100%); border-radius: 10px; margin-bottom: 22px; border-left: 4px solid #00D3FF;">
                         <tr>
                           <td style="padding: 18px 20px;">
-                            <p style="margin: 0 0 10px; line-height: 1.6; color: #01183D; font-size: 14px;"><strong>🆔 ID de Solicitud:</strong> <code style="background: white; padding: 4px 8px; border-radius: 4px; font-family: 'Courier New', monospace; color: #01183D; font-size: 13px;">${quoteRequest.id}</code></p>
-                            <p style="margin: 0; line-height: 1.6; color: #666; font-size: 14px;"><strong>📅 Recibido:</strong> ${new Date().toLocaleString('es-MX', { dateStyle: 'full', timeStyle: 'short' })}</p>
+                            <p style="margin: 0 0 10px; line-height: 1.6; color: #01183D !important; font-size: 14px;"><strong>🆔 ID de Solicitud:</strong> <code style="background-color: #ffffff !important; padding: 4px 8px; border-radius: 4px; font-family: 'Courier New', monospace; color: #01183D !important; font-size: 13px;">${quoteRequest.id}</code></p>
+                            <p style="margin: 0; line-height: 1.6; color: #666 !important; font-size: 14px;"><strong>📅 Recibido:</strong> ${new Date().toLocaleString('es-MX', { dateStyle: 'full', timeStyle: 'short' })}</p>
                           </td>
                         </tr>
                       </table>
@@ -318,7 +325,7 @@ router.post('/', async (req: Request, res: Response): Promise<void> => {
                               </tr>
                               <tr>
                                 <td colspan="2" align="center" style="padding: 10px 5px 0;">
-                                  <a href="${process.env.FRONTEND_URL || 'https://geminisoftware.mx'}/admin" style="display: inline-block; padding: 12px 24px; background: linear-gradient(135deg, #01183D 0%, #003799 100%); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 14px; line-height: 1.4;">🎛️ Ver en Admin Panel</a>
+                                  <a href="https://geminisoftware.mx/admin" style="display: inline-block; padding: 12px 24px; background: linear-gradient(135deg, #01183D 0%, #003799 100%); color: white !important; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 14px; line-height: 1.4;">🎛️ Ver en Admin Panel</a>
                                 </td>
                               </tr>
                             </table>
@@ -498,3 +505,4 @@ router.delete('/:id', async (req: Request, res: Response): Promise<void> => {
 });
 
 export default router;
+
