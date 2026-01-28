@@ -92,11 +92,11 @@ import Footer from '../components/Footer.astro';
               <label for="websiteGoal">¿Cuál es el objetivo principal de tu sitio web?</label>
               <select id="websiteGoal" name="websiteGoal" class="form-input">
                 <option value="">Selecciona una opción</option>
-                <option value="brand-presence">Dar presencia a mi marca</option>
-                <option value="sell-online">Vender productos en línea</option>
-                <option value="get-clients">Conseguir más clientes / contactos</option>
-                <option value="show-services">Mostrar servicios o portafolio</option>
-                <option value="other">Otro</option>
+                <option value="Dar presencia a mi marca">Dar presencia a mi marca</option>
+                <option value="Vender productos en línea">Vender productos en línea</option>
+                <option value="Conseguir más clientes / contactos">Conseguir más clientes / contactos</option>
+                <option value="Mostrar servicios o portafolio">Mostrar servicios o portafolio</option>
+                <option value="Otro">Otro</option>
               </select>
             </div>
           </section>
@@ -116,10 +116,10 @@ import Footer from '../components/Footer.astro';
               <label for="platform">¿En qué plataforma te gustaría tu sitio web?</label>
               <select id="platform" name="platform" class="form-input">
                 <option value="">Selecciona una opción</option>
-                <option value="shopify">Shopify</option>
-                <option value="wordpress">WordPress</option>
-                <option value="custom">Desarrollo a medida</option>
-                <option value="not-sure">No lo sé, quiero que me recomienden</option>
+                <option value="Shopify">Shopify</option>
+                <option value="WordPress">WordPress</option>
+                <option value="Desarrollo a medida">Desarrollo a medida</option>
+                <option value="No lo sé, quiero que me recomienden">No lo sé, quiero que me recomienden</option>
               </select>
             </div>
 
@@ -145,15 +145,15 @@ import Footer from '../components/Footer.astro';
               <label>¿Ya cuentas con un diseño del sitio?</label>
               <div class="radio-group">
                 <label class="radio-option">
-                  <input type="radio" name="hasDesign" value="si-tengo-diseño">
+                  <input type="radio" name="hasDesign" value="Sí, ya tengo el diseño (Figma / imágenes / mockups)">
                   <span>Sí, ya tengo el diseño (Figma / imágenes / mockups)</span>
                 </label>
                 <label class="radio-option">
-                  <input type="radio" name="hasDesign" value="solo-idea">
+                  <input type="radio" name="hasDesign" value="Tengo una idea, pero no diseño final">
                   <span>Tengo una idea, pero no diseño final</span>
                 </label>
                 <label class="radio-option">
-                  <input type="radio" name="hasDesign" value="sin-diseño">
+                  <input type="radio" name="hasDesign" value="No, necesito que lo diseñen desde cero">
                   <span>No, necesito que lo diseñen desde cero</span>
                 </label>
               </div>
@@ -163,23 +163,23 @@ import Footer from '../components/Footer.astro';
               <label>¿Cuentas con identidad visual? (puedes marcar varias)</label>
               <div class="checkbox-group">
                 <label class="checkbox-option">
-                  <input type="checkbox" name="visualIdentity" value="logo">
+                  <input type="checkbox" name="visualIdentity" value="Logo">
                   <span>Logo</span>
                 </label>
                 <label class="checkbox-option">
-                  <input type="checkbox" name="visualIdentity" value="colores-marca">
+                  <input type="checkbox" name="visualIdentity" value="Colores de marca">
                   <span>Colores de marca</span>
                 </label>
                 <label class="checkbox-option">
-                  <input type="checkbox" name="visualIdentity" value="tipografias">
+                  <input type="checkbox" name="visualIdentity" value="Tipografías">
                   <span>Tipografías</span>
                 </label>
                 <label class="checkbox-option">
-                  <input type="checkbox" name="visualIdentity" value="manual-marca">
+                  <input type="checkbox" name="visualIdentity" value="Manual de marca">
                   <span>Manual de marca</span>
                 </label>
                 <label class="checkbox-option">
-                  <input type="checkbox" name="visualIdentity" value="nada">
+                  <input type="checkbox" name="visualIdentity" value="Aún no tengo nada">
                   <span>Aún no tengo nada</span>
                 </label>
               </div>
@@ -227,38 +227,49 @@ import Footer from '../components/Footer.astro';
               <label>¿Qué páginas te gustaría incluir? (marca las que apliquen)</label>
               <div class="checkbox-group">
                 <label class="checkbox-option">
-                  <input type="checkbox" name="pages" value="inicio">
+                  <input type="checkbox" name="pages" value="Inicio">
                   <span>Inicio</span>
                 </label>
                 <label class="checkbox-option">
-                  <input type="checkbox" name="pages" value="nosotros">
+                  <input type="checkbox" name="pages" value="Nosotros">
                   <span>Nosotros</span>
                 </label>
                 <label class="checkbox-option">
-                  <input type="checkbox" name="pages" value="servicios">
+                  <input type="checkbox" name="pages" value="Servicios">
                   <span>Servicios</span>
                 </label>
                 <label class="checkbox-option">
-                  <input type="checkbox" name="pages" value="productos">
+                  <input type="checkbox" name="pages" value="Productos">
                   <span>Productos</span>
                 </label>
                 <label class="checkbox-option">
-                  <input type="checkbox" name="pages" value="blog">
+                  <input type="checkbox" name="pages" value="Blog">
                   <span>Blog</span>
                 </label>
                 <label class="checkbox-option">
-                  <input type="checkbox" name="pages" value="contacto">
+                  <input type="checkbox" name="pages" value="Contacto">
                   <span>Contacto</span>
                 </label>
                 <label class="checkbox-option">
-                  <input type="checkbox" name="pages" value="preguntas-frecuentes">
+                  <input type="checkbox" name="pages" value="Preguntas frecuentes">
                   <span>Preguntas frecuentes</span>
                 </label>
                 <label class="checkbox-option">
-                  <input type="checkbox" name="pages" value="legales">
+                  <input type="checkbox" name="pages" value="Políticas / legales">
                   <span>Políticas / legales</span>
                 </label>
               </div>
+            </div>
+
+            <div class="form-field">
+              <label for="customPages">Otras páginas (opcional)</label>
+              <textarea 
+                id="customPages" 
+                name="customPages" 
+                rows="3" 
+                class="form-input"
+                placeholder="Ej: Galería, Testimonios, Casos de éxito, Portal de clientes, etc."
+              ></textarea>
             </div>
           </section>
 
@@ -276,38 +287,54 @@ import Footer from '../components/Footer.astro';
               <label>¿Qué funciones te gustaría que tenga tu página?</label>
               <div class="checkbox-group">
                 <label class="checkbox-option">
-                  <input type="checkbox" name="features" value="formulario-contacto">
+                  <input type="checkbox" name="features" value="Formulario de contacto">
                   <span>Formulario de contacto</span>
                 </label>
                 <label class="checkbox-option">
-                  <input type="checkbox" name="features" value="whatsapp">
+                  <input type="checkbox" name="features" value="Botón de WhatsApp">
                   <span>Botón de WhatsApp</span>
                 </label>
                 <label class="checkbox-option">
-                  <input type="checkbox" name="features" value="blog">
+                  <input type="checkbox" name="features" value="Blog administrable">
                   <span>Blog administrable</span>
                 </label>
                 <label class="checkbox-option">
-                  <input type="checkbox" name="features" value="animaciones">
+                  <input type="checkbox" name="features" value="Animaciones o efectos visuales">
                   <span>Animaciones o efectos visuales</span>
                 </label>
                 <label class="checkbox-option">
-                  <input type="checkbox" name="features" value="seo">
+                  <input type="checkbox" name="features" value="Optimización para Google (SEO básico)">
                   <span>Optimización para Google (SEO básico)</span>
                 </label>
                 <label class="checkbox-option">
-                  <input type="checkbox" name="features" value="redes-sociales">
+                  <input type="checkbox" name="features" value="Integración con redes sociales">
                   <span>Integración con redes sociales</span>
                 </label>
                 <label class="checkbox-option">
-                  <input type="checkbox" name="features" value="estadisticas">
+                  <input type="checkbox" name="features" value="Estadísticas (Google Analytics / Pixel)">
                   <span>Estadísticas (Google Analytics / Pixel)</span>
                 </label>
                 <label class="checkbox-option">
-                  <input type="checkbox" name="features" value="multi-idioma">
+                  <input type="checkbox" name="features" value="Multi-idioma">
                   <span>Multi-idioma</span>
                 </label>
+                <label class="checkbox-option">
+                  <input type="checkbox" id="featuresOther" name="features" value="Otro (especificar)">
+                  <span>Otro (especificar)</span>
+                </label>
               </div>
+            </div>
+
+            <!-- Custom Features Input (hidden by default) -->
+            <div id="customFeaturesContainer" class="form-field hidden">
+              <label for="customFeatures">Especifica otras funcionalidades que necesitas</label>
+              <textarea 
+                id="customFeatures" 
+                name="customFeatures" 
+                rows="3" 
+                class="form-input"
+                placeholder="Ej: Reservas en línea, integración con CRM, mapas interactivos, etc."
+              ></textarea>
             </div>
           </section>
 
@@ -326,11 +353,11 @@ import Footer from '../components/Footer.astro';
               <label>¿Venderás productos en tu sitio?</label>
               <div class="radio-group">
                 <label class="radio-option">
-                  <input type="radio" name="hasStore" value="si">
+                  <input type="radio" name="hasStore" value="Sí">
                   <span>Sí</span>
                 </label>
                 <label class="radio-option">
-                  <input type="radio" name="hasStore" value="no">
+                  <input type="radio" name="hasStore" value="No">
                   <span>No</span>
                 </label>
               </div>
@@ -363,35 +390,35 @@ import Footer from '../components/Footer.astro';
                 <label>Funciones de tienda que te interesan:</label>
                 <div class="checkbox-group">
                   <label class="checkbox-option">
-                    <input type="checkbox" name="storeFeatures" value="pagos-tarjeta">
+                    <input type="checkbox" name="storeFeatures" value="Pagos con tarjeta">
                     <span>Pagos con tarjeta</span>
                   </label>
                   <label class="checkbox-option">
-                    <input type="checkbox" name="storeFeatures" value="pagos-efectivo">
+                    <input type="checkbox" name="storeFeatures" value="Pagos en efectivo / transferencia">
                     <span>Pagos en efectivo / transferencia</span>
                   </label>
                   <label class="checkbox-option">
-                    <input type="checkbox" name="storeFeatures" value="envios-automaticos">
+                    <input type="checkbox" name="storeFeatures" value="Envíos automáticos">
                     <span>Envíos automáticos</span>
                   </label>
                   <label class="checkbox-option">
-                    <input type="checkbox" name="storeFeatures" value="codigos-descuento">
+                    <input type="checkbox" name="storeFeatures" value="Códigos de descuento">
                     <span>Códigos de descuento</span>
                   </label>
                   <label class="checkbox-option">
-                    <input type="checkbox" name="storeFeatures" value="recompensas">
+                    <input type="checkbox" name="storeFeatures" value="Sistema de recompensas o puntos">
                     <span>Sistema de recompensas o puntos</span>
                   </label>
                   <label class="checkbox-option">
-                    <input type="checkbox" name="storeFeatures" value="cuentas-usuario">
+                    <input type="checkbox" name="storeFeatures" value="Cuentas de usuario">
                     <span>Cuentas de usuario</span>
                   </label>
                   <label class="checkbox-option">
-                    <input type="checkbox" name="storeFeatures" value="suscripciones">
+                    <input type="checkbox" name="storeFeatures" value="Suscripciones">
                     <span>Suscripciones</span>
                   </label>
                   <label class="checkbox-option">
-                    <input type="checkbox" name="storeFeatures" value="lista-deseos">
+                    <input type="checkbox" name="storeFeatures" value="Wishlist">
                     <span>Wishlist</span>
                   </label>
                 </div>
@@ -412,15 +439,15 @@ import Footer from '../components/Footer.astro';
               <label>¿Quién proporcionará los textos e imágenes?</label>
               <div class="radio-group">
                 <label class="radio-option">
-                  <input type="radio" name="contentProvider" value="cliente">
+                  <input type="radio" name="contentProvider" value="Yo como cliente">
                   <span>Yo como cliente</span>
                 </label>
                 <label class="radio-option">
-                  <input type="radio" name="contentProvider" value="apoyo-redaccion">
+                  <input type="radio" name="contentProvider" value="Necesito apoyo en redacción">
                   <span>Necesito apoyo en redacción</span>
                 </label>
                 <label class="radio-option">
-                  <input type="radio" name="contentProvider" value="gemini">
+                  <input type="radio" name="contentProvider" value="Quiero que Gemini se encargue de todo">
                   <span>Quiero que Gemini se encargue de todo</span>
                 </label>
               </div>
@@ -443,11 +470,11 @@ import Footer from '../components/Footer.astro';
               <label>¿Te gustaría recibir capacitación para administrar tu sitio?</label>
               <div class="radio-group">
                 <label class="radio-option">
-                  <input type="radio" name="needsTraining" value="si">
+                  <input type="radio" name="needsTraining" value="Sí">
                   <span>Sí</span>
                 </label>
                 <label class="radio-option">
-                  <input type="radio" name="needsTraining" value="no">
+                  <input type="radio" name="needsTraining" value="No">
                   <span>No</span>
                 </label>
               </div>
@@ -457,15 +484,15 @@ import Footer from '../components/Footer.astro';
               <label>¿Te interesa soporte después de publicar el sitio?</label>
               <div class="radio-group">
                 <label class="radio-option">
-                  <input type="radio" name="supportPeriod" value="7-days">
+                  <input type="radio" name="supportPeriod" value="7 días">
                   <span>7 días</span>
                 </label>
                 <label class="radio-option">
-                  <input type="radio" name="supportPeriod" value="30-days">
+                  <input type="radio" name="supportPeriod" value="30 días">
                   <span>30 días</span>
                 </label>
                 <label class="radio-option">
-                  <input type="radio" name="supportPeriod" value="monthly">
+                  <input type="radio" name="supportPeriod" value="Mantenimiento mensual">
                   <span>Mantenimiento mensual</span>
                 </label>
               </div>
@@ -774,12 +801,29 @@ import Footer from '../components/Footer.astro';
   hasStoreInputs.forEach(input => {
     input.addEventListener('change', (e) => {
       const target = e.target as HTMLInputElement;
-      if (target.value === 'si') {
+      if (target.value === 'Sí') {
         storeOptions?.classList.remove('hidden');
       } else {
         storeOptions?.classList.add('hidden');
       }
     });
+  });
+
+  // Mostrar/ocultar campo de funciones personalizadas
+  const featuresOtherCheckbox = document.getElementById('featuresOther') as HTMLInputElement;
+  const customFeaturesContainer = document.getElementById('customFeaturesContainer') as HTMLDivElement;
+
+  featuresOtherCheckbox?.addEventListener('change', () => {
+    if (featuresOtherCheckbox.checked) {
+      customFeaturesContainer?.classList.remove('hidden');
+    } else {
+      customFeaturesContainer?.classList.add('hidden');
+      // Clear the textarea when hidden
+      const customFeaturesTextarea = document.getElementById('customFeatures') as HTMLTextAreaElement;
+      if (customFeaturesTextarea) {
+        customFeaturesTextarea.value = '';
+      }
+    }
   });
 
   // Manejar envío del formulario
@@ -818,7 +862,9 @@ import Footer from '../components/Footer.astro';
       inspirationUrls: formData.get('inspirationUrls'),
       pageCount: formData.get('pageCount'),
       pages,
+      customPages: formData.get('customPages'),
       features,
+      customFeatures: formData.get('customFeatures'),
       hasStore: formData.get('hasStore') === 'si',
       productCount: formData.get('productCount'),
       storeFeatures,

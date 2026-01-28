@@ -149,9 +149,11 @@ model QuoteRequest {
   // Contenido y Páginas
   pageCount      String?
   pages          String? // JSON array
+  customPages    String? // Custom pages specified by user
   
   // Funciones
   features       String? // JSON array
+  customFeatures String? // Custom features specified by user
   
   // Tienda en Línea
   hasStore       Boolean @default(false)

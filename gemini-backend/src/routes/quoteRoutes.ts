@@ -57,7 +57,9 @@ router.post('/', async (req: Request, res: Response): Promise<void> => {
       inspirationUrls,
       pageCount,
       pages,
+      customPages,
       features,
+      customFeatures,
       hasStore,
       productCount,
       storeFeatures,
@@ -101,12 +103,14 @@ router.post('/', async (req: Request, res: Response): Promise<void> => {
         inspirationUrls,
         pageCount,
         pages: normalizeArray(pages),
+        customPages,
         features: normalizeArray(features),
-        hasStore: hasStore || false,
+        customFeatures,
+        hasStore: hasStore === 'Sí',
         productCount,
         storeFeatures: normalizeArray(storeFeatures),
         contentProvider,
-        needsTraining: needsTraining || false,
+        needsTraining: needsTraining === 'Sí',
         supportPeriod,
         launchDate,
         budget,
@@ -143,18 +147,21 @@ router.post('/', async (req: Request, res: Response): Promise<void> => {
             body { margin: 0; padding: 0; }
             table { border-spacing: 0; border-collapse: collapse; }
             img { border: 0; line-height: 100%; outline: none; text-decoration: none; }
+            [data-ogsc] { background-color: #ffffff !important; }
+            [data-ogsc] * { color: inherit !important; }
             @media (prefers-color-scheme: dark) {
-              body { background-color: #f0f4f8 !important; }
-              table { background-color: white !important; }
-              h1, h2, h3, p, span, div, td { color: inherit !important; }
+              .email-body, .email-body * { background-color: #f0f4f8 !important; }
+              .email-container, .email-container * { background-color: #ffffff !important; }
+              .email-text { color: #333333 !important; }
+              .email-heading { color: #01183D !important; }
             }
           </style>
         </head>
-        <body style="margin: 0; padding: 0; background-color: #f0f4f8 !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;">
-          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+        <body class="email-body" bgcolor="#f0f4f8" style="margin: 0; padding: 0; background-color: #f0f4f8 !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#f0f4f8">
             <tr>
-              <td align="center" style="padding: 20px 10px; background-color: #f0f4f8 !important;">
-                <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width: 600px; background-color: #ffffff !important; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,55,153,0.08);">
+              <td align="center" bgcolor="#f0f4f8" style="padding: 20px 10px; background-color: #f0f4f8 !important;">
+                <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" class="email-container" bgcolor="#ffffff" style="max-width: 600px; background-color: #ffffff !important; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,55,153,0.08);">
                   
                   <!-- Header -->
                   <tr>
@@ -200,85 +207,89 @@ router.post('/', async (req: Request, res: Response): Promise<void> => {
                       </table>
                       
                       <!-- Contact Info -->
-                      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #ffffff !important; border: 2px solid #e8f4ff; border-radius: 10px; margin-bottom: 18px;">
+                      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="background-color: #ffffff !important; border: 2px solid #e8f4ff; border-radius: 10px; margin-bottom: 18px;">
                         <tr>
-                          <td style="padding: 18px 20px;">
-                            <h3 style="color: #01183D !important; margin: 0 0 12px; font-size: 15px; font-weight: 600; line-height: 1.3;">📞 Información de Contacto</h3>
-                            ${contactEmail ? `<p style="margin: 0 0 8px; line-height: 1.6; color: #333 !important; font-size: 14px;">📧 <a href="mailto:${contactEmail}" style="color: #003799 !important; text-decoration: none; font-weight: 500;">${contactEmail}</a></p>` : ''}
-                            ${contactPhone ? `<p style="margin: 0; line-height: 1.6; color: #333 !important; font-size: 14px;">📱 <a href="tel:${contactPhone}" style="color: #003799 !important; text-decoration: none; font-weight: 500;">${contactPhone}</a></p>` : ''}
+                          <td bgcolor="#ffffff" style="padding: 18px 20px; background-color: #ffffff !important;">
+                            <h3 class="email-heading" style="color: #01183D !important; margin: 0 0 12px; font-size: 15px; font-weight: 600; line-height: 1.3;">📞 Información de Contacto</h3>
+                            ${contactEmail ? `<p class="email-text" style="margin: 0 0 8px; line-height: 1.6; color: #333333 !important; font-size: 14px;">📧 <a href="mailto:${contactEmail}" style="color: #003799 !important; text-decoration: none; font-weight: 500;">${contactEmail}</a></p>` : ''}
+                            ${contactPhone ? `<p class="email-text" style="margin: 0; line-height: 1.6; color: #333333 !important; font-size: 14px;">📱 <a href="tel:${contactPhone}" style="color: #003799 !important; text-decoration: none; font-weight: 500;">${contactPhone}</a></p>` : ''}
                           </td>
                         </tr>
                       </table>
                       
                       <!-- Platform -->
                       ${platform ? `
-                      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #ffffff !important; border: 2px solid #e8f4ff; border-radius: 10px; margin-bottom: 18px;">
+                      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="background-color: #ffffff !important; border: 2px solid #e8f4ff; border-radius: 10px; margin-bottom: 18px;">
                         <tr>
-                          <td style="padding: 18px 20px;">
-                            <h3 style="color: #01183D !important; margin: 0 0 12px; font-size: 15px; font-weight: 600; line-height: 1.3;">🖥️ Plataforma</h3>
-                            <p style="margin: 0 0 8px; line-height: 1.6; color: #333 !important; font-size: 14px;"><strong style="color: #01183D !important;">Preferencia:</strong> <span style="display: inline-block; background: #00D3FF; color: #01183D !important; padding: 4px 12px; border-radius: 15px; font-size: 13px; font-weight: 600; line-height: 1.4;">${platform}</span></p>
-                            ${platformReason ? `<p style="margin: 0; line-height: 1.6; color: #555; font-size: 14px;">Razón: ${platformReason}</p>` : ''}
+                          <td bgcolor="#ffffff" style="padding: 18px 20px; background-color: #ffffff !important;">
+                            <h3 class="email-heading" style="color: #01183D !important; margin: 0 0 12px; font-size: 15px; font-weight: 600; line-height: 1.3;">🖥️ Plataforma</h3>
+                            <p class="email-text" style="margin: 0 0 8px; line-height: 1.6; color: #333333 !important; font-size: 14px;"><strong style="color: #01183D !important;">Preferencia:</strong> <span bgcolor="#00D3FF" style="display: inline-block; background-color: #00D3FF !important; color: #01183D !important; padding: 4px 12px; border-radius: 15px; font-size: 13px; font-weight: 600; line-height: 1.4;">${platform}</span></p>
+                            ${platformReason ? `<p class="email-text" style="margin: 0; line-height: 1.6; color: #555555 !important; font-size: 14px;">Razón: ${platformReason}</p>` : ''}
                           </td>
                         </tr>
                       </table>
                       ` : ''}
                       
                       <!-- Design -->
-                      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #ffffff !important; border: 2px solid #e8f4ff; border-radius: 10px; margin-bottom: 18px;">
+                      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="background-color: #ffffff !important; border: 2px solid #e8f4ff; border-radius: 10px; margin-bottom: 18px;">
                         <tr>
-                          <td style="padding: 18px 20px;">
-                            <h3 style="color: #01183D !important; margin: 0 0 12px; font-size: 15px; font-weight: 600; line-height: 1.3;">🎨 Diseño</h3>
-                            <p style="margin: 0 0 8px; line-height: 1.6; color: #333 !important; font-size: 14px;"><strong style="color: #01183D !important;">¿Tiene diseño?</strong> ${hasDesign || 'No especificado'}</p>
-                            ${visualIdentity ? `<p style="margin: 0 0 8px; line-height: 1.6; color: #333 !important; font-size: 14px;"><strong style="color: #01183D !important;">Identidad Visual:</strong> ${safeJsonParse(visualIdentity).join(', ')}</p>` : ''}
-                            ${inspirationUrls ? `<p style="margin: 0; line-height: 1.6; color: #333 !important; font-size: 14px;"><strong style="color: #01183D !important;">Referencias:</strong> ${inspirationUrls}</p>` : ''}
+                          <td bgcolor="#ffffff" style="padding: 18px 20px; background-color: #ffffff !important;">
+                            <h3 class="email-heading" style="color: #01183D !important; margin: 0 0 12px; font-size: 15px; font-weight: 600; line-height: 1.3;">🎨 Diseño</h3>
+                            <p class="email-text" style="margin: 0 0 8px; line-height: 1.6; color: #333333 !important; font-size: 14px;"><strong style="color: #01183D !important;">¿Tiene diseño?</strong> ${hasDesign || 'No especificado'}</p>
+                            ${visualIdentity ? `<p class="email-text" style="margin: 0 0 8px; line-height: 1.6; color: #333333 !important; font-size: 14px;"><strong style="color: #01183D !important;">Identidad Visual:</strong> ${safeJsonParse(visualIdentity).join(', ')}</p>` : ''}
+                            ${inspirationUrls ? `<p class="email-text" style="margin: 0; line-height: 1.6; color: #333333 !important; font-size: 14px;"><strong style="color: #01183D !important;">Referencias:</strong> ${inspirationUrls}</p>` : ''}
                           </td>
                         </tr>
                       </table>
                       
                       <!-- Content & Pages -->
-                      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #ffffff !important; border: 2px solid #e8f4ff; border-radius: 10px; margin-bottom: 18px;">
+                      ${(pageCount || pages || customPages || features || customFeatures) ? `
+                      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="background-color: #ffffff !important; border: 2px solid #e8f4ff; border-radius: 10px; margin-bottom: 18px;">
                         <tr>
-                          <td style="padding: 18px 20px;">
-                            <h3 style="color: #01183D !important; margin: 0 0 12px; font-size: 15px; font-weight: 600; line-height: 1.3;">📄 Contenido del Sitio</h3>
-                            ${pageCount ? `<p style="margin: 0 0 8px; line-height: 1.6; color: #333 !important; font-size: 14px;"><strong style="color: #01183D !important;">Cantidad de páginas:</strong> ${pageCount}</p>` : ''}
-                            ${pages ? `<p style="margin: 0 0 8px; line-height: 1.6; color: #333 !important; font-size: 14px;"><strong style="color: #01183D !important;">Páginas solicitadas:</strong><br>${safeJsonParse(pages).map((p: string) => `<span style="display: inline-block; background: #f0f4f8; color: #333 !important; padding: 4px 10px; border-radius: 12px; margin: 3px 3px 3px 0; font-size: 13px; line-height: 1.4;">${p}</span>`).join('')}</p>` : ''}
-                            ${features ? `<p style="margin: 0; line-height: 1.6; color: #333 !important; font-size: 14px;"><strong style="color: #01183D !important;">Funcionalidades:</strong><br>${safeJsonParse(features).map((f: string) => `<span style="display: inline-block; background: #e8f4ff; color: #01183D !important; padding: 4px 10px; border-radius: 12px; margin: 3px 3px 3px 0; font-size: 13px; line-height: 1.4;">✓ ${f}</span>`).join('')}</p>` : ''}
+                          <td bgcolor="#ffffff" style="padding: 18px 20px; background-color: #ffffff !important;">
+                            <h3 class="email-heading" style="color: #01183D !important; margin: 0 0 12px; font-size: 15px; font-weight: 600; line-height: 1.3;">📄 Contenido del Sitio</h3>
+                            ${pageCount ? `<p class="email-text" style="margin: 0 0 8px; line-height: 1.6; color: #333333 !important; font-size: 14px;"><strong style="color: #01183D !important;">Cantidad de páginas:</strong> ${pageCount}</p>` : ''}
+                            ${pages ? `<p class="email-text" style="margin: 0 0 8px; line-height: 1.6; color: #333333 !important; font-size: 14px;"><strong style="color: #01183D !important;">Páginas solicitadas:</strong><br>${safeJsonParse(pages).map((p: string) => `<span bgcolor="#f0f4f8" style="display: inline-block; background-color: #f0f4f8 !important; color: #333333 !important; padding: 4px 10px; border-radius: 12px; margin: 3px 3px 3px 0; font-size: 13px; line-height: 1.4;">${p}</span>`).join('')}</p>` : ''}
+                            ${customPages ? `<p class="email-text" style="margin: 0 0 8px; line-height: 1.6; color: #333333 !important; font-size: 14px;"><strong style="color: #01183D !important;">Páginas personalizadas:</strong><br><span bgcolor="#fffbeb" style="display: block; background-color: #fffbeb !important; color: #92400e !important; padding: 10px; border-radius: 8px; margin-top: 6px; font-size: 13px; border-left: 3px solid #f59e0b;">${customPages}</span></p>` : ''}
+                            ${features ? `<p class="email-text" style="margin: 0 0 8px; line-height: 1.6; color: #333333 !important; font-size: 14px;"><strong style="color: #01183D !important;">Funcionalidades:</strong><br>${safeJsonParse(features).map((f: string) => `<span bgcolor="#e8f4ff" style="display: inline-block; background-color: #e8f4ff !important; color: #01183D !important; padding: 4px 10px; border-radius: 12px; margin: 3px 3px 3px 0; font-size: 13px; line-height: 1.4;">✓ ${f}</span>`).join('')}</p>` : ''}
+                            ${customFeatures ? `<p class="email-text" style="margin: 0; line-height: 1.6; color: #333333 !important; font-size: 14px;"><strong style="color: #01183D !important;">Funcionalidades personalizadas:</strong><br><span bgcolor="#fffbeb" style="display: block; background-color: #fffbeb !important; color: #92400e !important; padding: 10px; border-radius: 8px; margin-top: 6px; font-size: 13px; border-left: 3px solid #f59e0b;">${customFeatures}</span></p>` : ''}
                           </td>
                         </tr>
                       </table>
+                      ` : ''}
                       
                       <!-- Store -->
                       ${hasStore ? `
-                      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: linear-gradient(135deg, #fff5e6 0%, #ffe8cc 100%); border-radius: 10px; margin-bottom: 18px; border-left: 4px solid #F59E0B;">
+                      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#fff5e6" style="background: linear-gradient(135deg, #fff5e6 0%, #ffe8cc 100%); background-color: #fff5e6 !important; border-radius: 10px; margin-bottom: 18px; border-left: 4px solid #F59E0B;">
                         <tr>
-                          <td style="padding: 18px 20px;">
-                            <h3 style="color: #01183D !important; margin: 0 0 12px; font-size: 15px; font-weight: 600; line-height: 1.3;">🛒 Tienda en Línea</h3>
-                            ${productCount ? `<p style="margin: 0 0 8px; line-height: 1.6; color: #333 !important; font-size: 14px;"><strong style="color: #01183D !important;">Cantidad de productos:</strong> ${productCount}</p>` : ''}
-                            ${storeFeatures ? `<p style="margin: 0; line-height: 1.6; color: #333 !important; font-size: 14px;"><strong style="color: #01183D !important;">Características de la tienda:</strong><br>${safeJsonParse(storeFeatures).map((f: string) => `<span style="display: inline-block; background-color: #ffffff !important; color: #333 !important; padding: 4px 10px; border-radius: 12px; margin: 3px 3px 3px 0; font-size: 13px; line-height: 1.4;">🛍️ ${f}</span>`).join('')}</p>` : ''}
+                          <td bgcolor="#fff5e6" style="padding: 18px 20px; background-color: #fff5e6 !important;">
+                            <h3 class="email-heading" style="color: #01183D !important; margin: 0 0 12px; font-size: 15px; font-weight: 600; line-height: 1.3;">🛒 Tienda en Línea</h3>
+                            ${productCount ? `<p class="email-text" style="margin: 0 0 8px; line-height: 1.6; color: #333333 !important; font-size: 14px;"><strong style="color: #01183D !important;">Cantidad de productos:</strong> ${productCount}</p>` : ''}
+                            ${storeFeatures ? `<p class="email-text" style="margin: 0; line-height: 1.6; color: #333333 !important; font-size: 14px;"><strong style="color: #01183D !important;">Características de la tienda:</strong><br>${safeJsonParse(storeFeatures).map((f: string) => `<span bgcolor="#ffffff" style="display: inline-block; background-color: #ffffff !important; color: #333333 !important; padding: 4px 10px; border-radius: 12px; margin: 3px 3px 3px 0; font-size: 13px; line-height: 1.4;">🛍️ ${f}</span>`).join('')}</p>` : ''}
                           </td>
                         </tr>
                       </table>
                       ` : ''}
                       
                       <!-- Support & Training -->
-                      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #ffffff !important; border: 2px solid #e8f4ff; border-radius: 10px; margin-bottom: 18px;">
+                      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="background-color: #ffffff !important; border: 2px solid #e8f4ff; border-radius: 10px; margin-bottom: 18px;">
                         <tr>
-                          <td style="padding: 18px 20px;">
-                            <h3 style="color: #01183D !important; margin: 0 0 12px; font-size: 15px; font-weight: 600; line-height: 1.3;">🎓 Soporte y Capacitación</h3>
-                            ${contentProvider ? `<p style="margin: 0 0 8px; line-height: 1.6; color: #333 !important; font-size: 14px;"><strong style="color: #01183D !important;">Proveedor de contenido:</strong> ${contentProvider}</p>` : ''}
-                            ${needsTraining ? `<p style="margin: 0 0 8px; line-height: 1.6; color: #333 !important; font-size: 14px;">✅ Requiere capacitación</p>` : ''}
-                            ${supportPeriod ? `<p style="margin: 0; line-height: 1.6; color: #333 !important; font-size: 14px;"><strong style="color: #01183D !important;">Periodo de soporte:</strong> ${supportPeriod}</p>` : ''}
+                          <td bgcolor="#ffffff" style="padding: 18px 20px; background-color: #ffffff !important;">
+                            <h3 class="email-heading" style="color: #01183D !important; margin: 0 0 12px; font-size: 15px; font-weight: 600; line-height: 1.3;">🎓 Soporte y Capacitación</h3>
+                            ${contentProvider ? `<p class="email-text" style="margin: 0 0 8px; line-height: 1.6; color: #333333 !important; font-size: 14px;"><strong style="color: #01183D !important;">Proveedor de contenido:</strong> ${contentProvider}</p>` : ''}
+                            ${needsTraining ? `<p class="email-text" style="margin: 0 0 8px; line-height: 1.6; color: #333333 !important; font-size: 14px;">✅ Requiere capacitación</p>` : ''}
+                            ${supportPeriod ? `<p class="email-text" style="margin: 0; line-height: 1.6; color: #333333 !important; font-size: 14px;"><strong style="color: #01183D !important;">Periodo de soporte:</strong> ${supportPeriod}</p>` : ''}
                           </td>
                         </tr>
                       </table>
                       
                       <!-- Timeline -->
                       ${launchDate ? `
-                      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: linear-gradient(135deg, #e6f7ff 0%, #cceeff 100%); border-radius: 10px; margin-bottom: 18px; border-left: 4px solid #003799;">
+                      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#e6f7ff" style="background: linear-gradient(135deg, #e6f7ff 0%, #cceeff 100%); background-color: #e6f7ff !important; border-radius: 10px; margin-bottom: 18px; border-left: 4px solid #003799;">
                         <tr>
-                          <td style="padding: 18px 20px;">
-                            <h3 style="color: #01183D !important; margin: 0 0 12px; font-size: 15px; font-weight: 600; line-height: 1.3;">⏰ Tiempos</h3>
-                            <p style="margin: 0; line-height: 1.6; color: #333 !important; font-size: 14px;">📅 <strong style="color: #01183D !important;">Fecha de lanzamiento deseada:</strong> ${launchDate}</p>
+                          <td bgcolor="#e6f7ff" style="padding: 18px 20px; background-color: #e6f7ff !important;">
+                            <h3 class="email-heading" style="color: #01183D !important; margin: 0 0 12px; font-size: 15px; font-weight: 600; line-height: 1.3;">⏰ Tiempos</h3>
+                            <p class="email-text" style="margin: 0; line-height: 1.6; color: #333333 !important; font-size: 14px;">📅 <strong style="color: #01183D !important;">Fecha de lanzamiento deseada:</strong> ${launchDate}</p>
                           </td>
                         </tr>
                       </table>
@@ -286,22 +297,22 @@ router.post('/', async (req: Request, res: Response): Promise<void> => {
                       
                       <!-- Additional Info -->
                       ${additionalInfo ? `
-                      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #ffffff !important; border: 2px solid #e8f4ff; border-radius: 10px; margin-bottom: 18px;">
+                      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="background-color: #ffffff !important; border: 2px solid #e8f4ff; border-radius: 10px; margin-bottom: 18px;">
                         <tr>
-                          <td style="padding: 18px 20px;">
-                            <h3 style="color: #01183D !important; margin: 0 0 12px; font-size: 15px; font-weight: 600; line-height: 1.3;">💬 Información Adicional</h3>
-                            <p style="color: #333 !important; line-height: 1.6; margin: 0; font-size: 14px;">${additionalInfo}</p>
+                          <td bgcolor="#ffffff" style="padding: 18px 20px; background-color: #ffffff !important;">
+                            <h3 class="email-heading" style="color: #01183D !important; margin: 0 0 12px; font-size: 15px; font-weight: 600; line-height: 1.3;">💬 Información Adicional</h3>
+                            <p class="email-text" style="color: #333333 !important; line-height: 1.6; margin: 0; font-size: 14px;">${additionalInfo}</p>
                           </td>
                         </tr>
                       </table>
                       ` : ''}
                       
                       <!-- Request ID & Timestamp -->
-                      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: linear-gradient(135deg, #f8f9ff 0%, #e8f4ff 100%); border-radius: 10px; margin-bottom: 22px; border-left: 4px solid #00D3FF;">
+                      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#f8f9ff" style="background: linear-gradient(135deg, #f8f9ff 0%, #e8f4ff 100%); background-color: #f8f9ff !important; border-radius: 10px; margin-bottom: 22px; border-left: 4px solid #00D3FF;">
                         <tr>
-                          <td style="padding: 18px 20px;">
-                            <p style="margin: 0 0 10px; line-height: 1.6; color: #01183D !important; font-size: 14px;"><strong>🆔 ID de Solicitud:</strong> <code style="background-color: #ffffff !important; padding: 4px 8px; border-radius: 4px; font-family: 'Courier New', monospace; color: #01183D !important; font-size: 13px;">${quoteRequest.id}</code></p>
-                            <p style="margin: 0; line-height: 1.6; color: #666 !important; font-size: 14px;"><strong>📅 Recibido:</strong> ${new Date().toLocaleString('es-MX', { dateStyle: 'full', timeStyle: 'short' })}</p>
+                          <td bgcolor="#f8f9ff" style="padding: 18px 20px; background-color: #f8f9ff !important;">
+                            <p class="email-text" style="margin: 0 0 10px; line-height: 1.6; color: #01183D !important; font-size: 14px;"><strong>🆔 ID de Solicitud:</strong> <code bgcolor="#ffffff" style="background-color: #ffffff !important; padding: 4px 8px; border-radius: 4px; font-family: 'Courier New', monospace; color: #01183D !important; font-size: 13px;">${quoteRequest.id}</code></p>
+                            <p class="email-text" style="margin: 0; line-height: 1.6; color: #666666 !important; font-size: 14px;"><strong>📅 Recibido:</strong> ${new Date().toLocaleString('es-MX', { dateStyle: 'full', timeStyle: 'short' })}</p>
                           </td>
                         </tr>
                       </table>
