@@ -42,6 +42,8 @@ const variantClasses = {
           <img 
             src="/img/white-logo.webp" 
             alt="Gemini Software Logo" 
+            width="350"
+            height="72"
             class="w-full h-auto object-contain transition-transform duration-300 group-hover:scale-110"
           />
           <div class="absolute inset-0 bg-cyan-500/10 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -83,8 +85,8 @@ const variantClasses = {
         </a>
       </div>
 
-      <!-- AI Search (visible on all screens) -->
-      <AISearch client:load />
+      <!-- AI Search (visible on all screens) - Deferred for better initial page load -->
+      <AISearch client:idle />
 
       <!-- Mobile Menu Button -->
       <button
