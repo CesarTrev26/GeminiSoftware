@@ -65,9 +65,16 @@ export default defineConfig({
           drop_debugger: true,
         },
       },
-      cssMinify: true, // Keep default CSS minification
+      cssMinify: true,
       rollupOptions: {
         output: {
+          assetFileNames: (assetInfo) => {
+            // Optimize asset naming for better caching
+            if (assetInfo.name && assetInfo.name.endsWith('.css')) {
+              return 'assets/[name].[hash].css';
+            }
+            return 'assets/[name].[hash][extname]';
+          },
           manualChunks: (id) => {
             // Split vendor libraries into separate chunks
             if (id.includes('node_modules')) {

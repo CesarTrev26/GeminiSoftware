@@ -81,10 +81,22 @@ const normalizedCanonical = canonicalURL
   <meta name="theme-color" content="#01183D" />
   <meta name="msapplication-TileColor" content="#01183D" />
   
+  <!-- ========== Critical CSS Inline ========== -->
+  <style>
+    /* Critical above-the-fold styles */
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{-webkit-text-size-adjust:100%;font-family:Montserrat,system-ui,-apple-system,sans-serif}
+    body{margin:0;background:#fff;color:#333;overflow-x:hidden}
+    .navbar{position:fixed;top:0;width:100%;z-index:1000;background:rgba(1,24,61,.95);backdrop-filter:blur(10px)}
+    .hero{min-height:100vh;display:flex;align-items:center;justify-content:center}
+  </style>
+
   <!-- ========== Preconnect & Preload (Optimized) ========== -->
   <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" as="style" fetchpriority="high" onload="this.onload=null;this.rel='stylesheet'" />
+  
+  <!-- Defer non-critical font loading -->
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" /></noscript>
   
   <!-- Preload critical hero image for LCP -->
@@ -372,6 +384,31 @@ const normalizedCanonical = canonicalURL
         }
       );
     });
+  </script>
+
+  <!-- Optimize CSS Loading: Defer non-critical CSS -->
+  <script is:inline>
+    // Load non-critical CSS after page load
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(() => {
+        const links = document.querySelectorAll('link[rel="preload"][as="style"]');
+        links.forEach(link => {
+          if (link.getAttribute('onload')) {
+            link.onload();
+          }
+        });
+      });
+    } else {
+      // Fallback for browsers without requestIdleCallback
+      window.addEventListener('load', () => {
+        const links = document.querySelectorAll('link[rel="preload"][as="style"]');
+        links.forEach(link => {
+          if (link.getAttribute('onload')) {
+            link.onload();
+          }
+        });
+      });
+    }
   </script>
 
   <!-- AI Chat Component -->
