@@ -89,32 +89,39 @@ const normalizedCanonical = canonicalURL
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'G-58TV16E6FT');
-    
+  </script>
+  <script is:inline>
     // Track contact form submissions
     window.trackContactSubmission = function() {
-      gtag('event', 'form_submit', {
-        event_category: 'Contact',
-        event_label: 'Contact Form',
-        value: 1
-      });
+      if (window.gtag) {
+        gtag('event', 'form_submit', {
+          event_category: 'Contact',
+          event_label: 'Contact Form',
+          value: 1
+        });
+      }
     };
     
     // Track WhatsApp clicks
     window.trackWhatsAppClick = function() {
-      gtag('event', 'click', {
-        event_category: 'Contact',
-        event_label: 'WhatsApp Click',
-        value: 1
-      });
+      if (window.gtag) {
+        gtag('event', 'click', {
+          event_category: 'Contact',
+          event_label: 'WhatsApp Click',
+          value: 1
+        });
+      }
     };
     
     // Track service clicks
     window.trackServiceClick = function(serviceName) {
-      gtag('event', 'click', {
-        event_category: 'Services',
-        event_label: serviceName,
-        value: 1
-      });
+      if (window.gtag) {
+        gtag('event', 'click', {
+          event_category: 'Services',
+          event_label: serviceName,
+          value: 1
+        });
+      }
     };
   </script>
   
