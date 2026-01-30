@@ -169,6 +169,7 @@ function AIChat() {
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
         animate={isOpen ? { rotate: 0 } : { rotate: 0 }}
+        aria-label={isOpen ? "Cerrar chat de ayuda" : "Abrir chat de ayuda"}
       >
         <AnimatePresence mode="wait">
           {isOpen ? (
