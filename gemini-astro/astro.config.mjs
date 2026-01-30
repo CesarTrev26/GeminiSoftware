@@ -8,7 +8,7 @@ import compress from 'astro-compress';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://geminisoftware.mx',
-  output: 'static',
+  output: 'server',
   adapter: vercel({
     runtime: 'nodejs20.x',
     webAnalytics: {
