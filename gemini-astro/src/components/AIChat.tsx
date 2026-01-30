@@ -2,6 +2,13 @@ import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import AIChat3DBackground from './AIChat3DBackground';
 
+// Declare gtag type for Google Analytics
+declare global {
+  interface Window {
+    gtag?: (command: string, eventName: string, params?: Record<string, unknown>) => void;
+  }
+}
+
 interface Message {
   role: 'user' | 'assistant';
   content: string;
@@ -75,6 +82,14 @@ function AIChat() {
     if (isOpen) {
       inputRef.current?.focus();
       
+      // Track chat open event for Google Analytics
+      if (typeof window !== 'undefined' && window.gtag) {
+        window.gtag('event', 'chat_opened', {
+          event_category: 'engagement',
+          event_label: 'AI Chat Widget'
+        });
+      }
+      
       // Lock body scroll on mobile when chat is open
       if (typeof window !== 'undefined' && window.innerWidth < 640) {
         document.body.style.overflow = 'hidden';
@@ -119,7 +134,13 @@ function AIChat() {
 
   const sendMessage = async (text: string) => {
     if (!text.trim() || isLoading) return;
-
+    // Track message sent event
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', 'message_sent', {
+        event_category: 'engagement',
+        event_label: 'AI Chat Message'
+      });
+    }
     const userMessage: Message = {
       role: 'user',
       content: text,

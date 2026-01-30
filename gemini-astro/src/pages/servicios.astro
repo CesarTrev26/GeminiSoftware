@@ -301,6 +301,7 @@ const colorClasses: Record<string, { gradient: string; bg: string; text: string;
             href="https://wa.me/528136600062"
             target="_blank"
             class="px-8 py-4 border border-white/20 text-white font-medium rounded-full transition-all duration-300 hover:bg-white/10"
+            onclick="typeof window.trackWhatsAppClick === 'function' && window.trackWhatsAppClick()"
           >
             Hablar por WhatsApp
           </a>
