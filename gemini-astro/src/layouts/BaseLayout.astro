@@ -98,7 +98,7 @@ const normalizedCanonical = canonicalURL
   <link rel="dns-prefetch" href="https://gemini-backend.fly.dev" />
   <link rel="preconnect" href="https://gemini-backend.fly.dev" crossorigin />
   
-  <!-- Preload critical hero image for LCP - preload sm for mobile -->
+  <!-- Preload critical hero image for LCP -->
   {Astro.url.pathname === '/' && (
     <>
       <link rel="preload" href="/img/Laptop-full-sm.webp" as="image" type="image/webp" media="(max-width: 640px)" fetchpriority="high" />
@@ -112,11 +112,6 @@ const normalizedCanonical = canonicalURL
       <link rel="preload" href="https://gemini-backend.fly.dev/api/services" as="fetch" crossorigin />
       <link rel="preload" href="https://gemini-backend.fly.dev/api/projects?featured=true" as="fetch" crossorigin />
     </>
-  )}
-  
-  <!-- Preload critical hero image for LCP -->
-  {Astro.url.pathname === '/' && (
-    <link rel="preload" href="/img/Laptop-full.webp" as="image" type="image/webp" fetchpriority="high" />
   )}
   
   <!-- ========== Structured Data (JSON-LD) ========== -->
@@ -426,26 +421,7 @@ const normalizedCanonical = canonicalURL
     }
   </script>
 
-  <!-- AI Chat Component - Hidden on mobile for 3s to not block LCP -->
-  <div class="ai-chat-delayed">
-    <AIChatWrapper client:idle />
-  </div>
-  <style>
-    /* Hide AI chat on mobile initially to prevent React from blocking LCP */
-    @media (max-width: 1023px) {
-      .ai-chat-delayed {
-        opacity: 0;
-        pointer-events: none;
-        animation: delayedFadeIn 0.3s ease-out 2s forwards;
-      }
-    }
-    
-    @keyframes delayedFadeIn {
-      to {
-        opacity: 1;
-        pointer-events: auto;
-      }
-    }
-  </style>
+  <!-- AI Chat Component -->
+  <AIChatWrapper client:idle />
 </body>
 </html>
