@@ -116,8 +116,8 @@ export default function AIChat3DBackground({ burst = false, chatScroll = 0, isOp
         const containerWidth = containerRect.width;
         const containerHeight = containerRect.height;
 
-        // Apply scroll drag effect (use chatScroll if provided, else window scroll)
-        const currentScroll = chatScroll || window.scrollY;
+        // Apply scroll drag effect (use chatScroll when chat is open, else window scroll)
+        const currentScroll = isOpen ? chatScroll : window.scrollY;
         const scrollDelta = currentScroll - lastScrollY.current;
         lastScrollY.current = currentScroll;
 
