@@ -15,6 +15,9 @@ export default defineConfig({
       enabled: true
     }
   }),
+  build: {
+    inlineStylesheets: 'auto',
+  },
   integrations: [
     react(),
     tailwind(),
