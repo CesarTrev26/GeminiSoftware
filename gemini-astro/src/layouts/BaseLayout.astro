@@ -388,14 +388,6 @@ const normalizedCanonical = canonicalURL
 
   <!-- Optimize CSS Loading: Defer non-critical CSS -->
   <script is:inline>
-    // Register Service Worker for asset caching
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js')
-          .catch(err => console.log('SW registration failed:', err));
-      });
-    }
-
     // Load non-critical CSS after page load
     if ('requestIdleCallback' in window) {
       requestIdleCallback(() => {
