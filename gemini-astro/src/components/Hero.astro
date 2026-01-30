@@ -204,14 +204,12 @@ const {
     if ('connection' in navigator && (navigator as any).connection?.saveData) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     
-    // NOTE: We use transform-only animations (no opacity) to prevent CLS
-    // Elements are always visible, just animate their position
     const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
     
-    tl.from('.hero-badge', { y: 20, duration: 0.5 })
-      .from('.hero-title span', { y: 30, stagger: 0.08, duration: 0.5 }, '-=0.3')
-      .from('.hero-subtitle', { y: 20, duration: 0.5 }, '-=0.3')
-      .from('.hero-trust > div', { y: 15, stagger: 0.05, duration: 0.4 }, '-=0.2');
+    tl.from('.hero-badge', { opacity: 0, y: 30, duration: 0.6 })
+      .from('.hero-title span', { opacity: 0, y: 50, stagger: 0.1, duration: 0.6 }, '-=0.4')
+      .from('.hero-subtitle', { opacity: 0, y: 30, duration: 0.6 }, '-=0.4')
+      .from('.hero-trust > div', { opacity: 0, y: 20, stagger: 0.08, duration: 0.4 }, '-=0.3');
     
     // Parallax effect on orbs - defer to idle
     requestIdleCallback(() => {
@@ -247,6 +245,15 @@ const {
 </script>
 
 <style>
+  /* Prevent CLS by pre-allocating space and using will-change */
+  .hero-badge,
+  .hero-title,
+  .hero-subtitle,
+  .hero-trust {
+    will-change: transform;
+    /* Don't set will-change: opacity as it can cause CLS, let GSAP handle it */
+  }
+  
   /* Fast CSS fade-in for hero laptop - improves LCP while keeping visual effect */
   @keyframes heroFadeIn {
     from {
@@ -260,7 +267,8 @@ const {
   }
 
   .hero-visual {
-    animation: heroFadeIn 1s ease-out forwards;
+    animation: heroFadeIn 0.8s ease-out forwards;
+    will-change: transform, opacity;
   }
 
   /* Respect user preferences */

@@ -97,9 +97,9 @@ const normalizedCanonical = canonicalURL
   <link rel="dns-prefetch" href="https://gemini-backend.fly.dev" />
   <link rel="preconnect" href="https://gemini-backend.fly.dev" crossorigin />
   
-  <!-- Preload critical fonts to prevent CLS -->
-  <link rel="preload" href="/fonts/Montserrat-Light.ttf" as="font" type="font/ttf" crossorigin />
-  <link rel="preload" href="/fonts/MONTSERRATALT1-LIGHT.OTF" as="font" type="font/otf" crossorigin />
+  <!-- Load fonts async to not block render -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" /></noscript>
   
   <!-- Preload critical hero image for LCP (responsive) -->
   {Astro.url.pathname === '/' && (
