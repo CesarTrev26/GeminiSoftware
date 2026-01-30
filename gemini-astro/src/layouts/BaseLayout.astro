@@ -376,26 +376,6 @@ const normalizedCanonical = canonicalURL
       gsap.ticker.lagSmoothing(0);
     }
 
-    // Fix mobile viewport height and ScrollTrigger refresh
-    let resizeTimer: number;
-    const handleResize = () => {
-      clearTimeout(resizeTimer);
-      resizeTimer = window.setTimeout(() => {
-        ScrollTrigger.refresh();
-      }, 250);
-    };
-
-    // Refresh ScrollTrigger on resize and orientation change (mobile)
-    window.addEventListener('resize', handleResize);
-    window.addEventListener('orientationchange', () => {
-      setTimeout(() => ScrollTrigger.refresh(), 300);
-    });
-
-    // Initial refresh after fonts and images load
-    window.addEventListener('load', () => {
-      setTimeout(() => ScrollTrigger.refresh(), 100);
-    });
-
     // Reveal animations on scroll
     const revealElements = document.querySelectorAll('.reveal');
     revealElements.forEach((el) => {
