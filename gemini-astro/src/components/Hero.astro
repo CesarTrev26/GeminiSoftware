@@ -358,8 +358,7 @@ const {
   }
   
   .hero-cta {
-    animation: fadeInUpSimple 0.6s ease 0.8s forwards;
-    opacity: 0;
+    /* Removed opacity: 0 to improve LCP - buttons visible immediately */
   }
   
   @keyframes fadeInUpSimple {

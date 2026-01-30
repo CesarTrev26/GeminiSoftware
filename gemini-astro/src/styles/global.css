@@ -20,7 +20,7 @@
   font-family: 'MontserratAlt1';
   src: url('/fonts/MONTSERRATALT1-LIGHT.OTF') format('opentype');
   font-weight: 300;
-  font-display: block;
+  font-display: swap;
 }
 
 @font-face {
@@ -34,7 +34,7 @@
   font-family: 'Montserrat';
   src: url('/fonts/Montserrat-Light.ttf') format('truetype');
   font-weight: 300;
-  font-display: block;
+  font-display: swap;
 }
 
 @font-face {
