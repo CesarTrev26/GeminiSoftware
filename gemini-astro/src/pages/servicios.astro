@@ -8,6 +8,7 @@ import Footer from '@/components/Footer.astro';
 const seoData = {
   title: 'Servicios | Gemini Software - Desarrollo Web, Apps, Software y Marketing Digital',
   description: 'Descubre nuestros servicios: desarrollo web, aplicaciones móviles, software a medida, marketing digital, diseño UX/UI y mantenimiento. Soluciones tecnológicas para tu empresa.',
+  canonicalURL: 'https://geminisoftware.mx/servicios',
 };
 
 const services = [
@@ -312,3 +313,10 @@ const colorClasses: Record<string, { gradient: string; bg: string; text: string;
   
   <Footer />
 </BaseLayout>
+
+<script is:inline>
+  // Redirect .html to clean URL if accessed directly
+  if (window.location.pathname.endsWith('.html')) {
+    window.location.replace(window.location.pathname.replace('.html', ''));
+  }
+</script>

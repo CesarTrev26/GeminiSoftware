@@ -9,6 +9,7 @@ import ResponsiveImage from '@/components/ResponsiveImage.astro';
 const seoData = {
   title: 'Portafolio | Gemini Software - Proyectos de Desarrollo Web, Apps y Software',
   description: 'Descubre nuestro portafolio de proyectos: desarrollo web, aplicaciones móviles, software empresarial y más. Casos de éxito reales de empresas en México y Latinoamérica.',
+  canonicalURL: 'https://geminisoftware.mx/portfolio',
 };
 
 // Fetch projects from backend API
@@ -652,3 +653,10 @@ const featuredProjects = projects.filter((p: any) => p.featured);
     overflow: hidden;
   }
 </style>
+
+<script is:inline>
+  // Redirect .html to clean URL if accessed directly
+  if (window.location.pathname.endsWith('.html')) {
+    window.location.replace(window.location.pathname.replace('.html', ''));
+  }
+</script>
