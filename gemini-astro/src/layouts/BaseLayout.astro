@@ -81,48 +81,42 @@ const normalizedCanonical = canonicalURL
   <meta name="theme-color" content="#01183D" />
   <meta name="msapplication-TileColor" content="#01183D" />
 
-    <!-- ========== Google Analytics (Deferred) ========== -->
-  {import.meta.env.PUBLIC_GA_ID && (
-    <>
-      <script async src={`https://www.googletagmanager.com/gtag/js?id=${import.meta.env.PUBLIC_GA_ID}`}></script>
-      <script define:vars={{ gaId: import.meta.env.PUBLIC_GA_ID }}>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', gaId, {
-          page_path: window.location.pathname,
-          anonymize_ip: true,
-        });
-        
-        // Track contact form submissions
-        window.trackContactSubmission = function() {
-          gtag('event', 'form_submit', {
-            event_category: 'Contact',
-            event_label: 'Contact Form',
-            value: 1
-          });
-        };
-        
-        // Track WhatsApp clicks
-        window.trackWhatsAppClick = function() {
-          gtag('event', 'click', {
-            event_category: 'Contact',
-            event_label: 'WhatsApp Click',
-            value: 1
-          });
-        };
-        
-        // Track service clicks
-        window.trackServiceClick = function(serviceName) {
-          gtag('event', 'click', {
-            event_category: 'Services',
-            event_label: serviceName,
-            value: 1
-          });
-        };
-      </script>
-    </>
-  )}
+  <!-- ========== Google Analytics ========== -->
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-58TV16E6FT"></script>
+  <script is:inline>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-58TV16E6FT');
+    
+    // Track contact form submissions
+    window.trackContactSubmission = function() {
+      gtag('event', 'form_submit', {
+        event_category: 'Contact',
+        event_label: 'Contact Form',
+        value: 1
+      });
+    };
+    
+    // Track WhatsApp clicks
+    window.trackWhatsAppClick = function() {
+      gtag('event', 'click', {
+        event_category: 'Contact',
+        event_label: 'WhatsApp Click',
+        value: 1
+      });
+    };
+    
+    // Track service clicks
+    window.trackServiceClick = function(serviceName) {
+      gtag('event', 'click', {
+        event_category: 'Services',
+        event_label: serviceName,
+        value: 1
+      });
+    };
+  </script>
   
   <!-- ========== Critical CSS Inline ========== -->
   <style>
