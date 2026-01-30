@@ -88,6 +88,8 @@ function AIChat() {
           document.body.style.overflow = '';
           window.scrollTo(0, scrollPositionRef.current);
         }
+        // Reset chat scroll to prevent interference with page scrolling
+        setChatScroll(0);
       };
     }
   }, [isOpen]);

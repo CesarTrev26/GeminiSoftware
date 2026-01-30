@@ -27,6 +27,11 @@ export default function AIChat3DBackground({ burst = false, chatScroll = 0 }: { 
     }
   }, [burst]);
 
+  // Reset scroll tracking when switching between chat scroll and window scroll
+  useEffect(() => {
+    lastScrollY.current = chatScroll || window.scrollY;
+  }, [chatScroll]);
+
   const icons = [
     // Code icon
     <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">

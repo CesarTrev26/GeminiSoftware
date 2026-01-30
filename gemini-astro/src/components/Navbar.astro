@@ -218,6 +218,11 @@ const variantClasses = {
     window.addEventListener('scroll', () => {
       const currentScroll = window.scrollY;
       
+      // Skip scroll handling if body is locked (menu/chat open)
+      if (document.body.style.position === 'fixed') {
+        return;
+      }
+      
       if (navbar) {
         // Add background when scrolled
         if (currentScroll > 50) {
@@ -243,6 +248,7 @@ const variantClasses = {
 
     // Mobile menu toggle
     let scrollPosition = 0;
+    let wasBodyLocked = false;
     
     function toggleMenu() {
       isMenuOpen = !isMenuOpen;
@@ -261,6 +267,7 @@ const variantClasses = {
         if (isMenuOpen) {
           // Save current scroll position
           scrollPosition = window.scrollY;
+          wasBodyLocked = true;
           
           mobileMenu.classList.remove('opacity-0', 'pointer-events-none');
           mobileMenu.classList.add('opacity-100', 'pointer-events-auto');
@@ -289,12 +296,15 @@ const variantClasses = {
           mobileMenu.classList.add('opacity-0', 'pointer-events-none');
           mobileMenu.classList.remove('opacity-100', 'pointer-events-auto');
           
-          // Restore scroll position
-          document.body.style.position = '';
-          document.body.style.top = '';
-          document.body.style.width = '';
-          document.body.style.overflow = '';
-          window.scrollTo(0, scrollPosition);
+          // Restore scroll position only if body was locked
+          if (wasBodyLocked) {
+            document.body.style.position = '';
+            document.body.style.top = '';
+            document.body.style.width = '';
+            document.body.style.overflow = '';
+            window.scrollTo(0, scrollPosition);
+            wasBodyLocked = false;
+          }
           
           // Animate menu lines back
           if (menuLines[0]) {
