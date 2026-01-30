@@ -426,7 +426,26 @@ const normalizedCanonical = canonicalURL
     }
   </script>
 
-  <!-- AI Chat Component -->
-  <AIChatWrapper client:idle />
+  <!-- AI Chat Component - Hidden on mobile for 3s to not block LCP -->
+  <div class="ai-chat-delayed">
+    <AIChatWrapper client:idle />
+  </div>
+  <style>
+    /* Hide AI chat on mobile initially to prevent React from blocking LCP */
+    @media (max-width: 1023px) {
+      .ai-chat-delayed {
+        opacity: 0;
+        pointer-events: none;
+        animation: delayedFadeIn 0.3s ease-out 2s forwards;
+      }
+    }
+    
+    @keyframes delayedFadeIn {
+      to {
+        opacity: 1;
+        pointer-events: auto;
+      }
+    }
+  </style>
 </body>
 </html>

@@ -86,8 +86,10 @@ const variantClasses = {
         </a>
       </div>
 
-      <!-- AI Search (visible on all screens) -->
-      <AISearch client:idle />
+      <!-- AI Search - Hidden on mobile for 3s to not block LCP -->
+      <div class="ai-search-delayed">
+        <AISearch client:idle />
+      </div>
 
       <!-- Mobile Menu Button -->
       <button
@@ -333,6 +335,22 @@ const variantClasses = {
 </script>
 
 <style>
+  /* Hide AI search on mobile initially to prevent React from blocking LCP */
+  @media (max-width: 1023px) {
+    .ai-search-delayed {
+      opacity: 0;
+      pointer-events: none;
+      animation: delayedFadeIn 0.3s ease-out 2s forwards;
+    }
+  }
+  
+  @keyframes delayedFadeIn {
+    to {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+  
   .menu-line {
     transform-origin: center;
   }

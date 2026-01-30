@@ -227,11 +227,15 @@ const {
     
     const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
     
-    // Batch animations to reduce reflows
-    tl.from('.hero-badge', { opacity: 0, y: 30, duration: 0.6 })
-      .from('.hero-title span', { opacity: 0, y: 50, stagger: 0.1, duration: 0.6 }, '-=0.4')
-      .from('.hero-subtitle', { opacity: 0, y: 30, duration: 0.6 }, '-=0.4')
-      .from('.hero-trust > div', { opacity: 0, y: 20, stagger: 0.08, duration: 0.4 }, '-=0.3');
+    // On mobile: extremely fast animations (0.2s) for better LCP
+    const isMobile = window.innerWidth <= 768;
+    const duration = isMobile ? 0.2 : 0.4;
+    const stagger = isMobile ? 0.03 : 0.05;
+    
+    tl.from('.hero-badge', { opacity: 0, y: 30, duration: duration })
+      .from('.hero-title span', { opacity: 0, y: 50, stagger: stagger, duration: duration }, '-=0.15')
+      .from('.hero-subtitle', { opacity: 0, y: 30, duration: duration }, '-=0.15')
+      .from('.hero-trust > div', { opacity: 0, y: 20, stagger: stagger, duration: duration }, '-=0.1');
   };
   
   // Defer parallax until after initial render - reduces forced reflows
@@ -261,12 +265,12 @@ const {
     });
   };
   
-  // Run hero animations quickly, defer parallax to reduce reflows
+  // Run hero animations immediately for better LCP, defer parallax to reduce reflows
   if ('requestIdleCallback' in window) {
-    requestIdleCallback(initHeroAnimations, { timeout: 500 });
+    requestIdleCallback(initHeroAnimations, { timeout: 50 });
     requestIdleCallback(initParallax, { timeout: 2000 });
   } else {
-    setTimeout(initHeroAnimations, 100);
+    setTimeout(initHeroAnimations, 10);
     setTimeout(initParallax, 1000);
   }
 </script>
@@ -281,11 +285,11 @@ const {
     /* Don't set will-change: opacity as it can cause CLS, let GSAP handle it */
   }
   
-  /* Fast CSS fade-in for hero laptop - improves LCP while keeping visual effect */
+  /* Fast CSS fade-in for hero laptop */
   @keyframes heroFadeIn {
     from {
       opacity: 0;
-      transform: scale(0.95);
+      transform: scale(0.98);
     }
     to {
       opacity: 1;
@@ -293,9 +297,20 @@ const {
     }
   }
 
-  .hero-visual {
-    animation: heroFadeIn 0.8s ease-out forwards;
-    will-change: transform, opacity;
+  /* On mobile: extremely fast animation (0.15s) for better LCP */
+  @media (max-width: 768px) {
+    .hero-visual {
+      animation: heroFadeIn 0.15s ease-out forwards;
+      will-change: transform, opacity;
+    }
+  }
+
+  /* On desktop: slightly longer animation (0.4s) */
+  @media (min-width: 769px) {
+    .hero-visual {
+      animation: heroFadeIn 0.4s ease-out forwards;
+      will-change: transform, opacity;
+    }
   }
 
   /* Respect user preferences */
