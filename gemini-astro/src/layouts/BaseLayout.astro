@@ -83,23 +83,20 @@ const normalizedCanonical = canonicalURL
   
   <!-- ========== Critical CSS Inline ========== -->
   <style>
-    /* Critical above-the-fold styles */
+    /* Critical above-the-fold styles - must render immediately */
     *{box-sizing:border-box;margin:0;padding:0}
-    html{-webkit-text-size-adjust:100%;font-family:Montserrat,system-ui,-apple-system,sans-serif}
-    body{margin:0;background:#fff;color:#333;overflow-x:hidden}
+    html{-webkit-text-size-adjust:100%;font-family:system-ui,-apple-system,sans-serif}
+    body{margin:0;background:#01183d;color:#fff;overflow-x:hidden}
+    .hero-section{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#01183d 0%,#003799 50%,#00d3ff 100%);position:relative}
+    .container{max-width:1280px;margin:0 auto;padding:0 1rem}
     .navbar{position:fixed;top:0;width:100%;z-index:1000;background:rgba(1,24,61,.95);backdrop-filter:blur(10px)}
-    .hero{min-height:100vh;display:flex;align-items:center;justify-content:center}
+    /* Ensure text is visible even before custom fonts load */
+    .hero-title,.hero-subtitle{font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif}
   </style>
 
   <!-- ========== Preconnect & Preload (Optimized) ========== -->
-  <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="dns-prefetch" href="https://gemini-backend.fly.dev" />
   <link rel="preconnect" href="https://gemini-backend.fly.dev" crossorigin />
-  
-  <!-- Load fonts async to not block render -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'" />
-  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" /></noscript>
   
   <!-- Preload critical hero image for LCP (responsive) -->
   {Astro.url.pathname === '/' && (
