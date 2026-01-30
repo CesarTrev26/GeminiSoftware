@@ -20,6 +20,16 @@ export default defineConfig({
     tailwind(),
     sitemap({
       filter: (page) => !page.includes('/admin'),
+      changefreq: 'weekly',
+      priority: 0.7,
+      lastmod: new Date(),
+      customPages: [
+        'https://geminisoftware.mx/',
+        'https://geminisoftware.mx/portfolio',
+        'https://geminisoftware.mx/servicios',
+        'https://geminisoftware.mx/contacto',
+        'https://geminisoftware.mx/cotizar',
+      ],
     }),
     compress({
       CSS: true,

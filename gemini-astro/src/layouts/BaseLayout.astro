@@ -22,6 +22,11 @@ const {
 
 const siteURL = 'https://geminisoftware.mx';
 const fullImageURL = image.startsWith('http') ? image : `${siteURL}${image}`;
+
+// Normalize canonical URL: remove trailing slash (except for homepage) and ensure no www
+const normalizedCanonical = canonicalURL
+  .replace(/^https?:\/\/www\./, 'https://')  // Remove www
+  .replace(/\/$/, '') || 'https://geminisoftware.mx'; // Remove trailing slash (except root)
 ---
 
 <!DOCTYPE html>
@@ -44,14 +49,14 @@ const fullImageURL = image.startsWith('http') ? image : `${siteURL}${image}`;
   <meta name="keywords" content="desarrollo web, desarrollo de software, apps móviles, aplicaciones web, marketing digital, diseño web, UX/UI, SEO, CRM, ERP, software a medida, agencia digital, Monterrey, México, Nuevo León, Latinoamérica" />
   
   <!-- ========== Canonical & Language ========== -->
-  <link rel="canonical" href={canonicalURL} />
+  <link rel="canonical" href={normalizedCanonical} />
   <meta name="language" content="Spanish" />
   <meta name="geo.region" content="MX-NLE" />
   <meta name="geo.placename" content="Monterrey" />
   
   <!-- ========== Open Graph / Facebook ========== -->
   <meta property="og:type" content={type} />
-  <meta property="og:url" content={canonicalURL} />
+  <meta property="og:url" content={normalizedCanonical} />
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
   <meta property="og:image" content={fullImageURL} />
@@ -62,7 +67,7 @@ const fullImageURL = image.startsWith('http') ? image : `${siteURL}${image}`;
   
   <!-- ========== Twitter Card ========== -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:url" content={canonicalURL} />
+  <meta name="twitter:url" content={normalizedCanonical} />
   <meta name="twitter:title" content={title} />
   <meta name="twitter:description" content={description} />
   <meta name="twitter:image" content={fullImageURL} />
