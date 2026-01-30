@@ -178,7 +178,7 @@ const results = typeof project.results === 'string' ? JSON.parse(project.results
             </h2>
           </div>
           
-          <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4 sm:gap-6">
             {results.map((result: any, index: number) => (
               <div class="group relative p-5 sm:p-6 lg:p-8 rounded-2xl bg-white border border-gray-200/50 hover:border-cyan-500/30 hover:shadow-xl transition-all duration-500">
                 <!-- Gradient overlay on hover -->
@@ -188,7 +188,7 @@ const results = typeof project.results === 'string' ? JSON.parse(project.results
                   <div class="text-3xl sm:text-3xl lg:text-4xl font-montserrat-alt font-bold bg-gradient-to-br from-cyan-500 to-blue-500 bg-clip-text text-transparent mb-2 sm:mb-3">
                     {typeof result === 'object' ? result.value : result}
                   </div>
-                  <div class="text-sm sm:text-base text-dark-blue-500/70 font-medium leading-tight">
+                  <div class="text-sm sm:text-base text-dark-blue-500/70 font-medium leading-tight whitespace-normal">
                     {typeof result === 'object' ? result.label : ''}
                   </div>
                 </div>
