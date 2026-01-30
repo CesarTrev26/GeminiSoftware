@@ -12,7 +12,7 @@ interface Box {
   rotation: number;
 }
 
-export default function AIChat3DBackground({ burst = false }: { burst?: boolean }) {
+export default function AIChat3DBackground({ burst = false, chatScroll = 0 }: { burst?: boolean; chatScroll?: number }) {
   const [burstActive, setBurstActive] = useState(false);
   const [boxes, setBoxes] = useState<Box[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -108,9 +108,10 @@ export default function AIChat3DBackground({ burst = false }: { burst?: boolean 
         const containerWidth = containerRect.width;
         const containerHeight = containerRect.height;
 
-        // Apply scroll drag effect
-        const scrollDelta = scrollY.current - lastScrollY.current;
-        lastScrollY.current = scrollY.current;
+        // Apply scroll drag effect (use chatScroll if provided, else window scroll)
+        const currentScroll = chatScroll || window.scrollY;
+        const scrollDelta = currentScroll - lastScrollY.current;
+        lastScrollY.current = currentScroll;
 
         newBoxes.forEach((box, i) => {
           // Apply scroll drag (parallax effect)
@@ -184,7 +185,7 @@ export default function AIChat3DBackground({ burst = false }: { burst?: boolean 
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, [boxes.length]);
+  }, [boxes.length, chatScroll]);
 
   return (
     <div ref={containerRef} className="absolute inset-0 overflow-hidden pointer-events-none">

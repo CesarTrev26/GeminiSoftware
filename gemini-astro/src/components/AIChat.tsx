@@ -51,9 +51,11 @@ function AIChat() {
   const [particleBurst, setParticleBurst] = useState(false);
   const [sessionId] = useState(getSessionId);
   const [historyLoaded, setHistoryLoaded] = useState(false);
+  const [chatScroll, setChatScroll] = useState(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const scrollPositionRef = useRef(0);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -66,13 +68,13 @@ function AIChat() {
   // Lock body scroll on mobile when chat is open
   useEffect(() => {
     if (isOpen) {
-      // Save scroll position
-      const scrollY = window.scrollY;
+      // Save current scroll position to ref
+      scrollPositionRef.current = window.scrollY;
       
       // Lock body scroll on mobile
       if (window.innerWidth < 640) {
         document.body.style.position = 'fixed';
-        document.body.style.top = `-${scrollY}px`;
+        document.body.style.top = `-${scrollPositionRef.current}px`;
         document.body.style.width = '100%';
         document.body.style.overflow = 'hidden';
       }
@@ -84,7 +86,7 @@ function AIChat() {
           document.body.style.top = '';
           document.body.style.width = '';
           document.body.style.overflow = '';
-          window.scrollTo(0, scrollY);
+          window.scrollTo(0, scrollPositionRef.current);
         }
       };
     }
@@ -242,7 +244,7 @@ function AIChat() {
             className="fixed inset-0 sm:inset-auto sm:bottom-24 sm:right-6 z-[10000] sm:z-[60] w-full sm:w-[400px] h-full sm:h-[calc(100vh-8rem)] sm:max-h-[600px] bg-gray-50 dark:bg-gray-900 rounded-none sm:rounded-2xl shadow-2xl overflow-hidden flex flex-col border-0 sm:border border-gray-200 dark:border-gray-700"
           >
             {/* 3D Background */}
-            <AIChat3DBackground burst={particleBurst} />
+            <AIChat3DBackground burst={particleBurst} chatScroll={chatScroll} />
             
             {/* Header */}
             <div className="p-4 text-white relative z-10" style={{ background: 'linear-gradient(90deg, #01183D 0%, #0066CC 100%)' }}>
@@ -279,6 +281,10 @@ function AIChat() {
                 WebkitOverflowScrolling: 'touch', 
                 overscrollBehavior: 'contain',
                 touchAction: 'pan-y' // Allow only vertical scrolling
+              }}
+              onScroll={(e) => {
+                // Update chat scroll position for 3D background drag effect
+                setChatScroll(e.currentTarget.scrollTop);
               }}
               onWheel={(e) => {
                 const target = e.currentTarget;
