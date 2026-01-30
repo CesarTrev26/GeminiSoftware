@@ -94,10 +94,20 @@ const normalizedCanonical = canonicalURL
   <!-- ========== Preconnect & Preload (Optimized) ========== -->
   <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="dns-prefetch" href="https://gemini-backend.fly.dev" />
+  <link rel="preconnect" href="https://gemini-backend.fly.dev" crossorigin />
   
   <!-- Defer non-critical font loading -->
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" /></noscript>
+  
+  <!-- Preload critical API data -->
+  {Astro.url.pathname === '/' && (
+    <>
+      <link rel="preload" href="https://gemini-backend.fly.dev/api/services" as="fetch" crossorigin />
+      <link rel="preload" href="https://gemini-backend.fly.dev/api/projects?featured=true" as="fetch" crossorigin />
+    </>
+  )}
   
   <!-- Preload critical hero image for LCP -->
   {Astro.url.pathname === '/' && (
