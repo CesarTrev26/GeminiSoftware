@@ -101,6 +101,13 @@ const normalizedCanonical = canonicalURL
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" /></noscript>
   
+  <!-- Preload critical hero image for LCP (responsive) -->
+  {Astro.url.pathname === '/' && (
+    <>
+      <link rel="preload" href="/img/Laptop-full-sm.webp" as="image" type="image/webp" imagesrcset="/img/Laptop-full-sm.webp 400w, /img/Laptop-full-md.webp 800w" imagesizes="(max-width: 640px) 400px, 600px" fetchpriority="high" />
+    </>
+  )}
+  
   <!-- Preload critical API data -->
   {Astro.url.pathname === '/' && (
     <>
