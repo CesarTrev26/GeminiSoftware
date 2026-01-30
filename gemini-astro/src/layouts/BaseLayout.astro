@@ -83,14 +83,13 @@ const normalizedCanonical = canonicalURL
 
   <!-- ========== Google Analytics ========== -->
   <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-58TV16E6FT"></script>
+  <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-58TV16E6FT"></script>
   <script is:inline>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'G-58TV16E6FT');
-  </script>
-  <script is:inline>
+    
     // Track contact form submissions
     window.trackContactSubmission = function() {
       if (window.gtag) {
