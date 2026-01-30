@@ -133,12 +133,12 @@ const {
             <div class="relative">
               <img 
                 src="/img/Laptop-full-sm.webp"
-                srcset="/img/Laptop-full-sm.webp 400w, /img/Laptop-full-md.webp 800w, /img/Laptop-full-lg.webp 1200w, /img/Laptop-full.webp 1339w"
-                sizes="(max-width: 640px) 400px, (max-width: 768px) 600px, 800px"
+                srcset="/img/Laptop-full-sm.webp 400w, /img/Laptop-full-md.webp 800w, /img/Laptop-full-lg.webp 1200w"
+                sizes="(max-width: 480px) 380px, (max-width: 768px) 500px, (max-width: 1024px) 450px, 500px"
                 alt="Gemini Software - Desarrollo Web y Aplicaciones"
                 class="relative z-10 w-full h-auto drop-shadow-2xl"
                 width="400"
-                height="533"
+                height="232"
                 decoding="async"
                 fetchpriority="high"
               />
@@ -204,12 +204,14 @@ const {
     if ('connection' in navigator && (navigator as any).connection?.saveData) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     
+    // NOTE: We use transform-only animations (no opacity) to prevent CLS
+    // Elements are always visible, just animate their position
     const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
     
-    tl.from('.hero-badge', { opacity: 0, y: 30, duration: 0.6 })
-      .from('.hero-title span', { opacity: 0, y: 50, stagger: 0.1, duration: 0.6 }, '-=0.4')
-      .from('.hero-subtitle', { opacity: 0, y: 30, duration: 0.6 }, '-=0.4')
-      .from('.hero-trust > div', { opacity: 0, y: 20, stagger: 0.08, duration: 0.4 }, '-=0.3');
+    tl.from('.hero-badge', { y: 20, duration: 0.5 })
+      .from('.hero-title span', { y: 30, stagger: 0.08, duration: 0.5 }, '-=0.3')
+      .from('.hero-subtitle', { y: 20, duration: 0.5 }, '-=0.3')
+      .from('.hero-trust > div', { y: 15, stagger: 0.05, duration: 0.4 }, '-=0.2');
     
     // Parallax effect on orbs - defer to idle
     requestIdleCallback(() => {

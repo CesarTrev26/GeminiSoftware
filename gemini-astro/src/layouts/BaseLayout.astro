@@ -97,14 +97,14 @@ const normalizedCanonical = canonicalURL
   <link rel="dns-prefetch" href="https://gemini-backend.fly.dev" />
   <link rel="preconnect" href="https://gemini-backend.fly.dev" crossorigin />
   
-  <!-- Defer non-critical font loading -->
-  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
-  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" /></noscript>
+  <!-- Preload critical fonts to prevent CLS -->
+  <link rel="preload" href="/fonts/Montserrat-Light.ttf" as="font" type="font/ttf" crossorigin />
+  <link rel="preload" href="/fonts/MONTSERRATALT1-LIGHT.OTF" as="font" type="font/otf" crossorigin />
   
   <!-- Preload critical hero image for LCP (responsive) -->
   {Astro.url.pathname === '/' && (
     <>
-      <link rel="preload" href="/img/Laptop-full-sm.webp" as="image" type="image/webp" imagesrcset="/img/Laptop-full-sm.webp 400w, /img/Laptop-full-md.webp 800w" imagesizes="(max-width: 640px) 400px, 600px" fetchpriority="high" />
+      <link rel="preload" href="/img/Laptop-full-sm.webp" as="image" type="image/webp" imagesrcset="/img/Laptop-full-sm.webp 400w, /img/Laptop-full-md.webp 800w" imagesizes="(max-width: 480px) 380px, 500px" fetchpriority="high" />
     </>
   )}
   
