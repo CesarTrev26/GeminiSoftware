@@ -55,7 +55,6 @@ function AIChat() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const scrollPositionRef = useRef(0);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -64,35 +63,6 @@ function AIChat() {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
-
-  // Lock body scroll on mobile when chat is open
-  useEffect(() => {
-    if (isOpen) {
-      // Save current scroll position to ref
-      scrollPositionRef.current = window.scrollY;
-      
-      // Lock body scroll on mobile
-      if (window.innerWidth < 640) {
-        document.body.style.position = 'fixed';
-        document.body.style.top = `-${scrollPositionRef.current}px`;
-        document.body.style.width = '100%';
-        document.body.style.overflow = 'hidden';
-      }
-      
-      return () => {
-        // Restore body scroll
-        if (window.innerWidth < 640) {
-          document.body.style.position = '';
-          document.body.style.top = '';
-          document.body.style.width = '';
-          document.body.style.overflow = '';
-          window.scrollTo(0, scrollPositionRef.current);
-        }
-        // Reset chat scroll to prevent interference with page scrolling
-        setChatScroll(0);
-      };
-    }
-  }, [isOpen]);
 
   // Cargar historial cuando se abre el chat
   useEffect(() => {
@@ -104,7 +74,26 @@ function AIChat() {
   useEffect(() => {
     if (isOpen) {
       inputRef.current?.focus();
+      
+      // Lock body scroll on mobile when chat is open
+      if (typeof window !== 'undefined' && window.innerWidth < 640) {
+        document.body.style.overflow = 'hidden';
+        document.body.style.position = 'fixed';
+        document.body.style.width = '100%';
+      }
+    } else {
+      // Restore body scroll
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
     }
+    
+    return () => {
+      // Cleanup on unmount
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+    };
   }, [isOpen]);
 
   const loadHistory = async () => {
@@ -243,7 +232,7 @@ function AIChat() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ type: 'spring', damping: 20, stiffness: 300 }}
-            className="fixed inset-0 sm:inset-auto sm:bottom-24 sm:right-6 z-[10000] sm:z-[60] w-full sm:w-[400px] h-full sm:h-[calc(100vh-8rem)] sm:max-h-[600px] bg-gray-50 dark:bg-gray-900 rounded-none sm:rounded-2xl shadow-2xl overflow-hidden flex flex-col border-0 sm:border border-gray-200 dark:border-gray-700"
+            className="fixed bottom-0 right-0 sm:bottom-6 sm:right-6 z-[10000] sm:z-40 w-full sm:w-[400px] h-full sm:h-[min(600px,85vh)] bg-gray-50 dark:bg-gray-900 rounded-none sm:rounded-2xl shadow-2xl overflow-hidden flex flex-col border-0 sm:border border-gray-200 dark:border-gray-700"
           >
             {/* 3D Background */}
             <AIChat3DBackground burst={particleBurst} chatScroll={chatScroll} />
@@ -282,22 +271,10 @@ function AIChat() {
               style={{ 
                 WebkitOverflowScrolling: 'touch', 
                 overscrollBehavior: 'contain',
-                touchAction: 'pan-y' // Allow only vertical scrolling
+                touchAction: 'pan-y'
               }}
-              onScroll={(e) => {
-                // Update chat scroll position for 3D background drag effect
-                setChatScroll(e.currentTarget.scrollTop);
-              }}
-              onWheel={(e) => {
-                const target = e.currentTarget;
-                const isAtTop = target.scrollTop === 0;
-                const isAtBottom = target.scrollTop + target.clientHeight >= target.scrollHeight - 1;
-                
-                // Prevent parent scroll when scrolling inside chat
-                if ((e.deltaY < 0 && !isAtTop) || (e.deltaY > 0 && !isAtBottom)) {
-                  e.stopPropagation();
-                }
-              }}
+              onScroll={(e) => setChatScroll(e.currentTarget.scrollTop)}
+              onWheel={(e) => e.stopPropagation()}
             >
               {messages.map((msg, idx) => (
                 <motion.div
@@ -420,12 +397,18 @@ function AIChat() {
                   disabled={!input.trim() || isLoading}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="px-4 py-2.5 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white rounded-xl font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-md hover:shadow-lg"
+                  className="px-4 py-2.5 bg-gradient-to-r from-cyan-500 to-blue-500 text-white rounded-xl font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-md hover:shadow-lg"
                   aria-label="Enviar mensaje"
                 >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                  </svg>
+                  {isLoading ? (
+                    <svg className="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                  ) : (
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                    </svg>
+                  )}
                 </motion.button>
               </div>
               <p className="text-xs text-gray-400 dark:text-gray-500 mt-2 text-center">

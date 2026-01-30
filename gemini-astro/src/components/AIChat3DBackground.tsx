@@ -91,14 +91,17 @@ export default function AIChat3DBackground({ burst = false, chatScroll = 0 }: { 
     setBoxes(initialBoxes);
   }, []);
 
-  // Scroll tracking
+  // Scroll tracking - only track window scroll if chatScroll prop is not provided
   useEffect(() => {
+    // If chatScroll is being provided (chat is open), we don't need window scroll
+    if (chatScroll > 0) return;
+    
     const handleScroll = () => {
       scrollY.current = window.scrollY;
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [chatScroll]);
 
   // Animation loop with collision detection
   useEffect(() => {
