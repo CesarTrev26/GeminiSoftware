@@ -1,18 +1,4 @@
 {
-  "routes": [
-    {
-      "src": "/_astro/(.*)",
-      "dest": "/_astro/$1"
-    },
-    {
-      "src": "/img/(.*)",
-      "dest": "/img/$1"
-    },
-    {
-      "src": "/fonts/(.*)",
-      "dest": "/fonts/$1"
-    }
-  ],
   "rewrites": [
     {
       "source": "/portafolio",
@@ -48,7 +34,7 @@
   "trailingSlash": false,
   "headers": [
     {
-      "source": "/assets/(.*)",
+      "source": "/_astro/(.*)",
       "headers": [
         {
           "key": "Cache-Control",
