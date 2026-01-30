@@ -98,10 +98,11 @@ const normalizedCanonical = canonicalURL
   <link rel="dns-prefetch" href="https://gemini-backend.fly.dev" />
   <link rel="preconnect" href="https://gemini-backend.fly.dev" crossorigin />
   
-  <!-- Preload critical hero image for LCP (responsive) -->
+  <!-- Preload critical hero image for LCP - preload sm for mobile -->
   {Astro.url.pathname === '/' && (
     <>
-      <link rel="preload" href="/img/Laptop-full-sm.webp" as="image" type="image/webp" imagesrcset="/img/Laptop-full-sm.webp 400w, /img/Laptop-full-md.webp 800w" imagesizes="(max-width: 480px) 380px, 500px" fetchpriority="high" />
+      <link rel="preload" href="/img/Laptop-full-sm.webp" as="image" type="image/webp" media="(max-width: 640px)" fetchpriority="high" />
+      <link rel="preload" href="/img/Laptop-full-md.webp" as="image" type="image/webp" media="(min-width: 641px)" fetchpriority="high" />
     </>
   )}
   
@@ -425,7 +426,7 @@ const normalizedCanonical = canonicalURL
     }
   </script>
 
-  <!-- AI Chat Component -->
-  <AIChatWrapper client:only="react" />
+  <!-- AI Chat Component - Load only when visible to defer React -->
+  <AIChatWrapper client:visible />
 </body>
 </html>

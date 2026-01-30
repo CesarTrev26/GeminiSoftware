@@ -131,17 +131,32 @@ const {
             
             <!-- Laptop Image -->
             <div class="relative">
-              <img 
-                src="/img/Laptop-full-sm.webp"
-                srcset="/img/Laptop-full-sm.webp 400w, /img/Laptop-full-md.webp 800w, /img/Laptop-full-lg.webp 1200w"
-                sizes="(max-width: 480px) 380px, (max-width: 768px) 500px, (max-width: 1024px) 450px, 500px"
-                alt="Gemini Software - Desarrollo Web y Aplicaciones"
-                class="relative z-10 w-full h-auto drop-shadow-2xl"
-                width="400"
-                height="232"
-                decoding="async"
-                fetchpriority="high"
-              />
+              <picture>
+                <!-- Mobile: force sm image -->
+                <source 
+                  media="(max-width: 640px)" 
+                  srcset="/img/Laptop-full-sm.webp"
+                  type="image/webp"
+                />
+                <!-- Tablet: use md image -->
+                <source 
+                  media="(max-width: 1024px)" 
+                  srcset="/img/Laptop-full-md.webp"
+                  type="image/webp"
+                />
+                <!-- Desktop: use lg image -->
+                <img 
+                  src="/img/Laptop-full-md.webp"
+                  srcset="/img/Laptop-full-md.webp 800w, /img/Laptop-full-lg.webp 1200w"
+                  sizes="(max-width: 1024px) 800px, 600px"
+                  alt="Gemini Software - Desarrollo Web y Aplicaciones"
+                  class="relative z-10 w-full h-auto drop-shadow-2xl"
+                  width="400"
+                  height="232"
+                  decoding="async"
+                  fetchpriority="high"
+                />
+              </picture>
               
               <!-- Screen Content Animation -->
               <div class="absolute top-[8%] left-[12%] right-[12%] bottom-[25%] overflow-hidden rounded-lg">
@@ -198,6 +213,12 @@ const {
   
   gsap.registerPlugin(ScrollTrigger);
   
+  // Reduce forced reflows by batching reads/writes
+  gsap.config({ 
+    force3D: true,
+    nullTargetWarn: false,
+  });
+  
   // Hero animations on load - Use requestIdleCallback to not block LCP
   const initHeroAnimations = () => {
     // Skip animations on slow connections or reduced motion preference
@@ -206,41 +227,47 @@ const {
     
     const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
     
+    // Batch animations to reduce reflows
     tl.from('.hero-badge', { opacity: 0, y: 30, duration: 0.6 })
       .from('.hero-title span', { opacity: 0, y: 50, stagger: 0.1, duration: 0.6 }, '-=0.4')
       .from('.hero-subtitle', { opacity: 0, y: 30, duration: 0.6 }, '-=0.4')
       .from('.hero-trust > div', { opacity: 0, y: 20, stagger: 0.08, duration: 0.4 }, '-=0.3');
+  };
+  
+  // Defer parallax until after initial render - reduces forced reflows
+  const initParallax = () => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     
-    // Parallax effect on orbs - defer to idle
-    requestIdleCallback(() => {
-      gsap.to('.orb-1', {
-        y: -100,
-        scrollTrigger: {
-          trigger: '.hero-section',
-          start: 'top top',
-          end: 'bottom top',
-          scrub: 1,
-        },
-      });
-      
-      gsap.to('.orb-2', {
-        y: -50,
-        x: 50,
-        scrollTrigger: {
-          trigger: '.hero-section',
-          start: 'top top',
-          end: 'bottom top',
-          scrub: 1,
-        },
-      });
+    // Parallax effect on orbs
+    gsap.to('.orb-1', {
+      y: -100,
+      scrollTrigger: {
+        trigger: '.hero-section',
+        start: 'top top',
+        end: 'bottom top',
+        scrub: 1,
+      },
+    });
+    
+    gsap.to('.orb-2', {
+      y: -50,
+      x: 50,
+      scrollTrigger: {
+        trigger: '.hero-section',
+        start: 'top top',
+        end: 'bottom top',
+        scrub: 1,
+      },
     });
   };
   
-  // Run after page is interactive, not blocking LCP
+  // Run hero animations quickly, defer parallax to reduce reflows
   if ('requestIdleCallback' in window) {
-    requestIdleCallback(initHeroAnimations, { timeout: 1000 });
+    requestIdleCallback(initHeroAnimations, { timeout: 500 });
+    requestIdleCallback(initParallax, { timeout: 2000 });
   } else {
     setTimeout(initHeroAnimations, 100);
+    setTimeout(initParallax, 1000);
   }
 </script>
 

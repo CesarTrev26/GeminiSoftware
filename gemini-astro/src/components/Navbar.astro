@@ -85,8 +85,8 @@ const variantClasses = {
         </a>
       </div>
 
-      <!-- AI Search (visible on all screens) - Deferred for better initial page load -->
-      <AISearch client:idle />
+      <!-- AI Search (visible on all screens) - Lazy load when visible -->
+      <AISearch client:visible />
 
       <!-- Mobile Menu Button -->
       <button
