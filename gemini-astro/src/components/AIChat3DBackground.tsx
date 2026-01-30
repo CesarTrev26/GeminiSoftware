@@ -12,7 +12,7 @@ interface Box {
   rotation: number;
 }
 
-export default function AIChat3DBackground({ burst = false, chatScroll = 0 }: { burst?: boolean; chatScroll?: number }) {
+export default function AIChat3DBackground({ burst = false, chatScroll = 0, isOpen = false }: { burst?: boolean; chatScroll?: number; isOpen?: boolean }) {
   const [burstActive, setBurstActive] = useState(false);
   const [boxes, setBoxes] = useState<Box[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -91,17 +91,17 @@ export default function AIChat3DBackground({ burst = false, chatScroll = 0 }: { 
     setBoxes(initialBoxes);
   }, []);
 
-  // Scroll tracking - only track window scroll if chatScroll prop is not provided
+  // Scroll tracking - only track window scroll if chat is closed
   useEffect(() => {
-    // If chatScroll is being provided (chat is open), we don't need window scroll
-    if (chatScroll > 0) return;
+    // If chat is open, use chat scroll instead of window scroll
+    if (isOpen) return;
     
     const handleScroll = () => {
       scrollY.current = window.scrollY;
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [chatScroll]);
+  }, [isOpen]);
 
   // Animation loop with collision detection
   useEffect(() => {

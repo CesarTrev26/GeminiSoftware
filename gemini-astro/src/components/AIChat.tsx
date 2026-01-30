@@ -235,7 +235,7 @@ function AIChat() {
             className="fixed bottom-0 right-0 sm:bottom-6 sm:right-6 z-[10000] sm:z-40 w-full sm:w-[400px] h-full sm:h-[min(600px,85vh)] bg-gray-50 dark:bg-gray-900 rounded-none sm:rounded-2xl shadow-2xl overflow-hidden flex flex-col border-0 sm:border border-gray-200 dark:border-gray-700"
           >
             {/* 3D Background */}
-            <AIChat3DBackground burst={particleBurst} chatScroll={chatScroll} />
+            <AIChat3DBackground burst={particleBurst} chatScroll={chatScroll} isOpen={isOpen} />
             
             {/* Header */}
             <div className="p-4 text-white relative z-10" style={{ background: 'linear-gradient(90deg, #01183D 0%, #0066CC 100%)' }}>
