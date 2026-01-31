@@ -199,52 +199,6 @@ function AIChat() {
 
   return (
     <>
-      {/* Floating Button */}
-      <motion.button
-        onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 z-50 flex items-center justify-center w-16 h-16 rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.4)] hover:shadow-[0_8px_40px_rgba(1,24,61,0.6)] transition-all duration-300"
-        style={{ background: 'linear-gradient(135deg, #01183D 0%, #0066CC 100%)' }}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.95 }}
-        animate={isOpen ? { rotate: 0 } : { rotate: 0 }}
-        aria-label={isOpen ? "Cerrar chat de ayuda" : "Abrir chat de ayuda"}
-      >
-        <AnimatePresence mode="wait">
-          {isOpen ? (
-            <motion.svg
-              key="close"
-              initial={{ rotate: -90, opacity: 0 }}
-              animate={{ rotate: 0, opacity: 1 }}
-              exit={{ rotate: 90, opacity: 0 }}
-              className="w-6 h-6 text-white"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </motion.svg>
-          ) : (
-            <motion.div
-              key="chat"
-              initial={{ scale: 0, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0, opacity: 0 }}
-              className="relative"
-            >
-              <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-              </svg>
-              {/* Pulsing indicator */}
-              <motion.div
-                className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full"
-                animate={{ scale: [1, 1.3, 1] }}
-                transition={{ repeat: Infinity, duration: 2 }}
-              />
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </motion.button>
-
       {/* Chat Window */}
       <AnimatePresence>
         {isOpen && (
@@ -253,7 +207,7 @@ function AIChat() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ type: 'spring', damping: 20, stiffness: 300 }}
-            className="fixed bottom-0 right-0 sm:bottom-6 sm:right-6 z-[10000] sm:z-40 w-full sm:w-[400px] h-full sm:h-[min(600px,85vh)] bg-gray-50 dark:bg-gray-900 rounded-none sm:rounded-2xl shadow-2xl overflow-hidden flex flex-col border-0 sm:border border-gray-200 dark:border-gray-700"
+            className="fixed bottom-0 right-0 sm:bottom-[5.5rem] sm:right-6 z-[9999] w-full sm:w-[400px] h-full sm:h-[min(550px,calc(100vh-7rem))] bg-gray-50 dark:bg-gray-900 rounded-none sm:rounded-2xl shadow-2xl overflow-hidden flex flex-col border-0 sm:border border-gray-200 dark:border-gray-700"
           >
             {/* 3D Background */}
             <AIChat3DBackground burst={particleBurst} chatScroll={chatScroll} isOpen={isOpen} />
@@ -439,6 +393,52 @@ function AIChat() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Floating Button */}
+      <motion.button
+        onClick={() => setIsOpen(!isOpen)}
+        className="fixed bottom-6 right-6 z-[10000] flex items-center justify-center w-16 h-16 rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.4)] hover:shadow-[0_8px_40px_rgba(1,24,61,0.6)] transition-all duration-300"
+        style={{ background: 'linear-gradient(135deg, #01183D 0%, #0066CC 100%)' }}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.95 }}
+        animate={isOpen ? { rotate: 0 } : { rotate: 0 }}
+        aria-label={isOpen ? "Cerrar chat de ayuda" : "Abrir chat de ayuda"}
+      >
+        <AnimatePresence mode="wait">
+          {isOpen ? (
+            <motion.svg
+              key="close"
+              initial={{ rotate: -90, opacity: 0 }}
+              animate={{ rotate: 0, opacity: 1 }}
+              exit={{ rotate: 90, opacity: 0 }}
+              className="w-6 h-6 text-white"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </motion.svg>
+          ) : (
+            <motion.div
+              key="chat"
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0, opacity: 0 }}
+              className="relative"
+            >
+              <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+              </svg>
+              {/* Pulsing indicator */}
+              <motion.div
+                className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full"
+                animate={{ scale: [1, 1.3, 1] }}
+                transition={{ repeat: Infinity, duration: 2 }}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.button>
     </>
   );
 }
