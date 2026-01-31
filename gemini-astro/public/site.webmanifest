@@ -4,12 +4,19 @@
   "description": "Desarrollo de software a medida, sitios web y aplicaciones móviles en Monterrey, México",
   "icons": [
     {
-      "src": "/img/Logo_degradado.webp",
+      "src": "/img/Favicon2/Logo_degradado.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/img/Favicon2/Logo_degradado.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ],
-  "theme_color": "#00D3FF",
+  "theme_color": "#01183D",
   "background_color": "#01183D",
   "display": "standalone",
   "start_url": "/",
