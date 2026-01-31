@@ -38,7 +38,7 @@ router.get('/test-email', authenticate, async (req, res) => {
         message: 'Email service is not configured correctly. Check your SMTP settings.'
       });
     }
-  } catch (error) {
+  } catch {
     return res.status(500).json({
       success: false,
       message: 'Error testing email connection'
