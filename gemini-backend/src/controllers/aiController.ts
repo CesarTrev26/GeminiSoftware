@@ -620,3 +620,43 @@ export const updateConversationStatus = async (req: Request, res: Response) => {
     });
   }
 };
+
+// Eliminar conversación (admin)
+export const deleteConversation = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    // Verificar que la conversación existe
+    const conversation = await prisma.chatConversation.findUnique({
+      where: { id }
+    });
+
+    if (!conversation) {
+      return res.status(404).json({
+        success: false,
+        message: 'Conversación no encontrada'
+      });
+    }
+
+    // Eliminar todos los mensajes asociados primero (cascade delete)
+    await prisma.chatMessage.deleteMany({
+      where: { conversationId: id }
+    });
+
+    // Eliminar la conversación
+    await prisma.chatConversation.delete({
+      where: { id }
+    });
+
+    return res.json({
+      success: true,
+      message: 'Conversación eliminada exitosamente'
+    });
+  } catch (error) {
+    console.error('Delete conversation error:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Error al eliminar conversación'
+    });
+  }
+};

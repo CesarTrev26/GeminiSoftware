@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { chatWithAI, searchProjects, getConversationHistory, listConversations, getConversationById, updateConversationStatus } from '../controllers/aiController';
+import { chatWithAI, searchProjects, getConversationHistory, listConversations, getConversationById, updateConversationStatus, deleteConversation } from '../controllers/aiController';
 import { authenticate } from '../middleware/auth';
 import { testEmailConnection } from '../services/emailService';
 
@@ -22,6 +22,9 @@ router.get('/conversations/:id', authenticate, getConversationById);
 
 // Actualizar estado de conversación (admin only)
 router.patch('/conversations/:id', authenticate, updateConversationStatus);
+
+// Eliminar conversación (admin only)
+router.delete('/conversations/:id', authenticate, deleteConversation);
 
 // Test email connection (admin only)
 router.get('/test-email', authenticate, async (req, res) => {

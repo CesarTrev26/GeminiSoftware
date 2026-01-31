@@ -1903,6 +1903,7 @@ function filterConversations(status) {
 
 function renderConversationsTable(conversations) {
   const tbody = document.getElementById('conversationsTableBody');
+  const cardsContainer = document.getElementById('conversationsCardsContainer');
   
   if (!conversations || conversations.length === 0) {
     tbody.innerHTML = `
@@ -1917,18 +1918,36 @@ function renderConversationsTable(conversations) {
         </td>
       </tr>
     `;
+    cardsContainer.innerHTML = `
+      <div class="text-center py-12">
+        <svg class="w-12 h-12 mx-auto text-dark-blue-500/20 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+        </svg>
+        <p class="text-dark-blue-500/40 font-medium">No hay conversaciones</p>
+      </div>
+    `;
+    cardsContainer.classList.remove('hidden');
     return;
   }
   
+  const statusBadges = {
+    'ACTIVE': '<span class="status-badge status-pending">💬 Activa</span>',
+    'POTENTIAL_LEAD': '<span class="status-badge status-reviewing">⭐ Lead Potencial</span>',
+    'HOT_LEAD': '<span class="status-badge" style="background: linear-gradient(135deg, #ff6b6b, #ff8c42); color: white; font-weight: 600;">🔥 Lead Caliente</span>',
+    'CONVERTED': '<span class="status-badge status-published">✅ Convertida</span>',
+    'CLOSED': '<span class="status-badge status-draft">🚫 Cerrada</span>'
+  };
+  
+  const mobileStatusBadges = {
+    'ACTIVE': '<span class="status-badge active">💬 Activa</span>',
+    'POTENTIAL_LEAD': '<span class="status-badge potential">⭐ Potencial</span>',
+    'HOT_LEAD': '<span class="status-badge hot">🔥 Caliente</span>',
+    'CONVERTED': '<span class="status-badge converted">✅ Convertida</span>',
+    'CLOSED': '<span class="status-badge closed">🚫 Cerrada</span>'
+  };
+  
+  // Render desktop table
   tbody.innerHTML = conversations.map(conv => {
-    const statusBadges = {
-      'ACTIVE': '<span class="status-badge status-pending">💬 Activa</span>',
-      'POTENTIAL_LEAD': '<span class="status-badge status-reviewing">⭐ Lead Potencial</span>',
-      'HOT_LEAD': '<span class="status-badge" style="background: linear-gradient(135deg, #ff6b6b, #ff8c42); color: white; font-weight: 600;">🔥 Lead Caliente</span>',
-      'CONVERTED': '<span class="status-badge status-published">✅ Convertida</span>',
-      'CLOSED': '<span class="status-badge status-draft">🚫 Cerrada</span>'
-    };
-    
     return `
       <tr>
         <td>${statusBadges[conv.status] || conv.status}</td>
@@ -1971,6 +1990,64 @@ function renderConversationsTable(conversations) {
       </tr>
     `;
   }).join('');
+  
+  // Render mobile cards
+  cardsContainer.innerHTML = conversations.map(conv => {
+    return `
+      <div class="conversation-card" onclick="viewConversation('${conv.id}')">
+        <div class="flex items-start justify-between mb-3">
+          <div class="flex-1 min-w-0">
+            <h4 class="font-semibold text-dark-blue-500 text-base truncate mb-1">
+              ${conv.visitorName || 'Anónimo'}
+            </h4>
+            <p class="text-xs text-dark-blue-500/50 truncate">
+              ${conv.visitorEmail || 'No proporcionado'}
+            </p>
+          </div>
+          ${mobileStatusBadges[conv.status] || conv.status}
+        </div>
+        
+        <div class="space-y-2 mb-3">
+          <div class="flex items-center gap-2 text-sm">
+            <svg class="w-4 h-4 text-dark-blue-500/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+            </svg>
+            <span class="text-dark-blue-500/70">${conv.messageCount} mensajes</span>
+          </div>
+          <div class="flex items-center gap-2 text-sm">
+            <svg class="w-4 h-4 text-dark-blue-500/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <span class="text-dark-blue-500/50 text-xs">
+              ${new Date(conv.createdAt).toLocaleDateString('es-MX', { 
+                month: 'short', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+              })}
+            </span>
+          </div>
+        </div>
+        
+        ${conv.lastMessage ? `
+          <p class="text-sm text-dark-blue-500/60 line-clamp-2 mb-3">
+            ${conv.lastMessage}
+          </p>
+        ` : ''}
+        
+        <div class="flex justify-end pt-2 border-t border-dark-blue-500/5">
+          <span class="text-cyan-500 text-sm font-medium flex items-center gap-1">
+            Ver detalles
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+          </span>
+        </div>
+      </div>
+    `;
+  }).join('');
+  
+  cardsContainer.classList.remove('hidden');
 }
 
 async function viewConversation(id) {
@@ -2087,6 +2164,43 @@ async function updateConversationStatus() {
   } catch (error) {
     console.error('Error updating conversation:', error);
     alert('Error al actualizar conversación');
+  }
+}
+
+async function deleteConversation() {
+  const modal = document.getElementById('conversationModal');
+  const conversationId = modal.dataset.conversationId;
+  const visitorName = document.getElementById('conversationVisitorName').textContent;
+  
+  // Confirmation dialog
+  const confirmed = confirm(
+    `¿Estás seguro de que deseas eliminar esta conversación con ${visitorName}?\n\n` +
+    'Esta acción no se puede deshacer y eliminará todos los mensajes asociados.\n\n' +
+    'Nota: Esto no afectará al cliente, solo eliminará el historial del admin.'
+  );
+  
+  if (!confirmed) return;
+  
+  try {
+    const response = await apiCall(`${API_URL}/ai/conversations/${conversationId}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    
+    const data = await response.json();
+    
+    if (data.success) {
+      alert('Conversación eliminada exitosamente');
+      closeConversationModal();
+      loadConversations();
+    } else {
+      alert(data.message || 'Error al eliminar conversación');
+    }
+  } catch (error) {
+    console.error('Error deleting conversation:', error);
+    alert('Error al eliminar conversación');
   }
 }
 
