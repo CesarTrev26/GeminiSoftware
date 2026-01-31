@@ -321,9 +321,9 @@ const results = typeof project.results === 'string' ? JSON.parse(project.results
                       
                       case 'highlight':
                         return (
-                          <div class="relative">
-                            <div class="absolute inset-0 bg-gradient-to-r from-amber-500/20 via-yellow-500/20 to-amber-500/20 rounded-2xl blur-xl"></div>
-                            <div class="relative bg-gradient-to-br from-amber-50 to-yellow-50 rounded-2xl border-2 border-amber-500/30 p-6 sm:p-8 shadow-lg">
+                          <div class="relative group">
+                            <div class="absolute -inset-0.5 bg-gradient-to-r from-yellow-400 to-amber-400 rounded-2xl opacity-0 group-hover:opacity-100 blur transition-all duration-500"></div>
+                            <div class="relative bg-gradient-to-br from-amber-50 to-yellow-50 rounded-2xl border-2 border-amber-500/30 p-6 sm:p-8 shadow-lg hover:shadow-xl transition-all duration-300">
                               <div class="flex gap-4">
                                 <div class="flex-shrink-0">
                                   <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-amber-500 to-yellow-500 flex items-center justify-center shadow-lg">
