@@ -1853,20 +1853,30 @@ let allConversations = [];
 let currentConversationFilter = 'ALL';
 
 async function loadConversations() {
+  console.log('🔍 loadConversations started...');
+  console.log('🔑 Token:', token ? 'Present' : 'Missing');
+  console.log('🌐 API URL:', `${API_URL}/ai/conversations`);
+  
   try {
     const response = await apiCall(`${API_URL}/ai/conversations`, {
       headers: {
         'Authorization': `Bearer ${token}`
       }
     });
+    
+    console.log('📡 Response status:', response.status);
     const data = await response.json();
+    console.log('📦 Response data:', data);
     
     if (data.success) {
       allConversations = data.data;
+      console.log('✅ Conversations loaded:', allConversations.length);
       renderConversationsTable(allConversations);
+    } else {
+      console.log('❌ API returned success: false', data.message);
     }
   } catch (error) {
-    console.error('Error loading conversations:', error);
+    console.error('❌ Error loading conversations:', error);
     document.getElementById('conversationsTableBody').innerHTML = `
       <tr>
         <td colspan="7" class="text-center py-16">
@@ -1926,7 +1936,6 @@ function renderConversationsTable(conversations) {
         <p class="text-dark-blue-500/40 font-medium">No hay conversaciones</p>
       </div>
     `;
-    cardsContainer.classList.remove('hidden');
     return;
   }
   
@@ -2046,8 +2055,6 @@ function renderConversationsTable(conversations) {
       </div>
     `;
   }).join('');
-  
-  cardsContainer.classList.remove('hidden');
 }
 
 async function viewConversation(id) {
