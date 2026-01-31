@@ -33,7 +33,7 @@ const SYSTEM_PROMPT = `Eres el asistente virtual de Gemini Software, una empresa
 
 ## Información de Contacto:
 - 📧 Email: contacto@geminisoftware.mx
-- 📱 WhatsApp: +52 81 8020 7890
+- 📱 WhatsApp: +52 81 3660 0062
 - 🌐 Web: https://geminisoftware.mx
 - 📍 Monterrey, Nuevo León, México
 - ⏰ Horario: Lun-Vie 9:00-18:00 (GMT-6)
@@ -180,7 +180,7 @@ function generateFallbackResponse(message: string, projects: Array<{ title: stri
   }
 
   if (messageLower.includes('precio') || messageLower.includes('costo') || messageLower.includes('cotiz')) {
-    return 'No puedo darte precios exactos porque cada proyecto es único y requiere análisis personalizado. 💡\n\nPara una cotización precisa:\n📋 Contáctanos: https://www.geminisoftware.mx/contacto\n📧 Escríbenos: contact@geminisoftware.mx\n💬 WhatsApp: +52 477 237 4064\n\n¿Quieres contarme más sobre tu proyecto mientras tanto?';
+    return 'No puedo darte precios exactos porque cada proyecto es único y requiere análisis personalizado. 💡\n\nPara una cotización precisa:\n📋 Contáctanos: https://www.geminisoftware.mx/contacto\n📧 Escríbenos: contact@geminisoftware.mx\n💬 WhatsApp: +52 81 3660 0062\n\n¿Quieres contarme más sobre tu proyecto mientras tanto?';
   }
 
   if (projects.length > 0) {
