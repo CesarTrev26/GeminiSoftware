@@ -397,7 +397,7 @@ function AIChat() {
       {/* Floating Button */}
       <motion.button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 z-[10000] flex items-center justify-center w-16 h-16 rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.4)] hover:shadow-[0_8px_40px_rgba(1,24,61,0.6)] transition-all duration-300"
+        className="fixed bottom-6 right-6 z-[500] flex items-center justify-center w-16 h-16 rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.4)] hover:shadow-[0_8px_40px_rgba(1,24,61,0.6)] transition-all duration-300"
         style={{ background: 'linear-gradient(135deg, #01183D 0%, #0066CC 100%)' }}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
