@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { PrismaClient } from '@prisma/client';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { sendHotLeadNotification, sendPotentialLeadNotification } from '../services/emailService';
 
 const prisma = new PrismaClient();
 
@@ -28,6 +29,14 @@ const SYSTEM_PROMPT = `Eres el asistente virtual de Gemini Software, una empresa
 - +5 años de experiencia en proyectos de alto impacto
 - Clientes como NEST Desarrollo Inmobiliario, Nature's Factory, entre otros
 - Stack tecnológico moderno: React, Next.js, Astro, Node.js, TypeScript, Prisma, etc.
+- Ubicación: Monterrey, Nuevo León, México
+
+## Información de Contacto:
+- 📧 Email: contacto@geminisoftware.mx
+- 📱 WhatsApp: +52 81 8020 7890
+- 🌐 Web: https://geminisoftware.mx
+- 📍 Monterrey, Nuevo León, México
+- ⏰ Horario: Lun-Vie 9:00-18:00 (GMT-6)
 
 ## Servicios principales:
 1. **Desarrollo Web**: Sitios corporativos, landing pages, portales - Next.js, Astro, React
@@ -50,15 +59,18 @@ const SYSTEM_PROMPT = `Eres el asistente virtual de Gemini Software, una empresa
 - Respuestas concisas pero informativas (máximo 3-4 párrafos)
 - Usa emojis ocasionalmente para ser más amigable
 - Si el usuario pregunta algo técnico, da detalles relevantes
-- Si detectas interés de compra, sugiere agendar una llamada
+- Si detectas interés de compra, sugiere contactar y ofrece la información de contacto
+- **SIEMPRE proporciona la información de contacto cuando la pidan**
 - Responde en español a menos que te escriban en otro idioma
 
 ## Reglas importantes:
 - NO inventes información que no esté en tu contexto
-- Si no sabes algo, ofrece conectar con el equipo humano
+- Si no sabes algo, ofrece conectar con el equipo humano y proporciona los datos de contacto
 - Cuando menciones proyectos, incluye detalles técnicos relevantes
-- Si el usuario está interesado, pide su email para contacto
-- Mantén respuestas cortas y al punto`;
+- Si el usuario está interesado en cotizar o contratar, proporciona email y WhatsApp directamente
+- Si preguntan cómo contactar, da la info completa: email, WhatsApp, y horarios
+- Mantén respuestas cortas y al punto
+- Cuando detectes un lead calificado (interés real en servicios), marca el mensaje como HOT_LEAD`;
 
 // Función para buscar proyectos relacionados en la DB
 async function searchRelatedProjects(query: string) {
@@ -304,6 +316,75 @@ Asistente:`;
       }
     }
 
+    // Detectar intención del usuario para clasificar el lead
+    const messageLower = message.toLowerCase();
+    const leadKeywords = ['precio', 'costo', 'cotizar', 'cotización', 'cuanto', 'cuánto', 'contratar', 'necesito', 'proyecto', 'desarrollar', 'hacer', 'crear', 'quiero', 'interesa', 'contacto', 'email', 'teléfono', 'whatsapp', 'llamar', 'reunión', 'junta'];
+    const hasLeadIntent = leadKeywords.some(keyword => messageLower.includes(keyword));
+    
+    // Detectar si es un lead caliente (múltiples señales de interés)
+    const isHotLead = (hasLeadIntent && (
+      messageLower.includes('precio') || 
+      messageLower.includes('costo') ||
+      messageLower.includes('cotizar') ||
+      messageLower.includes('contratar') ||
+      messageLower.includes('necesito') ||
+      (conversation.visitorEmail && conversation.messages.length > 3)
+    ));
+
+    // Actualizar el estado de la conversación si hay señales de lead
+    if (isHotLead && conversation.status === 'ACTIVE') {
+      await prisma.chatConversation.update({
+        where: { id: conversation.id },
+        data: { 
+          status: 'HOT_LEAD',
+          notes: `Lead caliente detectado. Mensaje: "${message.substring(0, 100)}..."`
+        }
+      });
+
+      // 🔥 ENVIAR EMAIL DE NOTIFICACIÓN PARA LEAD CALIENTE
+      console.log('🔥 Lead caliente detectado! Enviando email...');
+      try {
+        const adminUrl = process.env.NODE_ENV === 'production' 
+          ? 'https://geminisoftware.mx/admin'
+          : 'http://localhost:4321/admin';
+        
+        await sendHotLeadNotification({
+          visitorName: conversation.visitorName || undefined,
+          visitorEmail: conversation.visitorEmail || undefined,
+          sessionId: conversation.sessionId,
+          lastMessage: message,
+          messageCount: conversation.messages.length + 1, // +1 por el mensaje actual
+          conversationUrl: `${adminUrl}#conversations`
+        });
+      } catch (emailError) {
+        console.error('❌ Error enviando email de lead caliente:', emailError);
+        // No bloqueamos la respuesta por error de email
+      }
+    } else if (hasLeadIntent && conversation.status === 'ACTIVE' && conversation.messages.length > 2) {
+      const updatedConv = await prisma.chatConversation.update({
+        where: { id: conversation.id },
+        data: { 
+          status: 'POTENTIAL_LEAD',
+          notes: `Lead potencial. Mostró interés con: "${message.substring(0, 100)}..."`
+        }
+      });
+
+      // ⭐ ENVIAR EMAIL DE NOTIFICACIÓN PARA LEAD POTENCIAL (solo la primera vez)
+      if (conversation.status === 'ACTIVE') { // Solo si es la primera vez que se marca como potencial
+        console.log('⭐ Lead potencial detectado! Enviando email...');
+        try {
+          await sendPotentialLeadNotification({
+            visitorName: updatedConv.visitorName || undefined,
+            visitorEmail: updatedConv.visitorEmail || undefined,
+            sessionId: updatedConv.sessionId,
+            messageCount: conversation.messages.length + 1
+          });
+        } catch (emailError) {
+          console.error('❌ Error enviando email de lead potencial:', emailError);
+        }
+      }
+    }
+
     // Guardar respuesta del asistente
     await prisma.chatMessage.create({
       data: {
@@ -427,6 +508,7 @@ export const listConversations = async (req: Request, res: Response) => {
         visitorName: c.visitorName,
         visitorEmail: c.visitorEmail,
         status: c.status,
+        notes: c.notes,
         messageCount: c._count.messages,
         lastMessage: c.messages[0]?.content?.substring(0, 100),
         createdAt: c.createdAt,
@@ -438,6 +520,84 @@ export const listConversations = async (req: Request, res: Response) => {
     return res.status(500).json({
       success: false,
       message: 'Error al listar conversaciones'
+    });
+  }
+};
+
+// Obtener una conversación completa con todos los mensajes (admin)
+export const getConversationById = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    const conversation = await prisma.chatConversation.findUnique({
+      where: { id },
+      include: {
+        messages: {
+          orderBy: { createdAt: 'asc' }
+        }
+      }
+    });
+
+    if (!conversation) {
+      return res.status(404).json({
+        success: false,
+        message: 'Conversación no encontrada'
+      });
+    }
+
+    return res.json({
+      success: true,
+      data: {
+        ...conversation,
+        messages: conversation.messages.map(m => ({
+          id: m.id,
+          role: m.role,
+          content: m.content,
+          projects: m.projects ? JSON.parse(m.projects) : undefined,
+          createdAt: m.createdAt
+        }))
+      }
+    });
+  } catch (error) {
+    console.error('Get conversation error:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Error al obtener conversación'
+    });
+  }
+};
+
+// Actualizar estado de conversación (admin)
+export const updateConversationStatus = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { status, notes } = req.body;
+
+    const validStatuses = ['ACTIVE', 'POTENTIAL_LEAD', 'HOT_LEAD', 'CONVERTED', 'CLOSED'];
+    if (status && !validStatuses.includes(status)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Estado inválido'
+      });
+    }
+
+    const conversation = await prisma.chatConversation.update({
+      where: { id },
+      data: {
+        ...(status && { status }),
+        ...(notes !== undefined && { notes })
+      }
+    });
+
+    return res.json({
+      success: true,
+      data: conversation
+    });
+  } catch (error) {
+    console.error('Update conversation error:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Error al actualizar conversación'
     });
   }
 };

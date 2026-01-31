@@ -146,6 +146,10 @@ function switchTab(tab) {
     console.log('📋 Calling loadQuotes()...');
     loadQuotes();
   }
+  else if (tab === 'conversations') {
+    console.log('💬 Calling loadConversations()...');
+    loadConversations();
+  }
 }
 
 // Stats Functions
@@ -1843,3 +1847,246 @@ function formatStoreFeatureName(feature) {
   };
   return features[feature] || feature;
 }
+
+// ========== CONVERSATIONS FUNCTIONS ==========
+let allConversations = [];
+let currentConversationFilter = 'ALL';
+
+async function loadConversations() {
+  try {
+    const response = await apiCall(`${API_URL}/ai/conversations`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    const data = await response.json();
+    
+    if (data.success) {
+      allConversations = data.data;
+      renderConversationsTable(allConversations);
+    }
+  } catch (error) {
+    console.error('Error loading conversations:', error);
+    document.getElementById('conversationsTableBody').innerHTML = `
+      <tr>
+        <td colspan="7" class="text-center py-16">
+          <div class="flex flex-col items-center gap-3">
+            <svg class="w-12 h-12 text-red-500/20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <p class="text-red-500/60 font-medium">Error al cargar conversaciones</p>
+          </div>
+        </td>
+      </tr>
+    `;
+  }
+}
+
+function filterConversations(status) {
+  currentConversationFilter = status;
+  
+  // Update filter buttons
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.classList.remove('active');
+    if (btn.getAttribute('data-filter') === status) {
+      btn.classList.add('active');
+    }
+  });
+  
+  // Filter conversations
+  const filtered = status === 'ALL' 
+    ? allConversations 
+    : allConversations.filter(c => c.status === status);
+  
+  renderConversationsTable(filtered);
+}
+
+function renderConversationsTable(conversations) {
+  const tbody = document.getElementById('conversationsTableBody');
+  
+  if (!conversations || conversations.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="7" class="text-center py-16">
+          <div class="flex flex-col items-center gap-3">
+            <svg class="w-12 h-12 text-dark-blue-500/20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+            </svg>
+            <p class="text-dark-blue-500/40 font-medium">No hay conversaciones</p>
+          </div>
+        </td>
+      </tr>
+    `;
+    return;
+  }
+  
+  tbody.innerHTML = conversations.map(conv => {
+    const statusBadges = {
+      'ACTIVE': '<span class="status-badge status-pending">💬 Activa</span>',
+      'POTENTIAL_LEAD': '<span class="status-badge status-reviewing">⭐ Lead Potencial</span>',
+      'HOT_LEAD': '<span class="status-badge" style="background: linear-gradient(135deg, #ff6b6b, #ff8c42); color: white; font-weight: 600;">🔥 Lead Caliente</span>',
+      'CONVERTED': '<span class="status-badge status-published">✅ Convertida</span>',
+      'CLOSED': '<span class="status-badge status-draft">🚫 Cerrada</span>'
+    };
+    
+    return `
+      <tr>
+        <td>${statusBadges[conv.status] || conv.status}</td>
+        <td>
+          <div class="font-semibold text-dark-blue-500">
+            ${conv.visitorName || 'Anónimo'}
+          </div>
+        </td>
+        <td>
+          <div class="text-sm ${conv.visitorEmail ? 'text-dark-blue-500' : 'text-dark-blue-500/30'}">
+            ${conv.visitorEmail || 'No proporcionado'}
+          </div>
+        </td>
+        <td>
+          <span class="px-2 py-1 text-xs font-medium rounded-lg bg-cyan-50 text-cyan-600">
+            ${conv.messageCount}
+          </span>
+        </td>
+        <td>
+          <div class="text-sm text-dark-blue-500/70 max-w-xs truncate">
+            ${conv.lastMessage || 'Sin mensajes'}
+          </div>
+        </td>
+        <td>
+          <div class="text-sm text-dark-blue-500/50">
+            ${new Date(conv.createdAt).toLocaleDateString('es-MX', { 
+              year: 'numeric', 
+              month: 'short', 
+              day: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit'
+            })}
+          </div>
+        </td>
+        <td class="text-center">
+          <button onclick="viewConversation('${conv.id}')" class="btn-secondary btn-sm">
+            Ver
+          </button>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+async function viewConversation(id) {
+  try {
+    const response = await apiCall(`${API_URL}/ai/conversations/${id}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    const data = await response.json();
+    
+    if (data.success) {
+      openConversationModal(data.data);
+    }
+  } catch (error) {
+    console.error('Error loading conversation:', error);
+    alert('Error al cargar la conversación');
+  }
+}
+
+function openConversationModal(conversation) {
+  document.getElementById('conversationModal').classList.add('active');
+  
+  // Set visitor info
+  document.getElementById('conversationVisitorName').textContent = 
+    conversation.visitorName || 'Visitante Anónimo';
+  document.getElementById('conversationSessionId').textContent = 
+    conversation.sessionId.substring(0, 20) + '...';
+  document.getElementById('conversationDate').textContent = 
+    new Date(conversation.createdAt).toLocaleDateString('es-MX', { 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  
+  document.getElementById('modalVisitorName').textContent = 
+    conversation.visitorName || '-';
+  document.getElementById('modalVisitorEmail').textContent = 
+    conversation.visitorEmail || '-';
+  document.getElementById('modalConversationNotes').textContent = 
+    conversation.notes || '-';
+  
+  document.getElementById('messageCount').textContent = 
+    conversation.messages.length;
+  
+  // Set status and notes for editing
+  document.getElementById('conversationStatus').value = conversation.status;
+  document.getElementById('conversationNotesInput').value = conversation.notes || '';
+  
+  // Store conversation ID for updates
+  document.getElementById('conversationModal').dataset.conversationId = conversation.id;
+  
+  // Render messages
+  const messagesContainer = document.getElementById('conversationMessages');
+  messagesContainer.innerHTML = conversation.messages.map(msg => {
+    const isUser = msg.role === 'user';
+    return `
+      <div class="flex ${isUser ? 'justify-end' : 'justify-start'}">
+        <div class="max-w-[80%] ${isUser ? 'bg-cyan-400 text-white' : 'bg-white border border-dark-blue-500/10'} rounded-xl px-4 py-3 shadow-sm">
+          <div class="flex items-center gap-2 mb-1">
+            <span class="text-xs font-semibold ${isUser ? 'text-white/90' : 'text-dark-blue-500/70'}">
+              ${isUser ? '👤 Usuario' : '🤖 Asistente'}
+            </span>
+            <span class="text-xs ${isUser ? 'text-white/70' : 'text-dark-blue-500/40'}">
+              ${new Date(msg.createdAt).toLocaleTimeString('es-MX', { 
+                hour: '2-digit', 
+                minute: '2-digit' 
+              })}
+            </span>
+          </div>
+          <p class="text-sm ${isUser ? 'text-white' : 'text-dark-blue-500'} whitespace-pre-wrap">
+            ${msg.content}
+          </p>
+        </div>
+      </div>
+    `;
+  }).join('');
+  
+  // Scroll to bottom
+  messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
+
+function closeConversationModal() {
+  document.getElementById('conversationModal').classList.remove('active');
+}
+
+async function updateConversationStatus() {
+  const modal = document.getElementById('conversationModal');
+  const conversationId = modal.dataset.conversationId;
+  const status = document.getElementById('conversationStatus').value;
+  const notes = document.getElementById('conversationNotesInput').value;
+  
+  try {
+    const response = await apiCall(`${API_URL}/ai/conversations/${conversationId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ status, notes })
+    });
+    
+    const data = await response.json();
+    
+    if (data.success) {
+      alert('Conversación actualizada exitosamente');
+      closeConversationModal();
+      loadConversations();
+    } else {
+      alert(data.message || 'Error al actualizar conversación');
+    }
+  } catch (error) {
+    console.error('Error updating conversation:', error);
+    alert('Error al actualizar conversación');
+  }
+}
+
